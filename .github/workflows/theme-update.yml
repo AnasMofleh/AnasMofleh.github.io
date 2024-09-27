@@ -2,7 +2,7 @@ name: "Theme Update"
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 5" # At 00:00 on Friday
 
 jobs:
   update-theme:

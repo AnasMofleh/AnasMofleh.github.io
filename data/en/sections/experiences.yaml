@@ -10,64 +10,51 @@ section:
 
 # Your experiences
 experiences:
+
 - company:
-    name: Example Co.
-    url: "https://www.example.com"
-    location: Dhaka Branch
-    logo: /images/sections/experiences/company1.jpg
+    name: Sinch AB
+    url: "https://www.sinch.com/"
+    location: Malmö, Sweden
+    logo: /images/sections/experiences/sinch.png
+    # Can optionally show a different logo for dark theme
+    # darkLogo: /images/sections/experiences/company3.jpg
+    overview: Sinch connects businesses with customers through conversations messaging, voice, or email services.
+  positions:
+  - designation: Data Engineer
+    start: Oct 2021
+    end: Jan 2023
+    responsibilities:
+    - Designing, developing and maintaining business intelligence solutions
+    - Crafting and executing queries upon request for data
+    - Presenting information through reports and visualization
+
+  - designation: Machine learning Engineer
+    start: May 2021
+    end: Oct 2021
+    responsibilities:
+    - Finetuning av transformers based models.
+    - NLP and Deep Learning project.
+    - Sentiment Analysis.
+    - Classification of messages.
+
+- company:
+    name: Region Skåne
+    url: "https://www.skane.se/"
+    location: Lund, Sweden
+    logo: /images/sections/experiences/regionskane.jpg
     # Can optionally show a different logo for dark theme
     # darkLogo: /images/sections/experiences/company1.jpg
     # company overview
-    overview: Example Co. is a widely recognized company for cloud-native development. It builds tools for Kubernetes.
+    overview: Region Skåne develop the business, public transport, culture, health and medical care in Skåne.
   positions:
-  - designation: Senior Software Engineer
-    start: Nov 2019
+  - designation: Data Engineer
+    start: Jan 2023
     # don't provide end date if you are currently working there. It will be replaced by "Present"
     # end: Dec 2020
     # give some points about what was your responsibilities at the company.
     responsibilities:
-    - Design and develop XYZ tool for ABC task
-    - Design, develop and manage disaster recovery tool [Xtool](https://www.example.com) that backup Kubernetes volumes, databases, and cluster's resource definition.
-    - Lead backend team.
+    - Worked on an EU finansed ML project that aim to better intensive care patients care. 
+    - "Played a key role with in Skåne Digital Infrastructure program to design, develop and implement 
+    Region Skånes new data platform, which utilises [Databricks](https://www.databricks.com/)."
 
-  - designation: Junior Software Engineer
-    start: Nov 2017
-    end: Oct 2019
-    responsibilities:
-    - Implement and test xyz feature for abc tool.
-    - Support client for abc tool.
-    - Learn k,d,w technology for xyz.
 
-- company:
-    name: PreExample Co.
-    url: "https://www.example.com"
-    location: Nowhere
-    logo: /images/sections/experiences/company2.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company2.jpg
-    overview: PreExample Co. is a gateway company to enter into Example co. So, nothing special here.
-  positions:
-  - designation: Software Engineer
-    start: March 2016
-    end: May 2017
-    responsibilities:
-    - Write lots of example codes.
-    - Read lots of examples.
-    - See lots of example videos.
-
-- company:
-    name: Intern Counting Company (ICC).
-    url: "https://www.example.com"
-    location: Intern Land
-    logo: /images/sections/experiences/company3.jpg
-    # Can optionally show a different logo for dark theme
-    # darkLogo: /images/sections/experiences/company3.jpg
-    overview: Intern counting Company (ICC) is responsible for counting worldwide intern Engineers.
-  positions:
-  - designation: Intern
-    start: Jun 2015
-    end: Jan 2016
-    responsibilities:
-    - Count lost of interns.
-    - Count more interns.
-    - Count me as an intern.

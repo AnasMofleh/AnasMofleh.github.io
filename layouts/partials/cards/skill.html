@@ -1,0 +1,19 @@
+<div class="col-xs-12 col-sm-6 col-lg-4 pt-2">
+  <a class="text-decoration-none" {{ if .url }}href="{{ .url }}" title="{{ .name }}" target="_blank" rel="noopener"{{ end }}>
+    <div class="card">
+      <div class="card-head d-flex">
+        <img src="{{ .thumbnail }}" alt="{{ .name }}" class="thumbnail">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ .name }}</h5>
+        <span class="card-subtitle">
+            <img class="card-img-xs" src="{{ .logo }}" alt="{{ .company }}_logo" />
+            {{ .company }}
+        </span>
+        <div class="card-date"> {{ .issuedDate }}</div>
+        
+      </div>
+    </div>
+  </a>
+</div>
+

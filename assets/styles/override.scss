@@ -1,0 +1,170 @@
+// override the project section's card styling 
+.projects-section {
+  .card {
+    .card-header {
+      background-color: get-light-color('bg-card');
+      padding: 0.7rem;
+      padding-bottom: 0rem;
+      text-decoration: none;
+
+      .sub-title {
+        color: get-light-color('muted-text-color');
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
+
+        .project-card-footer {
+          display: flex;
+
+          .project-tags-holder {
+            width: 70%;
+
+            .badge {
+              margin-left: 0.1em;
+              margin-right: 0.1em;
+            }
+
+          }
+        }
+
+        span {
+          &:nth-child(1) {
+            float: left;
+          }
+
+          &:nth-child(2) {
+            float: left;
+          }
+        }
+      }
+
+    }
+
+    .card-body {
+      padding: 0.7rem;
+
+      .card-img-xs {
+        margin-right: 0.5rem;
+        height: fit-content;
+        width: fit-content;
+      }
+    }
+  }
+
+  @include media('<=large') {
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+
+    .container {
+      max-width: 100%;
+    }
+
+    .filtr-projects {
+      padding: 0;
+    }
+
+    .filtr-item {
+      flex: 50%;
+      padding-left: 0.2rem;
+      padding-right: 0.2rem;
+      max-width: calc(100% / 2 - 0.2rem);
+    }
+  }
+
+  @include media('<=small') {
+    .btn {
+      margin-top: 0.3125rem;
+    }
+
+    .filtr-item {
+      max-width: 100%;
+    }
+  }
+}
+
+
+// override the skills section's card styling 
+.skills-section {
+  .card {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    height: 100%;
+
+    .card-head {
+      background-color: get-light-color('bg-primary') !important;
+      height: 18vw;
+      /* Set the height relative to the viewport width */
+      padding: 0.7rem;
+      padding-bottom: 0rem;
+      border-bottom: 0.0625rem solid rgba(get-light-color('accent-color'), 0.4);
+      display: flex;
+      /* Ensure the content inside is aligned properly */
+      align-items: center;
+      /* Center the content vertically */
+      justify-content: center;
+      /* Center the content horizontally */
+
+      .thumbnail {
+        object-fit: fill;
+        /* This will make the thumbnail cover the entire area of its container */
+        width: 100%;
+        /* Ensure the thumbnail takes the full width of the container */
+        height: 100%;
+        /* Ensure the thumbnail takes the full height of the container */
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    .card-body {
+      margin-bottom: -2.2rem;
+
+      .card-subtitle {
+        display: flex;
+        align-items: center;
+        margin-top: 0.3rem;
+        margin-bottom: 0.4rem;
+        margin-left: -0.2rem;
+        width: 100%; // Adjust the width as needed
+        height: 20%; // Adjust the height as needed
+
+        .card-img-xs {
+          margin-left: 0.1rem;
+          margin-right: 0.5rem; // Add margin to the right of the image
+          width: 2.2rem; // Set the desired width
+          height: 2.2rem; // Set the desired height
+          object-fit: cover; // Ensure the image covers the area without distortion
+        }
+      }
+    }
+  }
+
+  @include media('<=medium') {
+    padding-left: 0;
+    padding-right: 0;
+
+    .container {
+      max-width: 95%;
+    }
+  }
+}
+
+html[data-theme='dark'] {
+  .skills-section {
+    .card {
+      .card-head {
+        background-color: get-dark-color('bg-card') !important;
+        border-bottom: 0.0625rem solid rgba(get-dark-color('accent-color'), 0.4);
+      }
+
+      .card-body {
+
+        .card-subtitle,
+        .card-date {
+          color: white;
+          /* Change text color to white */
+        }
+      }
+    }
+  }
+}

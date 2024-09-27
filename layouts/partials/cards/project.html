@@ -1,0 +1,34 @@
+<div class="col-sm-12 col-md-6 col-lg-4 p-2 filtr-item" data-category='all, {{ delimit  .tags ","}}'>
+    <div class="card mt-1">
+        <div class="card">
+            <a class="card-header"
+                href="{{ if .repo }}{{ .repo }}{{ else if .url }}{{ .url }}{{ else }}javascript:void(0){{ end }}" {{ if
+                or .repo .url }}target="_blank" rel="noopener" {{ end }}>
+                <div>
+                    <div class="d-flex">
+                        <i style="padding-right: 0.25em" class="{{.logo}} h4"></i>
+                        <h5 class="card-title mb-0">{{ .name }}</h5>
+                    </div>
+                    <p>{{ .summary | markdownify }}</p>
+                    <div class="sub-title">
+                        <!-- Display project card technology tags -->
+                        <div class="project-card-footer">
+                            {{ if .tags }}
+                            <div class="project-tags-holder">
+                                {{ range $index,$tag:= .tags }}
+                                <span class="badge btn-info">
+                                    {{ $tag }}
+                                </span>
+                                {{ end }}
+                            </div>
+                            {{ end }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="card-body text-justify pt-1 pb-1">
+                <img class="card-img-xs" src="{{ .logo }}" alt="{{ .name }}" />
+            </div>
+        </div>
+    </div>
+</div>
