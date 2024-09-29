@@ -9,7 +9,7 @@ import os
 
 async def main():
     async with async_playwright() as p:
-        browser = await p.firefox.launch(headless = False)
+        browser = await p.firefox.launch(headless = True)
         page = await browser.new_page()
 
         # Navigate to LinkedIn login page
