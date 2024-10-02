@@ -44,8 +44,8 @@
 
       .card-img-xs {
         margin-right: 0.5rem;
-        height: fit-content;
-        width: fit-content;
+        height: 40vh;
+        width: 100%;
       }
     }
   }
@@ -84,6 +84,8 @@
 
 
 // override the skills section's card styling 
+$card-color: rgba(198, 222, 228, 0.357);
+
 .skills-section {
   .card {
     margin-top: 0.5rem;
@@ -91,7 +93,7 @@
     height: 100%;
 
     .card-head {
-      background-color: get-light-color('bg-primary') !important;
+      background-color: $card-color !important;
       height: 40vh;
       /* Set the height relative to the viewport width */
       padding: 0.7rem;
@@ -118,6 +120,8 @@
 
     .card-body {
       margin-bottom: -2.2rem;
+      background-color: $card-color !important;
+
 
       .card-subtitle {
         display: flex;
@@ -153,12 +157,13 @@ html[data-theme='dark'] {
   .skills-section {
     .card {
       .card-head {
-        background-color: get-dark-color('bg-card') !important;
+        background-color: $card-color !important;
         border-bottom: 0.0625rem solid rgba(get-dark-color('accent-color'), 0.4);
       }
 
       .card-body {
-
+        background-color: $card-color !important;
+        
         .card-subtitle,
         .card-date {
           color: white;
