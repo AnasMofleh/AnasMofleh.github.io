@@ -18,7 +18,7 @@ jobs:
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
-          pip install -r ../../actions/requirements.txt
+          pip install -r actions/requirements.txt
 
       - name: update projects # run main.py
         env:
