@@ -24,13 +24,13 @@ jobs:
         env:
           GH_USERNAME: ${{ secrets.GH_USERNAME }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: python ../../actions/projects_getter.py 
+        run: python actions/projects_getter.py 
 
       - name: update certifications # run main.py
         env:
           LINKEDIN_EMAIL: ${{ secrets.LINKEDIN_EMAIL }}
           LINKEDIN_PASSWORD: ${{ secrets.LINKEDIN_PASSWORD }}
-        run: python ../../actions/.\cert_scraper.py   
+        run: python actions/cert_scraper.py   
           
       - name: commit files
         run: |
