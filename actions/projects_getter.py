@@ -43,8 +43,8 @@ class projects_getter():
 
 if __name__ == '__main__':
     projects, tags  = projects_getter().list_repos()
-    data_writer().update_info(tags, 'data\en\sections\projects.yaml', 'buttons')
-    data_writer().update_info(projects, 'data\en\sections\projects.yaml', 'projects')
+    data_writer().update_info(tags, 'data/en/sections/projects.yaml', 'buttons')
+    data_writer().update_info(projects, 'data/en/sections/projects.yaml', 'projects')
 
 
 
