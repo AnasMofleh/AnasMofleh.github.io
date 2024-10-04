@@ -21,6 +21,9 @@ async def main():
         
         #   // Click the login button
         await page.get_by_role('button', name="Sign in", exact=True).click() 
+     
+        #   wait 30 seconds in case of 2 factor auth
+        time.sleep(30)
 
         # Navigate to LinkedIn certifications section
         await page.goto('https://www.linkedin.com/in/anas-mofleh/details/certifications/', wait_until='domcontentloaded')       
