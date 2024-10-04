@@ -1,4 +1,4 @@
-name: run main.py
+name: update website skills and project auto
 
 on:
   schedule:
