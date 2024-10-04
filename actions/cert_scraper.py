@@ -78,7 +78,7 @@ async def main():
         # for debugging
         #print(json.dumps(cert_list, indent=4, ensure_ascii=False))
 
-        data_writer().update_info(cert_list, '..\data\en\sections\skills.yaml', 'skills')
+        data_writer().update_info(cert_list, 'data/en/sections/skills.yaml', 'skills')
         await browser.close()
 
 
