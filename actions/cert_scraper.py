@@ -20,8 +20,8 @@ async def main():
         await page.goto('https://www.linkedin.com/login')
 
         # Enter login credentials
-        await page.get_by_label('Email or Phone').fill(os.environ["LINKEDIN_EMAIL"])  # Replace with your LinkedIn email
-        await page.get_by_label('Password').fill(os.environ["LINKEDIN_PASSWORD"])     # Replace with your LinkedIn password
+        await page.get_by_label('Email or Phone').fill(os.environ["LINKEDIN_EMAIL"])  # Replace with your LinkedIn email locally 
+        await page.get_by_label('Password').fill(os.environ["LINKEDIN_PASSWORD"])     # Replace with your LinkedIn password locally
         
         #   // Click the login button
         await page.get_by_role('button', name="Sign in", exact=True).click() 
@@ -88,8 +88,6 @@ async def main():
         data_writer().update_info(cert_list, 'data/en/sections/skills.yaml', 'skills')
         
         # gracefully close up everything
-
-
         await context.close()
         await browser.close()
 
