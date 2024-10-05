@@ -20,8 +20,8 @@ async def main():
         await page.goto('https://www.linkedin.com/login')
 
         # Enter login credentials
-        await page.get_by_label('Email or Phone').fill('anas-mofleh@hotmail.com')  # Replace with your LinkedIn email
-        await page.get_by_label('Password').fill("634a6381")                       # Replace with your LinkedIn password
+        await page.get_by_label('Email or Phone').fill(os.environ["LINKEDIN_EMAIL"])  # Replace with your LinkedIn email
+        await page.get_by_label('Password').fill(os.environ["LINKEDIN_PASSWORD"])     # Replace with your LinkedIn password
         
         #   // Click the login button
         await page.get_by_role('button', name="Sign in", exact=True).click() 
