@@ -9,7 +9,7 @@ import os
 
 async def main():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless = False)
+        browser = await p.chromium.launch(headless = True)
         
         # create a new incognito browser context.
         context = await browser.new_context(locale='en-US')
