@@ -9,21 +9,25 @@ import os
 
 async def main():
     async with async_playwright() as p:
-        browser = await p.firefox.launch(headless = True)
-        page = await browser.new_page()
+        browser = await p.chromium.launch(headless = False)
+        
+        # create a new incognito browser context.
+        context = await browser.new_context(locale='en-US')
+
+        page = await context.new_page()
 
         # Navigate to LinkedIn login page
         await page.goto('https://www.linkedin.com/login')
 
         # Enter login credentials
-        await page.get_by_label('Email or Phone').fill(os.environ["LINKEDIN_EMAIL"])  # Replace with your LinkedIn email
-        await page.get_by_label('Password').fill(os.environ["LINKEDIN_PASSWORD"])                       # Replace with your LinkedIn password
+        await page.get_by_label('Email or Phone').fill('anas-mofleh@hotmail.com')  # Replace with your LinkedIn email
+        await page.get_by_label('Password').fill("634a6381")                       # Replace with your LinkedIn password
         
         #   // Click the login button
         await page.get_by_role('button', name="Sign in", exact=True).click() 
      
         #   wait 30 seconds in case of 2 factor auth
-        time.sleep(30)
+        time.sleep(10)
 
         # Navigate to LinkedIn certifications section
         await page.goto('https://www.linkedin.com/in/anas-mofleh/details/certifications/', wait_until='domcontentloaded')       
@@ -82,6 +86,11 @@ async def main():
         #print(json.dumps(cert_list, indent=4, ensure_ascii=False))
 
         data_writer().update_info(cert_list, 'data/en/sections/skills.yaml', 'skills')
+        
+        # gracefully close up everything
+
+
+        await context.close()
         await browser.close()
 
 
