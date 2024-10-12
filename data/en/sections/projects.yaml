@@ -66,3 +66,8 @@ projects:
     improving concurrency and parallel programming skills.
   tags:
   - academic
+- name: AnasMofleh
+  logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AnasMofleh
+  summary: Welcome repo https://github.com/images/mona-whisper.gif
+  tags: []
