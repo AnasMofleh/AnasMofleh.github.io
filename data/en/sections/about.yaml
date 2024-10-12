@@ -19,10 +19,10 @@ company:
 # resume: "files/resume.pdf"
 
 # a summary about you
-summary: 'I am a passionate Data engineer with 4 years of working experience. 
-          I built bussniess insghts using platforms like [Snowflake](https://www.snowflake.com/), [DBT](https://www.getdbt.com/),
+summary: 'I am a passionate data engineer with four years of experience.
+          I build business insights using platforms like [Snowflake](https://www.snowflake.com/), [DBT](https://www.getdbt.com/),
           [Databricks](https://www.databricks.com/), [Microsoft Fabric](https://www.microsoft.com/sv-se/microsoft-fabric/) and more.
-          My pipelines help bussniess to transform complex data into actionable insights 📊'
+          My pipelines help businesses transform complex data into actionable insights 📊'
 
 # your social links
 # give as many as you want. use font-awesome for the icons.

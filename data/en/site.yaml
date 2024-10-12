@@ -22,8 +22,8 @@ customMenus:
 
 # Specify OpenGraph Headers
 openGraph:
-  title: Anas's Blog
+  title: Anas's Portfolio
   type: website
-  description: Portfolio and personal blog of Anas Mofleh.
+  description: Portfolio and personal website of Anas Mofleh.
   image: images/author/anas.png
   url: https://AnasMofleh.github.io

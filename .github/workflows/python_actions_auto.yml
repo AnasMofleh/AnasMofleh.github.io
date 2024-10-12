@@ -2,7 +2,7 @@ name: update website skills and project auto
 
 on:
   schedule:
-    - cron: '0 0 * * 6' # At 00:00 on Friday
+    - cron: '55 8 * * 6' # At 08:55 on Friday
 
 jobs:
   build:
