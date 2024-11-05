@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '55 8 * * 6' # At 08:55 on Friday
 
+permissions:
+  contents: write  # Allows the action to push changes
+
 jobs:
   build:
     runs-on: ubuntu-latest
