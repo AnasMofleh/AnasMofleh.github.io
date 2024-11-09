@@ -69,5 +69,6 @@ projects:
 - name: AnasMofleh
   logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/AnasMofleh
-  summary: Welcome repo https://github.com/images/mona-whisper.gif
-  tags: []
+  summary: My personal repo !
+  tags:
+  - professional
