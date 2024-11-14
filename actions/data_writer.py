@@ -22,7 +22,7 @@ class data_writer:
                 else:
                     data[key].append(current_data[e])
 
-            random.shuffle(data['skills'])
+            random.shuffle(data[key])
             with open(path, 'w', encoding='utf8') as file:
                 yaml.dump(data, file, default_flow_style=False, allow_unicode=True, sort_keys=False)   
 
