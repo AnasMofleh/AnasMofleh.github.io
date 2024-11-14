@@ -13,6 +13,14 @@ buttons:
   filter: academic
 - name: Hobby
   filter: hobby
+- name: Azure-open-ai
+  filter: azure-open-ai
+- name: Devpost-hackathon
+  filter: devpost-hackathon
+- name: Linkedin
+  filter: linkedin
+- name: Scb
+  filter: scb
 projects:
 - name: Snake
   logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
@@ -72,3 +80,12 @@ projects:
   summary: My personal repo !
   tags:
   - professional
+- name: Linkedin_jobs_datalake
+  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
+  summary: 'Microsoft Hackathon: Sweden''s Linkedin jobs Analysis'
+  tags:
+  - azure-open-ai
+  - devpost-hackathon
+  - linkedin
+  - scb
