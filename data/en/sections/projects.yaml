@@ -7,20 +7,12 @@ section:
 buttons:
 - name: Academic
   filter: academic
-- name: Azure-open-ai
-  filter: azure-open-ai
-- name: Devpost-hackathon
-  filter: devpost-hackathon
 - name: All
   filter: all
-- name: Scb
-  filter: scb
 - name: Hobby
   filter: hobby
 - name: Professional
   filter: professional
-- name: Linkedin
-  filter: linkedin
 projects:
 - name: EXCEL_Simulation
   logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
@@ -41,10 +33,7 @@ projects:
   repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
   summary: 'Microsoft Hackathon: Sweden''s Linkedin jobs Analysis'
   tags:
-  - azure-open-ai
-  - devpost-hackathon
-  - linkedin
-  - scb
+  - professional
 - name: AnasMofleh.github.io
   logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/AnasMofleh.github.io
