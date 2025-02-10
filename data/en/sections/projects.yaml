@@ -5,14 +5,14 @@ section:
   weight: 4
   showOnNavbar: true
 buttons:
-- name: Academic
-  filter: academic
 - name: All
   filter: all
-- name: Profissional
-  filter: profissional
 - name: Hobby
   filter: hobby
+- name: Profissional
+  filter: profissional
+- name: Academic
+  filter: academic
 - name: Professional
   filter: professional
 projects:
@@ -22,19 +22,6 @@ projects:
   summary: My personal repo !
   tags:
   - professional
-- name: AnasMofleh.github.io
-  logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AnasMofleh.github.io
-  summary: 'My personal website created based of Toha hug-theme. '
-  tags:
-  - professional
-- name: MultiThread
-  logo: https://github.com/AnasMofleh/MultiThread/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/MultiThread
-  summary: A collection of multithreading examples and exercises in Java, aimed at
-    improving concurrency and parallel programming skills.
-  tags:
-  - academic
 - name: Advanced-Data-Structure
   logo: https://github.com/AnasMofleh/Advanced-Data-Structure/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/Advanced-Data-Structure
@@ -42,15 +29,30 @@ projects:
     to enhance understanding and application of complex data structures.
   tags:
   - academic
+- name: Snake
+  logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Snake
+  summary: A classic implementation of the Snake game using Java, featuring basic
+    game mechanics and a simple user interface.
+  tags:
+  - hobby
+- name: Linkedin_jobs_datalake
+  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
+  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
+    Sweden''s Linkedin jobs Analysis'
+  tags:
+  - profissional
 - name: Cookie_shop
   logo: https://github.com/AnasMofleh/Cookie_shop/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/Cookie_shop
   summary: Simulation for a database in a Cookie_shop
   tags: []
-- name: Algorithms
-  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Algorithms
-  summary: 'Testing of different algorithms best known for NP problems '
+- name: MultiThread
+  logo: https://github.com/AnasMofleh/MultiThread/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/MultiThread
+  summary: A collection of multithreading examples and exercises in Java, aimed at
+    improving concurrency and parallel programming skills.
   tags:
   - academic
 - name: dbt_fundamentals
@@ -60,20 +62,18 @@ projects:
     fundamentals.
   tags:
   - professional
-- name: Linkedin_jobs_datalake
-  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
-  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
-    Sweden''s Linkedin jobs Analysis'
+- name: Algorithms
+  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Algorithms
+  summary: 'Testing of different algorithms best known for NP problems '
   tags:
-  - profissional
-- name: Snake
-  logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Snake
-  summary: A classic implementation of the Snake game using Java, featuring basic
-    game mechanics and a simple user interface.
+  - academic
+- name: AnasMofleh.github.io
+  logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AnasMofleh.github.io
+  summary: 'My personal website created based of Toha hug-theme. '
   tags:
-  - hobby
+  - professional
 - name: EXCEL_Simulation
   logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/EXCEL_Simulation
