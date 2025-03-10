@@ -5,47 +5,29 @@ section:
   weight: 4
   showOnNavbar: true
 buttons:
-- name: Academic
-  filter: academic
-- name: Profissional
-  filter: profissional
-- name: All
-  filter: all
 - name: Professional
   filter: professional
+- name: Academic
+  filter: academic
+- name: All
+  filter: all
+- name: Profissional
+  filter: profissional
 - name: Hobby
   filter: hobby
 projects:
-- name: AnasMofleh.github.io
-  logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AnasMofleh.github.io
-  summary: 'My personal website created based of Toha hug-theme. '
-  tags:
-  - professional
-- name: Linkedin_jobs_datalake
-  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
-  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
-    Sweden''s Linkedin jobs Analysis'
-  tags:
-  - profissional
-- name: Cookie_shop
-  logo: https://github.com/AnasMofleh/Cookie_shop/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Cookie_shop
-  summary: Simulation for a database in a Cookie_shop
-  tags: []
-- name: EXCEL_Simulation
-  logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/EXCEL_Simulation
-  summary: A project for simulating various scenarios using Excel, focusing on data
-    analysis and visualization.
-  tags:
-  - academic
 - name: Advanced-Data-Structure
   logo: https://github.com/AnasMofleh/Advanced-Data-Structure/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/Advanced-Data-Structure
   summary: A collection of advanced data structures implemented in Java, designed
     to enhance understanding and application of complex data structures.
+  tags:
+  - academic
+- name: EXCEL_Simulation
+  logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/EXCEL_Simulation
+  summary: A project for simulating various scenarios using Excel, focusing on data
+    analysis and visualization.
   tags:
   - academic
 - name: dbt_fundamentals
@@ -55,12 +37,19 @@ projects:
     fundamentals.
   tags:
   - professional
-- name: Algorithms
-  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Algorithms
-  summary: 'Testing of different algorithms best known for NP problems '
+- name: Linkedin_jobs_datalake
+  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
+  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
+    Sweden''s Linkedin jobs Analysis'
   tags:
-  - academic
+  - profissional
+- name: AnasMofleh.github.io
+  logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AnasMofleh.github.io
+  summary: 'My personal website created based of Toha hug-theme. '
+  tags:
+  - professional
 - name: Snake
   logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/Snake
@@ -68,16 +57,27 @@ projects:
     game mechanics and a simple user interface.
   tags:
   - hobby
+- name: MultiThread
+  logo: https://github.com/AnasMofleh/MultiThread/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/MultiThread
+  summary: A collection of multithreading examples and exercises in Java, aimed at
+    improving concurrency and parallel programming skills.
+  tags:
+  - academic
+- name: Cookie_shop
+  logo: https://github.com/AnasMofleh/Cookie_shop/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Cookie_shop
+  summary: Simulation for a database in a Cookie_shop
+  tags: []
 - name: AnasMofleh
   logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/AnasMofleh
   summary: My personal repo !
   tags:
   - professional
-- name: MultiThread
-  logo: https://github.com/AnasMofleh/MultiThread/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/MultiThread
-  summary: A collection of multithreading examples and exercises in Java, aimed at
-    improving concurrency and parallel programming skills.
+- name: Algorithms
+  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Algorithms
+  summary: 'Testing of different algorithms best known for NP problems '
   tags:
   - academic
