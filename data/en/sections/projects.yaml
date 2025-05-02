@@ -5,49 +5,39 @@ section:
   weight: 4
   showOnNavbar: true
 buttons:
-- name: Hobby
-  filter: hobby
-- name: Profissional
-  filter: profissional
-- name: Academic
-  filter: academic
-- name: All
-  filter: all
 - name: Professional
   filter: professional
+- name: Ai-agent
+  filter: ai-agent
+- name: Semantic-kernel
+  filter: semantic-kernel
+- name: All
+  filter: all
+- name: Profissional
+  filter: profissional
+- name: Openai
+  filter: openai
+- name: Academic
+  filter: academic
+- name: Hobby
+  filter: hobby
 projects:
-- name: Linkedin_jobs_datalake
-  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
-  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
-    Sweden''s Linkedin jobs Analysis'
+- name: SpecialChildAgent
+  logo: https://github.com/AnasMofleh/SpecialChildAgent/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/SpecialChildAgent
+  summary: An AI-powered assistant that helps users find relevant information and
+    resources from the Swedish website mittspeciellabarn.se, dedicated to supporting
+    families with children who have disabilities.
   tags:
-  - profissional
-- name: Snake
-  logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Snake
-  summary: A classic implementation of the Snake game using Java, featuring basic
-    game mechanics and a simple user interface.
+  - ai-agent
+  - openai
+  - semantic-kernel
+- name: Algorithms
+  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Algorithms
+  summary: 'Testing of different algorithms best known for NP problems '
   tags:
-  - hobby
-- name: dbt_fundamentals
-  logo: https://github.com/AnasMofleh/dbt_fundamentals/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/dbt_fundamentals
-  summary: A foundational project for learning and applying dbt (data build tool)
-    fundamentals.
-  tags:
-  - professional
-- name: Cookie_shop
-  logo: https://github.com/AnasMofleh/Cookie_shop/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Cookie_shop
-  summary: Simulation for a database in a Cookie_shop
-  tags: []
-- name: AnasMofleh
-  logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AnasMofleh
-  summary: My personal repo !
-  tags:
-  - professional
+  - academic
 - name: MultiThread
   logo: https://github.com/AnasMofleh/MultiThread/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/MultiThread
@@ -61,13 +51,24 @@ projects:
   summary: 'My personal website created based of Toha hug-theme. '
   tags:
   - professional
-- name: EXCEL_Simulation
-  logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/EXCEL_Simulation
-  summary: A project for simulating various scenarios using Excel, focusing on data
-    analysis and visualization.
+- name: AlsalamWebsite
+  logo: https://github.com/AnasMofleh/AlsalamWebsite/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AlsalamWebsite
+  summary: A general website for mosques in sweden
+  tags: []
+- name: Snake
+  logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Snake
+  summary: A classic implementation of the Snake game using Java, featuring basic
+    game mechanics and a simple user interface.
   tags:
-  - academic
+  - hobby
+- name: AnasMofleh
+  logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AnasMofleh
+  summary: My personal repo !
+  tags:
+  - professional
 - name: Advanced-Data-Structure
   logo: https://github.com/AnasMofleh/Advanced-Data-Structure/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/Advanced-Data-Structure
@@ -75,14 +76,29 @@ projects:
     to enhance understanding and application of complex data structures.
   tags:
   - academic
-- name: AlsalamWebsite
-  logo: https://github.com/AnasMofleh/AlsalamWebsite/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AlsalamWebsite
-  summary: A general website for mosques in sweden
-  tags: []
-- name: Algorithms
-  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Algorithms
-  summary: 'Testing of different algorithms best known for NP problems '
+- name: dbt_fundamentals
+  logo: https://github.com/AnasMofleh/dbt_fundamentals/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/dbt_fundamentals
+  summary: A foundational project for learning and applying dbt (data build tool)
+    fundamentals.
+  tags:
+  - professional
+- name: EXCEL_Simulation
+  logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/EXCEL_Simulation
+  summary: A project for simulating various scenarios using Excel, focusing on data
+    analysis and visualization.
   tags:
   - academic
+- name: Linkedin_jobs_datalake
+  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
+  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
+    Sweden''s Linkedin jobs Analysis'
+  tags:
+  - profissional
+- name: Cookie_shop
+  logo: https://github.com/AnasMofleh/Cookie_shop/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Cookie_shop
+  summary: Simulation for a database in a Cookie_shop
+  tags: []
