@@ -46,8 +46,7 @@ jobs:
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
 
       - name: pull latest changes
-        run: |
-          git pull origin main
+        run: git pull --no-rebase origin main
           
       - name: push changes
         uses: ad-m/github-push-action@v0.8.0
