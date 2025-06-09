@@ -5,124 +5,124 @@ section:
   showOnNavbar: true
   weight: 2
 skills:
+- name: Academy Accreditation - Databricks Lakehouse Fundamentals
+  company: Databricks
+  issuedDate: Issued Jun 2024 · Expired Jun 2025
+  url: https://credentials.databricks.com/1a838356-fe97-4a37-ad95-6d7a22ea3317
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEw0RP-QjCZkQ/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1727422461058?e=1750053600&v=beta&t=iAHNAWq9YnZeDUpHxDlT5414-DoEVBlmyiOy_F9olEM
+  logo: https://media.licdn.com/dms/image/v2/D560BAQFPIRKiPVETuw/company-logo_100_100/company-logo_100_100/0/1697215766274?e=1755129600&v=beta&t=XmGP_rius7UTF2vdTdmdwvNBEim2oXFER8V2NX2PpR0
+- name: Hands On Essentials - Data Sharing
+  company: Snowflake
+  issuedDate: Issued Jan 2022
+  url: https://www.credly.com/badges/1c13d048-774a-475c-937a-5d71fa6e5268?source=linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFyD9NHgLgY5A/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723232459054?e=1750053600&v=beta&t=BvQhzBODGL2tumkTHb02EJNIJljp9USRAf7vwkqlPbY
+  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1755129600&v=beta&t=_orVV_RJb5w72xM7vCwJt50VBX29z3yE1uN3E33S2Rw
+- name: 'AWS Learning: Object Storage'
+  company: Amazon Web Services (AWS)
+  issuedDate: Issued Feb 2023
+  url: https://www.credly.com/badges/7e91ee29-d38b-4121-9f5c-0013e730aea5/linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFKv5H0A8zkLg/profile-treasury-image-shrink_160_160/profile-treasury-image-shrink_160_160/0/1727422182154?e=1750053600&v=beta&t=K3PLhIsSTsY_oQn2b_becB7SANh-9MNjjRzvJKHhXJo
+  logo: https://media.licdn.com/dms/image/v2/D4E0BAQE0fp2sCqnVLg/company-logo_100_100/company-logo_100_100/0/1738855736997/amazon_web_services_logo?e=1755129600&v=beta&t=g32LfrBnMj64ilJhKxZ4ieWBPjSa_hK_EbQ4xAFBMRY
+- name: Hands On Essentials - Data Warehouse
+  company: Snowflake
+  issuedDate: Issued Dec 2021
+  url: https://www.credly.com/badges/7fc511c3-8e6e-4381-922a-9c736336fe64?source=linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGZbuFnC4kQtA/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723153775696?e=1750053600&v=beta&t=HG1z553cKSUkiMvOwoDsWqOXe8U1maA_lJNYOezAMUM
+  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1755129600&v=beta&t=_orVV_RJb5w72xM7vCwJt50VBX29z3yE1uN3E33S2Rw
+- name: Academy Accreditation - Databricks Fundamentals
+  company: Databricks
+  issuedDate: Issued Feb 2025 · Expires Feb 2026
+  url: https://credentials.databricks.com/65bd2772-060a-4eb4-adff-872e821e60ea
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFxrVM6kmbqkQ/profile-treasury-document-cover-images_480/B4DZVbhu3EGkAw-/0/1740997326365?e=1750053600&v=beta&t=h6nmJs-U6wksjxRW-1fmic2eG1fOMNfiWKwcpfQLxBQ
+  logo: https://media.licdn.com/dms/image/v2/D560BAQFPIRKiPVETuw/company-logo_100_100/company-logo_100_100/0/1697215766274?e=1755129600&v=beta&t=XmGP_rius7UTF2vdTdmdwvNBEim2oXFER8V2NX2PpR0
+- name: 'Microsoft Certified: Azure Fundamentals'
+  company: Microsoft
+  issuedDate: Issued Aug 2023
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/A26D3126CCB96B9C?sharingId=1B829C45C4FCBA27
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQHlrpsG4YwRqg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155421544?e=1750053600&v=beta&t=WwFMDbVdh8fyRHUr3cazTY4dsk-rnTO1OfHjHaXPUoQ
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
 - name: 'Microsoft Applied Skills: Implement a Real-Time Intelligence solution with
     Microsoft Fabric'
   company: Microsoft
   issuedDate: Issued Feb 2025
   url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/1C64B603CB7F1660?sharingId
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGSqrxWwa74WQ/profile-treasury-document-cover-images_480/B4DZU8RIteHABA-/0/1740472883897?e=1749456000&v=beta&t=w6b0TbT-rY994yO8m9j9f797eLN3lhhEVctbljBbtJ8
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
-- name: 'Microsoft Certified: Azure Data Engineer Associate'
-  company: Microsoft
-  issuedDate: Issued Feb 2024 · Expired Mar 2025
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/6362DBF26DA67A91?sharingId=1B829C45C4FCBA27
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQE2xYIzx1R5pg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723154869540?e=1749456000&v=beta&t=6W31je4t16zVSOCvWHk2obtkZ3hl584vJvcuP3ZfHYg
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
-- name: 'AWS Learning: Object Storage'
-  company: Amazon Web Services (AWS)
-  issuedDate: Issued Feb 2023
-  url: https://www.credly.com/badges/7e91ee29-d38b-4121-9f5c-0013e730aea5/linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFKv5H0A8zkLg/profile-treasury-image-shrink_160_160/profile-treasury-image-shrink_160_160/0/1727422182154?e=1749456000&v=beta&t=k9CrZ2MoTL_01yxDbPPW_pXt_cxmMKEhB90oNCPTWtg
-  logo: https://media.licdn.com/dms/image/v2/D4E0BAQE0fp2sCqnVLg/company-logo_100_100/company-logo_100_100/0/1738855736997/amazon_web_services_logo?e=1754524800&v=beta&t=ukKj1jzchfD-BM6SVNEP7OIu9uXuhiCPIGyC1qj0eiU
-- name: Hands On Essentials - Data Applications
-  company: Snowflake
-  issuedDate: Issued Feb 2022
-  url: https://www.credly.com/badges/705e27c1-935f-4cee-b367-99476d54fb41?source=linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQHbW6oShB6AWg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723232386118?e=1749456000&v=beta&t=BZafLHVJUa9q2p6CaFb71QU20QDtZZf51eXKWXrQQlc
-  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1754524800&v=beta&t=vzGPTXP-iYuLpVF3ICvaa5BQDtZ8N-K8q-5Rr9mpE_4
-- name: 'Microsoft Applied Skills: Implement a lakehouse in Microsoft Fabric'
-  company: Microsoft
-  issuedDate: Issued Sep 2024
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/867C5AFDD5EAA8E5?sharingId
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEPD3w8I7_7BA/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1731574837736?e=1749456000&v=beta&t=OhgcQCu_H7tgt8DXu0xPL22MxAC9myJTCSr6g2NsKh4
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
-- name: dbt Fundamentals
-  company: dbt Labs
-  issuedDate: Issued Jan 2022 · Expired Jul 2024
-  url: https://credentials.getdbt.com/dc4208a3-faab-48de-b394-a2f4592a8965
-  thumbnail: https://media.licdn.com/dms/image/sync/v2/D4D27AQGOP9Kki8A6Dg/articleshare-shrink_160/articleshare-shrink_160/0/1727432493383?e=1749456000&v=beta&t=-QT16v7ZRH8jW8tS1wGy1Deb9SbRWbTDEsLJMSSk8qU
-  logo: https://media.licdn.com/dms/image/v2/C560BAQGYxjMn8Ejunw/company-logo_100_100/company-logo_100_100/0/1630649588321/fishtown_analytics_logo?e=1754524800&v=beta&t=MN8NOKnNhVLVSVZWbOJAATPzXfugVC1Ue-Izo3U1c7M
-- name: Hands On Essentials - Data Engineering
-  company: Snowflake
-  issuedDate: Issued Mar 2023
-  url: https://www.credly.com/badges/3a0ef244-f3bd-444e-bf52-45a3673246a6/linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGl7xeO5PBYXg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723232593289?e=1749456000&v=beta&t=F1z9kXMz_QZgM8JwlFQXRMksGKOVEHfqqwkKL_gfKNY
-  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1754524800&v=beta&t=vzGPTXP-iYuLpVF3ICvaa5BQDtZ8N-K8q-5Rr9mpE_4
-- name: GitHub Actions
-  company: GitHub
-  issuedDate: Issued Oct 2024 · Expires Oct 2027
-  url: https://www.credly.com/badges/fe9d5158-730e-43ee-af91-1d5ef1616858/linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGyxHmeFivc3Q/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1731535336239?e=1749456000&v=beta&t=p5ZcYy36gWfaFjqgvyVF95s8acBJFgBsL8e3R5oES9U
-  logo: https://media.licdn.com/dms/image/v2/C560BAQFmuLSyL1nlPA/company-logo_100_100/company-logo_100_100/0/1678231359044/github_logo?e=1754524800&v=beta&t=bMVGpL2aXa-0k4jHwsFiE_OELr86-8BJpMijbyTLdGE
-- name: 'Microsoft Certified: Fabric Analytics Engineer Associate'
-  company: Microsoft
-  issuedDate: Issued May 2024 · Expired May 2025
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/F2E1AC495A915929?sharingId=1B829C45C4FCBA27
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGxmMVKOThL6Q/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155031293?e=1749456000&v=beta&t=lfyyRK5julpn_uWKugLW-1KmqC6Xvz6lE_Fg_6Fc2yk
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
-- name: Hands On Essentials - Data Sharing
-  company: Snowflake
-  issuedDate: Issued Jan 2022
-  url: https://www.credly.com/badges/1c13d048-774a-475c-937a-5d71fa6e5268?source=linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFyD9NHgLgY5A/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723232459054?e=1749456000&v=beta&t=dn1QnL01OtQ6Sr0gPpG19N2rjEuhQGKSLuGblbf7B64
-  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1754524800&v=beta&t=vzGPTXP-iYuLpVF3ICvaa5BQDtZ8N-K8q-5Rr9mpE_4
-- name: Hands On Essentials - Data Warehouse
-  company: Snowflake
-  issuedDate: Issued Dec 2021
-  url: https://www.credly.com/badges/7fc511c3-8e6e-4381-922a-9c736336fe64?source=linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGZbuFnC4kQtA/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723153775696?e=1749456000&v=beta&t=aYE2h16ablTar_LsNLIdDP4pCfpqPcNxADRjUqmYe2k
-  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1754524800&v=beta&t=vzGPTXP-iYuLpVF3ICvaa5BQDtZ8N-K8q-5Rr9mpE_4
-- name: Hands On Essentials - Data Lake
-  company: Snowflake
-  issuedDate: Issued Mar 2023
-  url: https://www.credly.com/badges/a8870ce4-858d-4c41-a705-0bc02caf7cd6/linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGnXl77oG9RlA/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723153411577?e=1749456000&v=beta&t=jgaj4g8Vx2fhQH1r7uThBrnH-yHfo4qXvSAECxqYcNY
-  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1754524800&v=beta&t=vzGPTXP-iYuLpVF3ICvaa5BQDtZ8N-K8q-5Rr9mpE_4
-- name: 'Microsoft Certified: Azure Fundamentals'
-  company: Microsoft
-  issuedDate: Issued Aug 2023
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/A26D3126CCB96B9C?sharingId=1B829C45C4FCBA27
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQHlrpsG4YwRqg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155421544?e=1749456000&v=beta&t=qEDq6oXpCy2wK4IIOLOzm_rDBZdAskUMBzn_ckb90mk
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
-- name: Databricks Certified Data Engineer Associate
-  company: Databricks
-  issuedDate: Issued Aug 2024 · Expires Aug 2026
-  url: https://credentials.databricks.com/304c9858-39ca-4635-bbb5-9bc253195f35
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGsw2zn_aY-fQ/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1727419499867?e=1749456000&v=beta&t=maGO6O9Ab4b7zOKSIGLqOevIrV0QkkpGx_lyTDXC70U
-  logo: https://media.licdn.com/dms/image/v2/D560BAQFPIRKiPVETuw/company-logo_100_100/company-logo_100_100/0/1697215766274?e=1754524800&v=beta&t=2s0qUvOvnj6LXSrrpaXvI7sZeZfbjVUa0_Prx1BD368
-- name: Academy Accreditation - Databricks Lakehouse Fundamentals
-  company: Databricks
-  issuedDate: Issued Jun 2024 · Expired Jun 2025
-  url: https://credentials.databricks.com/1a838356-fe97-4a37-ad95-6d7a22ea3317
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEw0RP-QjCZkQ/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1727422461058?e=1749456000&v=beta&t=j4WzLPULekGPU6g1pslkwZ1efh6LmD0VP2eG8tIs5zE
-  logo: https://media.licdn.com/dms/image/v2/D560BAQFPIRKiPVETuw/company-logo_100_100/company-logo_100_100/0/1697215766274?e=1754524800&v=beta&t=2s0qUvOvnj6LXSrrpaXvI7sZeZfbjVUa0_Prx1BD368
-- name: 'Microsoft Certified: Fabric Data Engineer Associate'
-  company: Microsoft
-  issuedDate: Issued Feb 2025 · Expires Feb 2026
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/1C1BC904FA9D00C7?sharingId
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEssIW9tcBogw/profile-treasury-document-cover-images_480/B4DZVJh9hrHIAw-/0/1740695399783?e=1749456000&v=beta&t=Bnwq4THOzUum3I6cEiZu33_MboZyDcbbsLkvLLEYVEc
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
-- name: Academy Accreditation - Databricks Fundamentals
-  company: Databricks
-  issuedDate: Issued Feb 2025 · Expires Feb 2026
-  url: https://credentials.databricks.com/65bd2772-060a-4eb4-adff-872e821e60ea
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFxrVM6kmbqkQ/profile-treasury-document-cover-images_480/B4DZVbhu3EGkAw-/0/1740997326365?e=1749456000&v=beta&t=K1twArYq5-LbjfYG72jPI0yGyKSIMQ3qG7hPrmHtZzA
-  logo: https://media.licdn.com/dms/image/v2/D560BAQFPIRKiPVETuw/company-logo_100_100/company-logo_100_100/0/1697215766274?e=1754524800&v=beta&t=2s0qUvOvnj6LXSrrpaXvI7sZeZfbjVUa0_Prx1BD368
-- name: 'Microsoft Certified: Azure AI Fundamentals'
-  company: Microsoft
-  issuedDate: Issued Sep 2023
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/B99DECD2D7C0926B?sharingId=1B829C45C4FCBA27
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEulqpMzSVW8w/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155192677?e=1749456000&v=beta&t=b7I-pNuiX5skertDSXxdNX0EMOxJq7-PTjRz0-MQVJ4
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
-- name: GitHub Foundations
-  company: GitHub
-  issuedDate: Issued Jul 2024 · Expires Jul 2027
-  url: https://www.credly.com/badges/8d9553e6-758d-4bf7-a77d-cd5c06412c2f/linked_in_profile
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFyXCTX_za0PQ/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1727422307232?e=1749456000&v=beta&t=EF7Y3uEYaTZEdlbj0FfGhVL5ml429N1FIMrc5ChPNJg
-  logo: https://media.licdn.com/dms/image/v2/C560BAQFmuLSyL1nlPA/company-logo_100_100/company-logo_100_100/0/1678231359044/github_logo?e=1754524800&v=beta&t=bMVGpL2aXa-0k4jHwsFiE_OELr86-8BJpMijbyTLdGE
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGSqrxWwa74WQ/profile-treasury-document-cover-images_480/B4DZU8RIteHABA-/0/1740472883897?e=1750053600&v=beta&t=qAgSVKM5jei08jfcEc9xya-WVTkpylRK91bkuPOrQv4
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
 - name: 'Microsoft Certified: Azure Data Fundamentals'
   company: Microsoft
   issuedDate: Issued Aug 2023
   url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/8C23F773F92C77F9?sharingId=1B829C45C4FCBA27
-  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFvaglbuWzf7Q/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155296186?e=1749456000&v=beta&t=9jwHmAbMEppAiCGTjm8eNBEoC2VdhbYyzbRXuP53RQY
-  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1754524800&v=beta&t=ekV0Y5IMXzk-ZWXUcvw4yYiZJiLtZ-NUuXkIMZew_y4
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFvaglbuWzf7Q/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155296186?e=1750053600&v=beta&t=YkNPTuOQPrk1Ixzj7xN-5Qf_4fL9-Q3LyJYBYqkPdKw
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
+- name: Hands On Essentials - Data Engineering
+  company: Snowflake
+  issuedDate: Issued Mar 2023
+  url: https://www.credly.com/badges/3a0ef244-f3bd-444e-bf52-45a3673246a6/linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGl7xeO5PBYXg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723232593289?e=1750053600&v=beta&t=iPqQ71WhvHzW3uzul132RRy6QPdlk4eo6B-draSijnY
+  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1755129600&v=beta&t=_orVV_RJb5w72xM7vCwJt50VBX29z3yE1uN3E33S2Rw
+- name: dbt Fundamentals
+  company: dbt Labs
+  issuedDate: Issued Jan 2022 · Expired Jul 2024
+  url: https://credentials.getdbt.com/dc4208a3-faab-48de-b394-a2f4592a8965
+  thumbnail: https://media.licdn.com/dms/image/sync/v2/D4D27AQGOP9Kki8A6Dg/articleshare-shrink_160/articleshare-shrink_160/0/1727432493383?e=1750053600&v=beta&t=feARXmwpDTvLOIeKX6JYWi8Rkm9X3fjQ64JNL39ERGg
+  logo: https://media.licdn.com/dms/image/v2/D560BAQHYKuW1_dSUTw/company-logo_100_100/B56Zcxv_zLHEAQ-/0/1748886356585/dbtlabs_logo?e=1755129600&v=beta&t=Em5Q_lxmvPLmL-Ti68paSkQcRsTaUUJelohkxvrjtxQ
+- name: 'Microsoft Certified: Fabric Data Engineer Associate'
+  company: Microsoft
+  issuedDate: Issued Feb 2025 · Expires Feb 2026
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/1C1BC904FA9D00C7?sharingId
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEssIW9tcBogw/profile-treasury-document-cover-images_480/B4DZVJh9hrHIAw-/0/1740695399783?e=1750053600&v=beta&t=yv3nMW8OkVh0Ow_2Mw2kJYjDXpzsdxEu7p99_zuLldg
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
+- name: 'Microsoft Certified: Azure Data Engineer Associate'
+  company: Microsoft
+  issuedDate: Issued Feb 2024 · Expired Mar 2025
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/6362DBF26DA67A91?sharingId=1B829C45C4FCBA27
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQE2xYIzx1R5pg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723154869540?e=1750053600&v=beta&t=BRQMqplmkLQE5FzkycRiMkuoYUb5At6ljwzSouffSq0
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
+- name: Databricks Certified Data Engineer Associate
+  company: Databricks
+  issuedDate: Issued Aug 2024 · Expires Aug 2026
+  url: https://credentials.databricks.com/304c9858-39ca-4635-bbb5-9bc253195f35
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGsw2zn_aY-fQ/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1727419499867?e=1750053600&v=beta&t=G2k5Ru2EOJjp0kOGmd4zkVAGL6tM7kliFEKTnWJeyIs
+  logo: https://media.licdn.com/dms/image/v2/D560BAQFPIRKiPVETuw/company-logo_100_100/company-logo_100_100/0/1697215766274?e=1755129600&v=beta&t=XmGP_rius7UTF2vdTdmdwvNBEim2oXFER8V2NX2PpR0
+- name: 'Microsoft Certified: Azure AI Fundamentals'
+  company: Microsoft
+  issuedDate: Issued Sep 2023
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/B99DECD2D7C0926B?sharingId=1B829C45C4FCBA27
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEulqpMzSVW8w/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155192677?e=1750053600&v=beta&t=9inXXOlcnaNAbYD2dwtjRCQGd_Cr2JqvCqhmzi3XLtQ
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
+- name: GitHub Actions
+  company: GitHub
+  issuedDate: Issued Oct 2024 · Expires Oct 2027
+  url: https://www.credly.com/badges/fe9d5158-730e-43ee-af91-1d5ef1616858/linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGyxHmeFivc3Q/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1731535336239?e=1750053600&v=beta&t=_2MAyEyLZeAni_0y-SBsGT51YVMW_X29Ef1V_LWHWyc
+  logo: https://media.licdn.com/dms/image/v2/C560BAQFmuLSyL1nlPA/company-logo_100_100/company-logo_100_100/0/1678231359044/github_logo?e=1755129600&v=beta&t=Pc8ny9vZ5ualZh0gvyMgxXutqgw--o4SB8TREtdryqQ
+- name: 'Microsoft Certified: Fabric Analytics Engineer Associate'
+  company: Microsoft
+  issuedDate: Issued May 2024 · Expired May 2025
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/F2E1AC495A915929?sharingId=1B829C45C4FCBA27
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGxmMVKOThL6Q/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723155031293?e=1750053600&v=beta&t=d3o1mFT72TuHe7iO2JmWeMo6CqegWg3p1pAA6HzdDAg
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
+- name: 'Microsoft Applied Skills: Implement a lakehouse in Microsoft Fabric'
+  company: Microsoft
+  issuedDate: Issued Sep 2024
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/867C5AFDD5EAA8E5?sharingId
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQEPD3w8I7_7BA/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1731574837736?e=1750053600&v=beta&t=xmnZfpzFG234bood_wcfpjfeELH6XZBSObCRJ6iqt8o
+  logo: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=1755129600&v=beta&t=euDQeyiIcVQyO4WvNYRX79RHqv28DJ54tQjmtV5bIqY
+- name: Hands On Essentials - Data Lake
+  company: Snowflake
+  issuedDate: Issued Mar 2023
+  url: https://www.credly.com/badges/a8870ce4-858d-4c41-a705-0bc02caf7cd6/linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQGnXl77oG9RlA/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723153411577?e=1750053600&v=beta&t=tmsjtDInDse3OO8SBMVpfELbU7AI4SuDNLYcr3tBB_w
+  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1755129600&v=beta&t=_orVV_RJb5w72xM7vCwJt50VBX29z3yE1uN3E33S2Rw
+- name: Hands On Essentials - Data Applications
+  company: Snowflake
+  issuedDate: Issued Feb 2022
+  url: https://www.credly.com/badges/705e27c1-935f-4cee-b367-99476d54fb41?source=linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQHbW6oShB6AWg/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1723232386118?e=1750053600&v=beta&t=k70JctaCstFogDLO81G7YVFkn25-XZuqlT3q1uczrk0
+  logo: https://media.licdn.com/dms/image/v2/D560BAQF3mYS3WqCB3g/company-logo_100_100/company-logo_100_100/0/1688575708630/snowflake_computing_logo?e=1755129600&v=beta&t=_orVV_RJb5w72xM7vCwJt50VBX29z3yE1uN3E33S2Rw
+- name: GitHub Foundations
+  company: GitHub
+  issuedDate: Issued Jul 2024 · Expires Jul 2027
+  url: https://www.credly.com/badges/8d9553e6-758d-4bf7-a77d-cd5c06412c2f/linked_in_profile
+  thumbnail: https://media.licdn.com/dms/image/v2/D4D2DAQFyXCTX_za0PQ/profile-treasury-document-cover-images_480/profile-treasury-document-cover-images_480/0/1727422307232?e=1750053600&v=beta&t=J_uqHt-LrJvCOUZ3t-Yd-jeoHWzN6hk-njAwoOb_NOI
+  logo: https://media.licdn.com/dms/image/v2/C560BAQFmuLSyL1nlPA/company-logo_100_100/company-logo_100_100/0/1678231359044/github_logo?e=1755129600&v=beta&t=Pc8ny9vZ5ualZh0gvyMgxXutqgw--o4SB8TREtdryqQ
