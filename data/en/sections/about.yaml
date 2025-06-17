@@ -19,10 +19,12 @@ company:
 # resume: "files/resume.pdf"
 
 # a summary about you
-summary: 'I am a passionate data engineer with four years of experience.
+summary: 'I am a passionate data engineer with five years of experience.
           I build business insights using platforms like [Snowflake](https://www.snowflake.com/), [DBT](https://www.getdbt.com/),
           [Databricks](https://www.databricks.com/), [Microsoft Fabric](https://www.microsoft.com/sv-se/microsoft-fabric/) and more.
-          My pipelines help businesses transform complex data into actionable insights 📊'
+          I specialize in building efficient data pipelines that help organizations make smarter, data-driven decisions, turning complex data into clear actionable insights 📊. 
+
+          According to the [Myers-Briggs Type Indicator (MBTI)](https://www.16personalities.com/entj-personality), I have an ENTJ personality type — often called “The Commander.” Which varies my natural inclination toward strategic thinking, problem-solving, and leadership.'
 
 # your social links
 # give as many as you want. use font-awesome for the icons.
