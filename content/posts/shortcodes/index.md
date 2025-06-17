@@ -231,4 +231,4 @@ erDiagram
 
 ## Embeded PDF
 
-{{< embed-pdf src="/files/resume.pdf" >}}
+{{< embed-pdf src="/files/CV_EN.docx" >}}
