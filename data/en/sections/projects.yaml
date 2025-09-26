@@ -5,74 +5,47 @@ section:
   weight: 4
   showOnNavbar: true
 buttons:
-- name: Academic
-  filter: academic
-- name: Openai
-  filter: openai
+- name: Ai-agent
+  filter: ai-agent
 - name: Hobby
   filter: hobby
-- name: Profissional
-  filter: profissional
 - name: Professional
   filter: professional
 - name: Semantic-kernel
   filter: semantic-kernel
-- name: Ai-agent
-  filter: ai-agent
 - name: All
   filter: all
+- name: Openai
+  filter: openai
+- name: Profissional
+  filter: profissional
+- name: Academic
+  filter: academic
 projects:
-- name: Algorithms
-  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Algorithms
-  summary: 'Testing of different algorithms best known for NP problems '
-  tags:
-  - academic
-- name: AlsalamWebsite
-  logo: https://github.com/AnasMofleh/AlsalamWebsite/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AlsalamWebsite
-  summary: null
-  tags: []
-- name: Advanced-Data-Structure
-  logo: https://github.com/AnasMofleh/Advanced-Data-Structure/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Advanced-Data-Structure
-  summary: A collection of advanced data structures implemented in Java, designed
-    to enhance understanding and application of complex data structures.
-  tags:
-  - academic
-- name: Snake
-  logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Snake
-  summary: A classic implementation of the Snake game using Java, featuring basic
-    game mechanics and a simple user interface.
-  tags:
-  - hobby
-- name: AnasMofleh
-  logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AnasMofleh
-  summary: My personal repo !
-  tags:
-  - professional
-- name: Linkedin_jobs_datalake
-  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
-  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
-    Sweden''s Linkedin jobs Analysis'
-  tags:
-  - profissional
 - name: AnasMofleh.github.io
   logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/AnasMofleh.github.io
   summary: 'My personal website created based of Toha hug-theme. '
   tags:
   - professional
-- name: EXCEL_Simulation
-  logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/EXCEL_Simulation
-  summary: A project for simulating various scenarios using Excel, focusing on data
-    analysis and visualization.
+- name: Algorithms
+  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Algorithms
+  summary: 'Testing of different algorithms best known for NP problems '
   tags:
   - academic
+- name: Cookie_shop
+  logo: https://github.com/AnasMofleh/Cookie_shop/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Cookie_shop
+  summary: Simulation for a database in a Cookie_shop
+  tags: []
+- name: dbt_fundamentals
+  logo: https://github.com/AnasMofleh/dbt_fundamentals/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/dbt_fundamentals
+  summary: A foundational project for learning and applying dbt (data build tool)
+    fundamentals.
+  tags:
+  - professional
 - name: SpecialChildAgent
   logo: https://github.com/AnasMofleh/SpecialChildAgent/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/SpecialChildAgent
@@ -83,23 +56,13 @@ projects:
   - ai-agent
   - openai
   - semantic-kernel
-- name: diml_docs
-  logo: https://github.com/AnasMofleh/diml_docs/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/diml_docs
-  summary: null
-  tags: []
-- name: dbt_fundamentals
-  logo: https://github.com/AnasMofleh/dbt_fundamentals/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/dbt_fundamentals
-  summary: A foundational project for learning and applying dbt (data build tool)
-    fundamentals.
+- name: Snake
+  logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Snake
+  summary: A classic implementation of the Snake game using Java, featuring basic
+    game mechanics and a simple user interface.
   tags:
-  - professional
-- name: Cookie_shop
-  logo: https://github.com/AnasMofleh/Cookie_shop/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Cookie_shop
-  summary: Simulation for a database in a Cookie_shop
-  tags: []
+  - hobby
 - name: MultiThread
   logo: https://github.com/AnasMofleh/MultiThread/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/MultiThread
@@ -107,3 +70,40 @@ projects:
     improving concurrency and parallel programming skills.
   tags:
   - academic
+- name: diml_docs
+  logo: https://github.com/AnasMofleh/diml_docs/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/diml_docs
+  summary: null
+  tags: []
+- name: AnasMofleh
+  logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AnasMofleh
+  summary: My personal repo !
+  tags:
+  - professional
+- name: EXCEL_Simulation
+  logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/EXCEL_Simulation
+  summary: A project for simulating various scenarios using Excel, focusing on data
+    analysis and visualization.
+  tags:
+  - academic
+- name: Linkedin_jobs_datalake
+  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
+  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
+    Sweden''s Linkedin jobs Analysis'
+  tags:
+  - profissional
+- name: Advanced-Data-Structure
+  logo: https://github.com/AnasMofleh/Advanced-Data-Structure/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Advanced-Data-Structure
+  summary: A collection of advanced data structures implemented in Java, designed
+    to enhance understanding and application of complex data structures.
+  tags:
+  - academic
+- name: AlsalamWebsite
+  logo: https://github.com/AnasMofleh/AlsalamWebsite/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AlsalamWebsite
+  summary: null
+  tags: []
