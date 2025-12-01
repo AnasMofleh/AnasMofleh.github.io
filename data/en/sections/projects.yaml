@@ -11,37 +11,17 @@ buttons:
   filter: academic
 - name: Ai-agent
   filter: ai-agent
-- name: Professional
-  filter: professional
-- name: Openai
-  filter: openai
-- name: Profissional
-  filter: profissional
 - name: Semantic-kernel
   filter: semantic-kernel
+- name: Profissional
+  filter: profissional
+- name: Openai
+  filter: openai
+- name: Professional
+  filter: professional
 - name: All
   filter: all
 projects:
-- name: Linkedin_jobs_datalake
-  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
-  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
-    Sweden''s Linkedin jobs Analysis'
-  tags:
-  - profissional
-- name: Algorithms
-  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/Algorithms
-  summary: 'Testing of different algorithms best known for NP problems '
-  tags:
-  - academic
-- name: dbt_fundamentals
-  logo: https://github.com/AnasMofleh/dbt_fundamentals/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/dbt_fundamentals
-  summary: A foundational project for learning and applying dbt (data build tool)
-    fundamentals.
-  tags:
-  - professional
 - name: MultiThread
   logo: https://github.com/AnasMofleh/MultiThread/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/MultiThread
@@ -49,16 +29,18 @@ projects:
     improving concurrency and parallel programming skills.
   tags:
   - academic
-- name: SpecialChildAgent
-  logo: https://github.com/AnasMofleh/SpecialChildAgent/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/SpecialChildAgent
-  summary: An AI-powered assistant that helps users find relevant information and
-    resources from the Swedish website mittspeciellabarn.se, dedicated to supporting
-    families with children who have disabilities.
+- name: Algorithms
+  logo: https://github.com/AnasMofleh/Algorithms/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Algorithms
+  summary: 'Testing of different algorithms best known for NP problems '
   tags:
-  - ai-agent
-  - openai
-  - semantic-kernel
+  - academic
+- name: AnasMofleh.github.io
+  logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AnasMofleh.github.io
+  summary: 'My personal website created based of Toha hug-theme. '
+  tags:
+  - professional
 - name: Snake
   logo: https://github.com/AnasMofleh/Snake/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/Snake
@@ -66,17 +48,18 @@ projects:
     game mechanics and a simple user interface.
   tags:
   - hobby
-- name: diml_docs
-  logo: https://github.com/AnasMofleh/diml_docs/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/diml_docs
-  summary: null
-  tags: []
-- name: AnasMofleh.github.io
-  logo: https://github.com/AnasMofleh/AnasMofleh.github.io/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AnasMofleh.github.io
-  summary: 'My personal website created based of Toha hug-theme. '
+- name: dbt_fundamentals
+  logo: https://github.com/AnasMofleh/dbt_fundamentals/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/dbt_fundamentals
+  summary: A foundational project for learning and applying dbt (data build tool)
+    fundamentals.
   tags:
   - professional
+- name: AlsalamWebsite
+  logo: https://github.com/AnasMofleh/AlsalamWebsite/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/AlsalamWebsite
+  summary: null
+  tags: []
 - name: AnasMofleh
   logo: https://github.com/AnasMofleh/AnasMofleh/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/AnasMofleh
@@ -88,6 +71,11 @@ projects:
   repo: https://github.com/AnasMofleh/Cookie_shop
   summary: Simulation for a database in a Cookie_shop
   tags: []
+- name: diml_docs
+  logo: https://github.com/AnasMofleh/diml_docs/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/diml_docs
+  summary: null
+  tags: []
 - name: Advanced-Data-Structure
   logo: https://github.com/AnasMofleh/Advanced-Data-Structure/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/Advanced-Data-Structure
@@ -95,11 +83,6 @@ projects:
     to enhance understanding and application of complex data structures.
   tags:
   - academic
-- name: AlsalamWebsite
-  logo: https://github.com/AnasMofleh/AlsalamWebsite/blob/main/thumbnail.png?raw=true
-  repo: https://github.com/AnasMofleh/AlsalamWebsite
-  summary: null
-  tags: []
 - name: EXCEL_Simulation
   logo: https://github.com/AnasMofleh/EXCEL_Simulation/blob/main/thumbnail.png?raw=true
   repo: https://github.com/AnasMofleh/EXCEL_Simulation
@@ -107,3 +90,20 @@ projects:
     analysis and visualization.
   tags:
   - academic
+- name: Linkedin_jobs_datalake
+  logo: https://github.com/AnasMofleh/Linkedin_jobs_datalake/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/Linkedin_jobs_datalake
+  summary: 'Our winner project of the  Microsoft Fabric and AI Learning Hackathon:
+    Sweden''s Linkedin jobs Analysis'
+  tags:
+  - profissional
+- name: SpecialChildAgent
+  logo: https://github.com/AnasMofleh/SpecialChildAgent/blob/main/thumbnail.png?raw=true
+  repo: https://github.com/AnasMofleh/SpecialChildAgent
+  summary: An AI-powered assistant that helps users find relevant information and
+    resources from the Swedish website mittspeciellabarn.se, dedicated to supporting
+    families with children who have disabilities.
+  tags:
+  - ai-agent
+  - openai
+  - semantic-kernel
