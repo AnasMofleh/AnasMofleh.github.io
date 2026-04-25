@@ -1,0 +1,133 @@
+{{/*
+  Platformer overlay that sits on top of the home hero.
+  Rooms are populated client-side by cloning the corresponding fallback section
+  (rendered by layouts/index.html below the hero) on first entry. This avoids
+  duplicate ids and keeps content authored in one place.
+*/}}
+<section id="platformer-hero" class="platformer-hero" aria-label="Interactive portfolio map. Use arrow keys to move the character, or use the on-screen arrows.">
+
+  <div class="platformer-stage" data-platformer-stage>
+
+    {{/* Destination labels (top-left, top-right, bottom-left, bottom-right). */}}
+    <button type="button"
+            class="platformer-destination platformer-destination--top-left"
+            data-room-link="experiences"
+            aria-label="Go to Experiences (top left)">
+      <span class="platformer-destination__label">Experiences</span>
+    </button>
+    <button type="button"
+            class="platformer-destination platformer-destination--top-right"
+            data-room-link="skills"
+            aria-label="Go to Skills (top right)">
+      <span class="platformer-destination__label">Skills</span>
+    </button>
+    <button type="button"
+            class="platformer-destination platformer-destination--bottom-left"
+            data-room-link="education"
+            aria-label="Go to Education and Publications (bottom left)">
+      <span class="platformer-destination__label">Education<br/>&amp; Publications</span>
+    </button>
+    <button type="button"
+            class="platformer-destination platformer-destination--bottom-right"
+            data-room-link="projects"
+            aria-label="Go to Projects (bottom right)">
+      <span class="platformer-destination__label">Projects</span>
+    </button>
+
+    {{/* Platforms — geometry per the requested ASCII layout:
+              ----                  (top center)
+       ---           ---            (upper-left, upper-right)
+              ------                (center)
+                  ||                (pipe to intro)
+    */}}
+    <div class="platformer-platform platformer-platform--top"          data-platform data-platform-id="top"          aria-hidden="true"></div>
+    <div class="platformer-platform platformer-platform--center"       data-platform data-platform-id="center"       aria-hidden="true"></div>
+    <div class="platformer-platform platformer-platform--mid-left"     data-platform data-platform-id="mid-left"     aria-hidden="true"></div>
+    <div class="platformer-platform platformer-platform--mid-right"    data-platform data-platform-id="mid-right"    aria-hidden="true"></div>
+    <div class="platformer-platform platformer-platform--lower-left"   data-platform data-platform-id="lower-left"   aria-hidden="true"></div>
+    <div class="platformer-platform platformer-platform--lower-right"  data-platform data-platform-id="lower-right"  aria-hidden="true"></div>
+    <div class="platformer-platform platformer-platform--edge-left"    data-platform data-platform-id="edge-left"    aria-hidden="true"></div>
+    <div class="platformer-platform platformer-platform--edge-right"   data-platform data-platform-id="edge-right"   aria-hidden="true"></div>
+
+    {{/* Green pipe — entry to the intro room. */}}
+    <button type="button"
+            class="platformer-pipe"
+            data-platform
+            data-platform-id="pipe"
+            data-room-link="intro"
+            aria-label="Enter the introduction room">
+      <span class="platformer-pipe__rim"></span>
+      <span class="platformer-pipe__body"></span>
+      <span class="platformer-pipe__hint">Socials</span>
+    </button>
+
+    {{/* Player character (hidden on mobile via CSS). */}}
+    <div class="platformer-character"
+         data-character
+         role="img"
+         aria-label="Player character">
+      <span class="platformer-character__body"></span>
+      <span class="platformer-character__face"></span>
+    </div>
+
+    <div class="platformer-ground" aria-hidden="true"></div>
+
+    {{/* Help / instructions toggle. */}}
+    <div class="platformer-help" data-help>
+      <div class="platformer-help__panel" data-help-panel>
+        <p class="platformer-hint">
+          Use <kbd>←</kbd> <kbd>→</kbd> to move, <kbd>↑</kbd> or <kbd>Space</kbd> to jump (press again for a double jump),
+          step off the left or right edge to enter the corresponding room, press <kbd>↓</kbd> on the pipe for the introduction,
+          and <kbd>Esc</kbd> or Back Home returns to the map. Tap the corner arrows on touch devices.
+        </p>
+      </div>
+      <button type="button" class="platformer-help__toggle" data-help-toggle aria-label="Show instructions" aria-expanded="true">i</button>
+    </div>
+  </div>
+
+  {{/* Room layer — bodies are populated by JS from the fallback sections. */}}
+  <div class="platformer-rooms" data-room-layer aria-hidden="true" aria-live="polite">
+    {{ $rooms := slice
+      (dict "id" "experiences" "title" "Experiences"               "side" "left"   "eyebrow" "Top-left room"     "source" "#experiences")
+      (dict "id" "skills"      "title" "Skills"                    "side" "right"  "eyebrow" "Top-right room"    "source" "#skills")
+      (dict "id" "education"   "title" "Education & Publications"  "side" "left"   "eyebrow" "Bottom-left room"  "source" "#education,#publications")
+      (dict "id" "projects"    "title" "Projects"                  "side" "right"  "eyebrow" "Bottom-right room" "source" "#projects")
+      (dict "id" "intro"       "title" "Introduction"              "side" "bottom" "eyebrow" "Pipe room"         "source" "#about")
+    }}
+    {{ range $rooms }}
+      <section class="platformer-room platformer-room--{{ .side }}"
+               data-room="{{ .id }}"
+               data-room-source="{{ .source }}"
+               aria-hidden="true">
+        <div class="platformer-room__frame" role="dialog" aria-modal="true" aria-labelledby="platformer-room-title-{{ .id }}">
+          <div class="platformer-room__chrome">
+            <div>
+              <p class="platformer-room__eyebrow">{{ .eyebrow }}</p>
+              <h2 class="platformer-room__title" id="platformer-room-title-{{ .id }}">{{ .title }}</h2>
+            </div>
+            <button type="button" class="platformer-room__close" data-room-close>Back Home</button>
+          </div>
+          <div class="platformer-room__body" data-room-body></div>
+        </div>
+      </section>
+    {{ end }}
+  </div>
+</section>
+
+{{/* Consent banner. */}}
+<div class="platformer-consent" data-consent-banner hidden>
+  <p class="platformer-consent__text">
+    This site uses Google Analytics to understand which rooms get visited. Allow analytics?
+  </p>
+  <div class="platformer-consent__actions">
+    <button type="button" class="platformer-consent__btn platformer-consent__btn--accept" data-consent-accept>Allow</button>
+    <button type="button" class="platformer-consent__btn platformer-consent__btn--deny"  data-consent-deny>No thanks</button>
+  </div>
+</div>
+
+{{/* Neon color picker — replaces the --pf-neon CSS var live. */}}
+<div class="platformer-color-picker" data-color-picker>
+  <label for="pf-color-input">Neon</label>
+  <input id="pf-color-input" type="color" value="#00f0ff" data-color-input />
+  <button type="button" data-color-reset aria-label="Reset color">reset</button>
+</div>

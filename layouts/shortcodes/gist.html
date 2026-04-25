@@ -1,0 +1,9 @@
+{{/* Local stub for the removed `gist` shortcode. */}}
+{{ $user := .Get 0 }}
+{{ $id   := .Get 1 }}
+{{ if and $user $id }}
+  <script src="https://gist.github.com/{{ $user }}/{{ $id }}.js"></script>
+  <noscript>
+    <a href="https://gist.github.com/{{ $user }}/{{ $id }}" rel="noopener" target="_blank">View gist on GitHub</a>
+  </noscript>
+{{ end }}

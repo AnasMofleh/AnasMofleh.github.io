@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+  <head>
+    <title>{{- .Site.Title -}}</title>
+    {{ $siteDescription := .Site.Params.description }}
+    {{ if (index .Site.Data .Site.Language.Lang).site }}
+      {{ $siteConfig := (index .Site.Data .Site.Language.Lang).site }}
+      {{ if $siteConfig.description }}
+        {{ $siteDescription = $siteConfig.description }}
+      {{ end }}
+    {{ end }}
+    <meta name="description" content="{{ $siteDescription }}" />
+
+    {{- partial "header.html" . -}}
+    {{- partial "opengraph.html" . -}}
+
+    {{- partial "analytics.html" . -}}
+
+    {{/* Consent-gated GA4 wrapper used by the platformer engine. */}}
+    <script>
+      (function () {
+        var KEY = "platformer-consent";
+        window.__platformerAnalytics = window.__platformerAnalytics || {
+          gaId: {{ with site.Params.features.analytics.services.google.id }}{{ . | jsonify }}{{ else }}""{{ end }},
+          loaded: false,
+          queue: []
+        };
+        function loadGA(id) {
+          if (!id || window.__platformerAnalytics.loaded) return;
+          window.__platformerAnalytics.loaded = true;
+          var s = document.createElement("script");
+          s.async = true;
+          s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ window.dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag("js", new Date());
+          gtag("config", id, { anonymize_ip: true });
+          var q = window.__platformerAnalytics.queue.splice(0);
+          q.forEach(function (a) { gtag.apply(null, a); });
+        }
+        window.platformerTrack = function (eventName, params) {
+          if (localStorage.getItem(KEY) !== "granted") return;
+          var id = window.__platformerAnalytics.gaId;
+          if (!window.__platformerAnalytics.loaded) loadGA(id);
+          if (window.gtag) {
+            window.gtag("event", eventName, params || {});
+          } else {
+            window.__platformerAnalytics.queue.push(["event", eventName, params || {}]);
+          }
+        };
+        window.platformerSetConsent = function (granted) {
+          localStorage.setItem(KEY, granted ? "granted" : "denied");
+          if (granted) loadGA(window.__platformerAnalytics.gaId);
+        };
+      })();
+    </script>
+
+    <script>
+      theme = localStorage.getItem('theme-scheme') || localStorage.getItem('darkmode:color-scheme') || 'light';
+      if (theme == 'system') {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        } else {
+          theme = 'light';
+        }
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+  </head>
+  <body data-bs-spy="scroll" data-bs-target="#top-navbar" data-bs-offset="100">
+
+    {{- partial "navigators/navbar.html" . -}}
+
+    {{/* Home hero (kept as background) wrapped with the platformer overlay. */}}
+    <div class="platformer-shell" data-platformer-shell>
+      {{- partial "sections/home.html" . -}}
+      {{- partial "home/platformer.html" . -}}
+    </div>
+
+    {{/* Standard sections below as scrollable fallback / SEO anchors. */}}
+    {{ $sections:= site.Data.sections }}
+    {{ if (index site.Data site.Language.Lang).sections }}
+      {{ $sections = (index site.Data site.Language.Lang).sections }}
+    {{ end }}
+
+    {{ if $sections }}
+      {{ $background:= "bg-primary"}}
+      {{ range sort $sections "section.weight" }}
+        {{ if .section.enable }}
+          <div class="container-fluid section-holder d-flex {{ $background }}">
+            {{ if .section.template }}
+              {{- partial .section.template . -}}
+            {{ else }}
+              {{- partial (printf "sections/%s.html" (replace (lower .section.id) " " "-")) . -}}
+            {{ end }}
+          </div>
+          {{ if eq $background "bg-primary" }}
+            {{ $background = "bg-secondary" }}
+          {{ else }}
+            {{ $background = "bg-primary" }}
+          {{end}}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+
+    {{ $footerTemplate:= site.Params.footer.template | default "footer.html" }}
+    {{- partial $footerTemplate . -}}
+
+    {{ partial "scripts.html" . }}
+
+    {{/* Platformer engine. */}}
+    {{ $platformerJS := resources.Get "js/platformer.js" | resources.Minify | resources.Fingerprint }}
+    <script defer src="{{ $platformerJS.RelPermalink }}" integrity="{{ $platformerJS.Data.Integrity }}"></script>
+
+    {{- partial "misc/support.html" . -}}
+
+  </body>
+</html>

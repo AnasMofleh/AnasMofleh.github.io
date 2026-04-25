@@ -1,0 +1,8 @@
+{{/* Local stub for the removed `tweet` shortcode. */}}
+{{ $user := .Get "user" | default (.Get 0) }}
+{{ $id   := .Get "id"   | default (.Get 1) }}
+{{ if and $user $id }}
+  <blockquote class="twitter-tweet">
+    <a href="https://twitter.com/{{ $user }}/status/{{ $id }}" rel="noopener" target="_blank">View tweet on X</a>
+  </blockquote>
+{{ end }}

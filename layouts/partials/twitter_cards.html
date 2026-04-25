@@ -1,0 +1,17 @@
+{{/* Local replacement for the removed `_internal/twitter_cards.html`. */}}
+{{ $title       := site.Title }}
+{{ $description := site.Params.description | default "" }}
+{{ if (index site.Data site.Language.Lang).site }}
+  {{ $cfg := (index site.Data site.Language.Lang).site }}
+  {{ if $cfg.openGraph.title }}{{ $title = $cfg.openGraph.title }}{{ end }}
+  {{ if $cfg.openGraph.description }}{{ $description = $cfg.openGraph.description }}{{ else if $cfg.description }}{{ $description = $cfg.description }}{{ end }}
+{{ end }}
+{{ $image := "" }}
+{{ if (index site.Data site.Language.Lang).author }}
+  {{ with (index site.Data site.Language.Lang).author.image }}{{ $image = . }}{{ end }}
+{{ end }}
+
+<meta name="twitter:card"        content="summary_large_image"/>
+<meta name="twitter:title"       content="{{ $title }}"/>
+<meta name="twitter:description" content="{{ $description }}"/>
+{{ with $image }}<meta name="twitter:image" content="{{ . | relURL }}">{{ end }}
