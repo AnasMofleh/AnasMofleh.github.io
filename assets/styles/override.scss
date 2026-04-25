@@ -173,3 +173,461 @@ html[data-theme='dark'] {
     }
   }
 }
+
+/* =========================================================================
+   Platformer home overlay
+   ========================================================================= */
+
+:root {
+  --pf-neon: #00f0ff;
+  --pf-neon-deep: #0066ff;
+  --pf-neon-soft: rgba(0, 240, 255, 0.85);
+}
+
+$pf-bg-card: rgba(8, 14, 28, 0.82);
+$pf-neon: #00f0ff;
+$pf-neon-deep: #0066ff;
+$pf-platform: $pf-neon;
+$pf-platform-top: lighten($pf-neon, 10%);
+$pf-pipe: $pf-neon;
+$pf-pipe-dark: $pf-neon-deep;
+$pf-accent: $pf-neon;
+
+.platformer-shell {
+  position: relative;
+}
+
+.platformer-hero {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* let underlying home keep its own interactivity except where we opt-in */
+  z-index: 5;
+}
+
+.platformer-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  &.is-blurred {
+    filter: blur(2px) brightness(0.6);
+    transition: filter 0.35s ease;
+  }
+}
+
+/* Destinations (corner arrow buttons) — arrow-shaped via clip-path */
+.platformer-destination {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6.5rem;
+  height: 2.6rem;
+  padding: 0;
+  background: #fff;
+  color: #111;
+  border: 0;
+  font-family: 'Press Start 2P', 'Mulish', system-ui, sans-serif;
+  font-size: 0.7rem;
+  text-decoration: none;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 4;
+  filter:
+    drop-shadow(0 0 12px #fff)
+    drop-shadow(0 0 28px rgba(255,255,255,0.7))
+    drop-shadow(0 0 48px rgba(255,255,255,0.5));
+  transition: transform 0.15s ease, filter 0.15s ease;
+
+  &:hover, &:focus-visible {
+    transform: scale(1.05);
+    filter:
+      drop-shadow(0 0 10px var(--pf-neon))
+      drop-shadow(0 0 24px color-mix(in srgb, var(--pf-neon) 75%, transparent))
+      drop-shadow(0 0 40px color-mix(in srgb, var(--pf-neon-deep) 55%, transparent));
+    outline: none;
+  }
+
+  &__label {
+    color: #111;
+    line-height: 1.15;
+    text-align: center;
+    text-shadow: 0 0 4px rgba(255,255,255,0.5);
+  }
+
+  /* Arrow shapes via clip-path — text sits inside the rectangular body. */
+  &--top-left,
+  &--bottom-left {
+    clip-path: polygon(0% 50%, 25% 0%, 25% 25%, 100% 25%, 100% 75%, 25% 75%, 25% 100%);
+    .platformer-destination__label { padding-left: 25%; padding-right: 0.4rem; }
+  }
+  &--top-right,
+  &--bottom-right {
+    clip-path: polygon(0% 25%, 75% 25%, 75% 0%, 100% 50%, 75% 100%, 75% 75%, 0% 75%);
+    .platformer-destination__label { padding-right: 25%; padding-left: 0.4rem; }
+  }
+  &--top-left    { top: 6rem;    left: 1rem; }
+  &--top-right   { top: 6rem;    right: 1rem; }
+  &--bottom-left { bottom: 6rem; left: 1rem; }
+  &--bottom-right{ bottom: 6rem; right: 1rem; }
+}
+
+/* Platforms — neon glowing */
+.platformer-platform {
+  position: absolute;
+    background: linear-gradient(to bottom,
+      color-mix(in srgb, #fff 90%, white) 0 4px,
+      #fff 4px 100%);
+  border-radius: 3px;
+  z-index: 2;
+  box-shadow:
+    0 0 12px #fff,
+    0 0 28px rgba(255,255,255,0.7),
+    0 0 48px rgba(255,255,255,0.5),
+    inset 0 -2px 0 rgba(255,255,255,0.25);
+
+  &--top         { top: 22%;  left: 42%; width: 16%; height: 12px; }
+  &--center      { top: 72%;  left: 36%; width: 28%; height: 12px; }
+  &--mid-left    { top: 56%;  left: 22%; width: 14%; height: 12px; }
+  &--mid-right   { top: 56%;  right: 22%; width: 14%; height: 12px; }
+  &--lower-left  { top: 82%;  left: 18%; width: 18%; height: 12px; }
+  &--lower-right { top: 82%;  right: 18%; width: 18%; height: 12px; }
+  &--edge-left   { top: 50%;  left: 0;   width: 14%; height: 12px; transform: translateY(-50%); border-radius: 0 3px 3px 0; }
+  &--edge-right  { top: 50%;  right: 0;  width: 14%; height: 12px; transform: translateY(-50%); border-radius: 3px 0 0 3px; }
+}
+
+/* Pipe — center bottom, leads to intro */
+.platformer-pipe {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 96px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 3;
+
+  &__rim {
+    position: absolute;
+    top: 0; left: -8px; right: -8px;
+    height: 18px;
+    background: var(--pf-neon);
+    border: 3px solid var(--pf-neon-deep);
+    border-radius: 4px;
+  }
+  &__body {
+    position: absolute;
+    top: 14px; left: 0; right: 0; bottom: 0;
+    background: var(--pf-neon);
+    border: 3px solid var(--pf-neon-deep);
+    border-radius: 0 0 4px 4px;
+  }
+  &__hint {
+    position: absolute;
+    top: -1.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: var(--pf-neon);
+    background: rgba(0,0,0,0.55);
+    padding: 0.25rem 0.4rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  &:hover .platformer-pipe__hint { background: rgba(0,0,0,0.8); }
+}
+
+/* Ground baseline */
+.platformer-ground {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 18px;
+  background: linear-gradient(to bottom, #4a8b3a 0 4px, #2f5a26 4px 100%);
+  z-index: 1;
+}
+
+/* Author photo — neon ring matching the platforms */
+.platformer-shell #home img.rounded-circle {
+  border: 3px solid #fff !important;
+  box-shadow:
+    0 0 12px #fff,
+    0 0 28px rgba(255,255,255,0.7),
+    0 0 48px rgba(255,255,255,0.5);
+}
+
+/* Color picker — small floating control in the bottom-right corner. */
+.platformer-color-picker {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 9;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.55rem;
+  background: $pf-bg-card;
+  color: #fff;
+  border: 1px solid var(--pf-neon);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  pointer-events: auto;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--pf-neon) 60%, transparent);
+
+  input[type="color"] {
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  button {
+    background: transparent;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    font-size: 0.7rem;
+    text-decoration: underline;
+  }
+}
+
+/* Player character (DOM sprite) */
+.platformer-character {
+  position: absolute;
+  left: 0; top: 0;
+  width: 28px;
+  height: 36px;
+  z-index: 6;
+  pointer-events: none;
+  will-change: transform;
+
+  &__body {
+    position: absolute;
+    inset: 8px 0 0 0;
+    background: #d62828;
+    border: 2px solid #1a1a1a;
+    border-radius: 4px;
+  }
+  &__face {
+    position: absolute;
+    top: 0; left: 4px; right: 4px;
+    height: 14px;
+    background: #ffd6a5;
+    border: 2px solid #1a1a1a;
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: inset 4px 4px 0 0 rgba(0,0,0,0.18);
+  }
+}
+
+/* Help panel — bottom center */
+.platformer-help {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  z-index: 7;
+  pointer-events: auto;
+
+  &__toggle {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    border: 2px solid $pf-neon;
+    background: $pf-bg-card;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba($pf-neon, 0.8);
+  }
+  &__panel {
+    position: absolute;
+    left: 50%;
+    bottom: 2.75rem;
+    transform: translateX(-50%) translateY(0.5rem) scale(0.97);
+    width: 22rem;
+    max-width: 90vw;
+    background: $pf-bg-card;
+    color: #fff;
+    border: 2px solid $pf-neon;
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 0 16px rgba($pf-neon, 0.5);
+
+    p, .platformer-hint { color: #fff; margin: 0; }
+  }
+  &.is-open &__panel {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  kbd {
+    background: #fff;
+    color: #000;
+    border-radius: 3px;
+    padding: 0 0.25rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* ---------- Rooms ---------- */
+.platformer-rooms {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  pointer-events: none;
+}
+
+.platformer-room {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: rgba(8, 12, 18, 0.86);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: translate3d(0,0,0);
+
+  &.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Lower all rooms except home when active */
+  &.is-active:not([data-room="home"]) .platformer-room__frame {
+    margin-top: 8vh;
+  }
+
+  // Directional entry animations.
+  &.is-from-right  { transform: translate3d(100%, 0, 0); }
+  &.is-from-left   { transform: translate3d(-100%, 0, 0); }
+  &.is-from-top    { transform: translate3d(0, -100%, 0); }
+  &.is-from-bottom { transform: translate3d(0, 100%, 0); }
+  &.is-active.is-from-right,
+  &.is-active.is-from-left,
+  &.is-active.is-from-top,
+  &.is-active.is-from-bottom {
+    transform: translate3d(0, 0, 0);
+  }
+
+  &__frame {
+    margin: 2vh auto;
+    width: #{"min(1200px, 96vw)"};
+    max-height: 96vh;
+    background: #fff;
+    color: #111;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  &__chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(to right, #232a3d, #11151f);
+    color: #fff;
+  }
+  &__eyebrow {
+    margin: 0;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $pf-accent;
+  }
+  &__title { margin: 0; font-size: 1.1rem; }
+  &__close {
+    background: $pf-accent;
+    color: #1a1a1a;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  &__body {
+    flex: 1;
+    overflow: auto;
+    padding: 0;
+  }
+  &__cloned {
+    /* Sections cloned into the room: strip the alternating bg-primary spacing. */
+    margin: 0 !important;
+    padding: 1rem 0.5rem !important;
+  }
+}
+
+html[data-theme='dark'] .platformer-room__frame {
+  background: #15171c;
+  color: #f3f3f3;
+}
+
+/* ---------- Consent banner ---------- */
+.platformer-consent {
+  position: fixed;
+  z-index: 2000;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  width: #{"min(40rem, 92vw)"};
+  background: $pf-bg-card;
+  color: #fff;
+  border: 2px solid $pf-accent;
+  border-radius: 0.6rem;
+  padding: 0.8rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+
+  &__text { margin: 0; font-size: 0.9rem; flex: 1 1 18rem; }
+  &__actions { display: flex; gap: 0.5rem; }
+  &__btn {
+    border: 0;
+    border-radius: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    &--accept { background: $pf-accent; color: #1a1a1a; }
+    &--deny   { background: transparent; color: #fff; border: 1px solid #fff; }
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .platformer-room { transition: opacity 0.15s ease; }
+  .platformer-character { transition: none; }
+}
+
+/* ---------- Mobile / touch ---------- */
+@media (hover: none), (max-width: 768px) {
+  .platformer-character { display: none !important; }
+  .platformer-platform  { display: none !important; }
+  .platformer-help      { display: none !important; }
+  .platformer-pipe__hint { font-size: 0.5rem; }
+
+  .platformer-destination {
+    font-size: 0.65rem;
+    padding: 0.4rem 0.5rem;
+    &--bottom-left, &--bottom-right { bottom: 7.5rem; }
+  }
+  .platformer-room__frame { margin: 0; width: 100vw; max-height: 100vh; border-radius: 0; }
+}
