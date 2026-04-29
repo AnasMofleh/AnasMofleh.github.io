@@ -24,7 +24,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r actions/requirements.txt
-          playwright install
 
       - name: update projects # run main.py
         env:
@@ -32,11 +31,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: python actions/projects_getter.py 
 
-      - name: update certifications # run main.py
-        env:
-          LINKEDIN_EMAIL: ${{ secrets.LINKEDIN_EMAIL }}
-          LINKEDIN_PASSWORD: ${{ secrets.LINKEDIN_PASSWORD }}
-        run: python actions/cert_scraper.py   
+      - name: update skills # read images from repo
+        run: python actions/skills_reader.py   
           
       - name: commit files
         run: |
@@ -45,9 +41,6 @@ jobs:
           git add -A
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
 
-      - name: pull latest changes
-        run: git pull --no-rebase origin main
-          
       - name: push changes
         uses: ad-m/github-push-action@v0.8.0
         with:

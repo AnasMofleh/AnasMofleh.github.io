@@ -222,55 +222,83 @@ $pf-accent: $pf-neon;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 6.5rem;
+  width: 8vw;
+  min-width: 5rem;
+  max-width: 8rem;
   height: 2.6rem;
   padding: 0;
-  background: #fff;
-  color: #111;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   border: 0;
   font-family: 'Press Start 2P', 'Mulish', system-ui, sans-serif;
-  font-size: 0.7rem;
+  font-size: clamp(0.5rem, 1.2vw, 0.7rem);
   text-decoration: none;
   cursor: pointer;
   pointer-events: auto;
   z-index: 4;
+  /* Default glow */
   filter:
-    drop-shadow(0 0 12px #fff)
-    drop-shadow(0 0 28px rgba(255,255,255,0.7))
-    drop-shadow(0 0 48px rgba(255,255,255,0.5));
+    drop-shadow(0 0 6px #fff)
+    drop-shadow(0 0 16px rgba(255, 255, 255, 0.85))
+    drop-shadow(0 0 28px rgba(255, 255, 255, 0.4));
   transition: transform 0.15s ease, filter 0.15s ease;
 
   &:hover, &:focus-visible {
-    transform: scale(1.05);
+    transform: scale(1.08);
     filter:
-      drop-shadow(0 0 10px var(--pf-neon))
-      drop-shadow(0 0 24px color-mix(in srgb, var(--pf-neon) 75%, transparent))
-      drop-shadow(0 0 40px color-mix(in srgb, var(--pf-neon-deep) 55%, transparent));
+      drop-shadow(0 0 10px #fff)
+      drop-shadow(0 0 26px rgba(255, 255, 255, 0.85))
+      drop-shadow(0 0 44px rgba(255, 255, 255, 0.6))
+      drop-shadow(0 0 64px rgba(255, 255, 255, 0.5));
     outline: none;
   }
 
   &__label {
-    color: #111;
+    color: #fff;
     line-height: 1.15;
     text-align: center;
-    text-shadow: 0 0 4px rgba(255,255,255,0.5);
+    white-space: nowrap;
+    text-shadow:
+      0 0 6px #fff,
+      0 0 12px rgba(255, 255, 255, 0.85);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 
   /* Arrow shapes via clip-path — text sits inside the rectangular body. */
   &--top-left,
   &--bottom-left {
-    clip-path: polygon(0% 50%, 25% 0%, 25% 25%, 100% 25%, 100% 75%, 25% 75%, 25% 100%);
-    .platformer-destination__label { padding-left: 25%; padding-right: 0.4rem; }
+    clip-path: polygon(0% 50%, 32% 0%, 32% 25%, 100% 25%, 100% 75%, 32% 75%, 32% 100%);
+    .platformer-destination__label { padding-left: 34%; padding-right: 0.3rem; }
   }
   &--top-right,
   &--bottom-right {
-    clip-path: polygon(0% 25%, 75% 25%, 75% 0%, 100% 50%, 75% 100%, 75% 75%, 0% 75%);
-    .platformer-destination__label { padding-right: 25%; padding-left: 0.4rem; }
+    clip-path: polygon(0% 25%, 68% 25%, 68% 0%, 100% 50%, 68% 100%, 68% 75%, 0% 75%);
+    .platformer-destination__label { padding-right: 34%; padding-left: 0.3rem; }
   }
-  &--top-left    { top: 6rem;    left: 1rem; }
-  &--top-right   { top: 6rem;    right: 1rem; }
-  &--bottom-left { bottom: 6rem; left: 1rem; }
-  &--bottom-right{ bottom: 6rem; right: 1rem; }
+
+  /* Position using viewport-relative units */
+  &--top-left    { top: 10vh;   left: 0.3vw; }
+  &--top-right   { top: 10vh;   right: 0.3vw; }
+  &--bottom-left { bottom: 10vh; left: 0.3vw; }
+  &--bottom-right{ bottom: 10vh; right: 0.3vw; }
+
+  /* Directional animation — continuous gentle pulse in arrow direction */
+  animation: arrowPulse 2s ease-in-out infinite;
+  &--top-left    { animation-name: arrowPulseLeft; }
+  &--top-right   { animation-name: arrowPulseRight; }
+  &--bottom-left { animation-name: arrowPulseLeft; }
+  &--bottom-right{ animation-name: arrowPulseRight; }
+}
+
+@keyframes arrowPulseLeft {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-6px); }
+}
+@keyframes arrowPulseRight {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
 }
 
 /* Platforms — neon glowing */
@@ -288,7 +316,7 @@ $pf-accent: $pf-neon;
     inset 0 -2px 0 rgba(255,255,255,0.25);
 
   &--top         { top: 22%;  left: 42%; width: 16%; height: 12px; }
-  &--center      { top: 72%;  left: 36%; width: 28%; height: 12px; }
+  &--center      { top: 69%;  left: 36%; width: 28%; height: 12px; }
   &--mid-left    { top: 56%;  left: 22%; width: 14%; height: 12px; }
   &--mid-right   { top: 56%;  right: 22%; width: 14%; height: 12px; }
   &--lower-left  { top: 82%;  left: 18%; width: 18%; height: 12px; }
@@ -316,15 +344,15 @@ $pf-accent: $pf-neon;
     position: absolute;
     top: 0; left: -8px; right: -8px;
     height: 18px;
-    background: var(--pf-neon);
-    border: 3px solid var(--pf-neon-deep);
+    background: #fff;
+    border: 3px solid rgba(200, 200, 200, 0.8);
     border-radius: 4px;
   }
   &__body {
     position: absolute;
     top: 14px; left: 0; right: 0; bottom: 0;
-    background: var(--pf-neon);
-    border: 3px solid var(--pf-neon-deep);
+    background: #fff;
+    border: 3px solid rgba(200, 200, 200, 0.8);
     border-radius: 0 0 4px 4px;
   }
   &__hint {
@@ -334,7 +362,7 @@ $pf-accent: $pf-neon;
     transform: translateX(-50%);
     font-family: 'Press Start 2P', monospace;
     font-size: 0.55rem;
-    color: var(--pf-neon);
+    color: #fff;
     background: rgba(0,0,0,0.55);
     padding: 0.25rem 0.4rem;
     border-radius: 3px;
@@ -360,42 +388,6 @@ $pf-accent: $pf-neon;
     0 0 12px #fff,
     0 0 28px rgba(255,255,255,0.7),
     0 0 48px rgba(255,255,255,0.5);
-}
-
-/* Color picker — small floating control in the bottom-right corner. */
-.platformer-color-picker {
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 9;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.55rem;
-  background: $pf-bg-card;
-  color: #fff;
-  border: 1px solid var(--pf-neon);
-  border-radius: 999px;
-  font-size: 0.75rem;
-  pointer-events: auto;
-  box-shadow: 0 0 10px color-mix(in srgb, var(--pf-neon) 60%, transparent);
-
-  input[type="color"] {
-    width: 1.6rem;
-    height: 1.6rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-  }
-  button {
-    background: transparent;
-    color: #fff;
-    border: 0;
-    cursor: pointer;
-    font-size: 0.7rem;
-    text-decoration: underline;
-  }
 }
 
 /* Player character (DOM sprite) */
@@ -615,6 +607,15 @@ html[data-theme='dark'] .platformer-room__frame {
 @media (prefers-reduced-motion: reduce) {
   .platformer-room { transition: opacity 0.15s ease; }
   .platformer-character { transition: none; }
+  .platformer-destination {
+    animation: none !important;
+  }
+}
+
+/* ---------- Hide "Posts" and "Notes" nav links in header ---------- */
+#blog-link,
+#note-link {
+  display: none !important;
 }
 
 /* ---------- Mobile / touch ---------- */
@@ -625,9 +626,12 @@ html[data-theme='dark'] .platformer-room__frame {
   .platformer-pipe__hint { font-size: 0.5rem; }
 
   .platformer-destination {
-    font-size: 0.65rem;
-    padding: 0.4rem 0.5rem;
-    &--bottom-left, &--bottom-right { bottom: 7.5rem; }
+    width: 10vw;
+    min-width: 4.5rem;
+    max-width: 7rem;
+    font-size: clamp(0.45rem, 1vw, 0.6rem);
+    padding: 0;
+    &--bottom-left, &--bottom-right { bottom: 12vh; }
   }
   .platformer-room__frame { margin: 0; width: 100vw; max-height: 100vh; border-radius: 0; }
 }

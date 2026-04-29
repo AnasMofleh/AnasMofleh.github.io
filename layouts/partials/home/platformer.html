@@ -24,8 +24,8 @@
     <button type="button"
             class="platformer-destination platformer-destination--bottom-left"
             data-room-link="education"
-            aria-label="Go to Education and Publications (bottom left)">
-      <span class="platformer-destination__label">Education<br/>&amp; Publications</span>
+            aria-label="Go to Education (bottom left)">
+      <span class="platformer-destination__label">Educations</span>
     </button>
     <button type="button"
             class="platformer-destination platformer-destination--bottom-right"
@@ -90,7 +90,7 @@
     {{ $rooms := slice
       (dict "id" "experiences" "title" "Experiences"               "side" "left"   "eyebrow" "Top-left room"     "source" "#experiences")
       (dict "id" "skills"      "title" "Skills"                    "side" "right"  "eyebrow" "Top-right room"    "source" "#skills")
-      (dict "id" "education"   "title" "Education & Publications"  "side" "left"   "eyebrow" "Bottom-left room"  "source" "#education,#publications")
+      (dict "id" "education"   "title" "Education"  "side" "left"   "eyebrow" "Bottom-left room"  "source" "#education,#publications")
       (dict "id" "projects"    "title" "Projects"                  "side" "right"  "eyebrow" "Bottom-right room" "source" "#projects")
       (dict "id" "intro"       "title" "Introduction"              "side" "bottom" "eyebrow" "Pipe room"         "source" "#about")
     }}
@@ -125,9 +125,3 @@
   </div>
 </div>
 
-{{/* Neon color picker — replaces the --pf-neon CSS var live. */}}
-<div class="platformer-color-picker" data-color-picker>
-  <label for="pf-color-input">Neon</label>
-  <input id="pf-color-input" type="color" value="#00f0ff" data-color-input />
-  <button type="button" data-color-reset aria-label="Reset color">reset</button>
-</div>
