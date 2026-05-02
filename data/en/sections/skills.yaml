@@ -5,18 +5,24 @@ section:
   showOnNavbar: true
   weight: 2
 skills:
-- name: Hands On Essentials - Data Engineering
-  company: Snowflake
-  issuedDate: Issued Mar 2023
-  url: https://www.credly.com/badges/3a0ef244-f3bd-444e-bf52-45a3673246a6/linked_in_profile
-  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-engineering/thumbnail.png
-  logo: /images/sections/skills/snowflake/logo.png
-- name: 'Microsoft Applied Skills: Implement a lakehouse in Microsoft Fabric'
+- name: Academy Accreditation - Databricks Lakehouse Fundamentals
+  company: Databricks
+  issuedDate: Issued Jun 2024 · Expired Jun 2025
+  url: https://credentials.databricks.com/1a838356-fe97-4a37-ad95-6d7a22ea3317
+  thumbnail: /images/sections/skills/databricks/lakehouse-fundamentals/thumbnail.png
+  logo: /images/sections/skills/databricks/logo.png
+- name: 'Microsoft Certified: Azure AI Fundamentals'
   company: Microsoft
-  issuedDate: Issued Sep 2024
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/867C5AFDD5EAA8E5?sharingId
-  thumbnail: /images/sections/skills/microsoft/implement-a-lakehouse-in-microsoft-fabric/thumbnail.png
+  issuedDate: Issued Sep 2023
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/B99DECD2D7C0926B?sharingId=1B829C45C4FCBA27
+  thumbnail: /images/sections/skills/microsoft/azure-ai-fundamentals/thumbnail.png
   logo: /images/sections/skills/microsoft/logo.png
+- name: Hands On Essentials - Data Sharing
+  company: Snowflake
+  issuedDate: Issued Jan 2022
+  url: https://www.credly.com/badges/1c13d048-774a-475c-937a-5d71fa6e5268?source=linked_in_profile
+  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-sharing/thumbnail.png
+  logo: /images/sections/skills/snowflake/logo.png
 - name: 'Microsoft Applied Skills: Implement a Real-Time Intelligence solution with
     Microsoft Fabric'
   company: Microsoft
@@ -24,95 +30,71 @@ skills:
   url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/1C64B603CB7F1660?sharingId
   thumbnail: /images/sections/skills/microsoft/implement-real-time-intelligence-solution-fabric/thumbnail.png
   logo: /images/sections/skills/microsoft/logo.png
-- name: 'Microsoft Certified: Azure Fundamentals'
-  company: Microsoft
-  issuedDate: Issued Aug 2023
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/A26D3126CCB96B9C?sharingId=1B829C45C4FCBA27
-  thumbnail: /images/sections/skills/microsoft/azure-fundamentals/thumbnail.png
-  logo: /images/sections/skills/microsoft/logo.png
-- name: 'Microsoft Certified: Azure Data Engineer Associate'
-  company: Microsoft
-  issuedDate: Issued Feb 2024 · Expired Mar 2025
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/6362DBF26DA67A91?sharingId=1B829C45C4FCBA27
-  thumbnail: /images/sections/skills/microsoft/azure-data-engineer-associate/thumbnail.png
-  logo: /images/sections/skills/microsoft/logo.png
-- name: 'Microsoft Certified: Fabric Data Engineer Associate'
-  company: Microsoft
-  issuedDate: Issued Feb 2025 · Expires Feb 2027
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/1C1BC904FA9D00C7?sharingId
-  thumbnail: /images/sections/skills/microsoft/fabric-data-engineer-associate/thumbnail.png
-  logo: /images/sections/skills/microsoft/logo.png
-- name: Hands On Essentials - Data Warehouse
-  company: Snowflake
-  issuedDate: Issued Dec 2021
-  url: https://www.credly.com/badges/7fc511c3-8e6e-4381-922a-9c736336fe64?source=linked_in_profile
-  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-warehouse/thumbnail.png
-  logo: /images/sections/skills/snowflake/logo.png
-- name: Hands On Essentials - Data Lake
-  company: Snowflake
-  issuedDate: Issued Mar 2023
-  url: https://www.credly.com/badges/a8870ce4-858d-4c41-a705-0bc02caf7cd6/linked_in_profile
-  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-lake/thumbnail.png
-  logo: /images/sections/skills/snowflake/logo.png
-- name: Academy Accreditation - Databricks Lakehouse Fundamentals
-  company: Databricks
-  issuedDate: Issued Jun 2024 · Expired Jun 2025
-  url: https://credentials.databricks.com/1a838356-fe97-4a37-ad95-6d7a22ea3317
-  thumbnail: /images/sections/skills/databricks/lakehouse-fundamentals/thumbnail.png
-  logo: /images/sections/skills/databricks/logo.png
-- name: 'Microsoft Certified: Fabric Analytics Engineer Associate'
-  company: Microsoft
-  issuedDate: Issued May 2024 · Expired May 2025
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/F2E1AC495A915929?sharingId=1B829C45C4FCBA27
-  thumbnail: /images/sections/skills/microsoft/fabric-analytics-engineer-associate/thumbnail.png
-  logo: /images/sections/skills/microsoft/logo.png
-- name: dbt Fundamentals
-  company: dbt Labs
-  issuedDate: Issued Jan 2022 · Expired Jul 2024
-  url: https://credentials.getdbt.com/dc4208a3-faab-48de-b394-a2f4592a8965
-  thumbnail: /images/sections/skills/dbt-labs/dbt-fundamentals/thumbnail.png
-  logo: /images/sections/skills/dbt-labs/logo.png
-- name: GitHub Actions
-  company: GitHub
-  issuedDate: Issued Oct 2024 · Expires Oct 2027
-  url: https://www.credly.com/badges/fe9d5158-730e-43ee-af91-1d5ef1616858/linked_in_profile
-  thumbnail: /images/sections/skills/github/github-actions/thumbnail.png
-  logo: /images/sections/skills/github/logo.png
-- name: 'Hack Together: AI Agents Hackathon'
-  company: Microsoft
-  issuedDate: Issued Jun 2025
-  url: https://www.credly.com/badges/1f3986b5-7420-4188-8e9e-e8e05c4f3d1d/linked_in_profile
-  thumbnail: /images/sections/skills/microsoft/ai-agents-hackathon/thumbnail.png
-  logo: /images/sections/skills/microsoft/logo.png
-- name: 'Microsoft Certified: Azure AI Fundamentals'
-  company: Microsoft
-  issuedDate: Issued Sep 2023
-  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/B99DECD2D7C0926B?sharingId=1B829C45C4FCBA27
-  thumbnail: /images/sections/skills/microsoft/azure-ai-fundamentals/thumbnail.png
-  logo: /images/sections/skills/microsoft/logo.png
 - name: GitHub Foundations
   company: GitHub
   issuedDate: Issued Jul 2024 · Expires Jul 2027
   url: https://www.credly.com/badges/8d9553e6-758d-4bf7-a77d-cd5c06412c2f/linked_in_profile
   thumbnail: /images/sections/skills/github/github-foundations/thumbnail.png
   logo: /images/sections/skills/github/logo.png
-- name: Academy Accreditation - Databricks Fundamentals
-  company: Databricks
-  issuedDate: Issued Feb 2025 · Expires Feb 2026
-  url: https://credentials.databricks.com/65bd2772-060a-4eb4-adff-872e821e60ea
-  thumbnail: /images/sections/skills/databricks/databricks-fundamentals/thumbnail.png
-  logo: /images/sections/skills/databricks/logo.png
 - name: 'AWS Learning: Object Storage'
   company: Amazon Web Services (AWS)
   issuedDate: Issued Feb 2023
   url: https://www.credly.com/badges/7e91ee29-d38b-4121-9f5c-0013e730aea5/linked_in_profile
   thumbnail: /images/sections/skills/aws/object-storage/thumbnail.png
   logo: /images/sections/skills/aws/logo.png
+- name: GitHub Actions
+  company: GitHub
+  issuedDate: Issued Oct 2024 · Expires Oct 2027
+  url: https://www.credly.com/badges/fe9d5158-730e-43ee-af91-1d5ef1616858/linked_in_profile
+  thumbnail: /images/sections/skills/github/github-actions/thumbnail.png
+  logo: /images/sections/skills/github/logo.png
+- name: Hands On Essentials - Data Lake
+  company: Snowflake
+  issuedDate: Issued Mar 2023
+  url: https://www.credly.com/badges/a8870ce4-858d-4c41-a705-0bc02caf7cd6/linked_in_profile
+  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-lake/thumbnail.png
+  logo: /images/sections/skills/snowflake/logo.png
+- name: dbt Fundamentals
+  company: dbt Labs
+  issuedDate: Issued Jan 2022 · Expired Jul 2024
+  url: https://credentials.getdbt.com/dc4208a3-faab-48de-b394-a2f4592a8965
+  thumbnail: /images/sections/skills/dbt-labs/dbt-fundamentals/thumbnail.png
+  logo: /images/sections/skills/dbt-labs/logo.png
+- name: Databricks Certified Data Engineer Associate
+  company: Databricks
+  issuedDate: Issued Aug 2024 · Expires Aug 2026
+  url: https://credentials.databricks.com/304c9858-39ca-4635-bbb5-9bc253195f35
+  thumbnail: /images/sections/skills/databricks/certified-data-engineer-associate/thumbnail.png
+  logo: /images/sections/skills/databricks/logo.png
+- name: Hands On Essentials - Data Warehouse
+  company: Snowflake
+  issuedDate: Issued Dec 2021
+  url: https://www.credly.com/badges/7fc511c3-8e6e-4381-922a-9c736336fe64?source=linked_in_profile
+  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-warehouse/thumbnail.png
+  logo: /images/sections/skills/snowflake/logo.png
+- name: Academy Accreditation - Databricks Fundamentals
+  company: Databricks
+  issuedDate: Issued Feb 2025 · Expires Feb 2026
+  url: https://credentials.databricks.com/65bd2772-060a-4eb4-adff-872e821e60ea
+  thumbnail: /images/sections/skills/databricks/databricks-fundamentals/thumbnail.png
+  logo: /images/sections/skills/databricks/logo.png
+- name: Hands On Essentials - Data Engineering
+  company: Snowflake
+  issuedDate: Issued Mar 2023
+  url: https://www.credly.com/badges/3a0ef244-f3bd-444e-bf52-45a3673246a6/linked_in_profile
+  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-engineering/thumbnail.png
+  logo: /images/sections/skills/snowflake/logo.png
 - name: 'Microsoft Certified: Azure Data Fundamentals'
   company: Microsoft
   issuedDate: Issued Aug 2023
   url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/8C23F773F92C77F9?sharingId=1B829C45C4FCBA27
   thumbnail: /images/sections/skills/microsoft/azure-data-fundamentals/thumbnail.png
+  logo: /images/sections/skills/microsoft/logo.png
+- name: 'Microsoft Certified: Fabric Analytics Engineer Associate'
+  company: Microsoft
+  issuedDate: Issued May 2024 · Expired May 2025
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/F2E1AC495A915929?sharingId=1B829C45C4FCBA27
+  thumbnail: /images/sections/skills/microsoft/fabric-analytics-engineer-associate/thumbnail.png
   logo: /images/sections/skills/microsoft/logo.png
 - name: Hands On Essentials - Data Applications
   company: Snowflake
@@ -120,15 +102,33 @@ skills:
   url: https://www.credly.com/badges/705e27c1-935f-4cee-b367-99476d54fb41?source=linked_in_profile
   thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-applications/thumbnail.png
   logo: /images/sections/skills/snowflake/logo.png
-- name: Hands On Essentials - Data Sharing
-  company: Snowflake
-  issuedDate: Issued Jan 2022
-  url: https://www.credly.com/badges/1c13d048-774a-475c-937a-5d71fa6e5268?source=linked_in_profile
-  thumbnail: /images/sections/skills/snowflake/hands-on-essentials-data-sharing/thumbnail.png
-  logo: /images/sections/skills/snowflake/logo.png
-- name: Databricks Certified Data Engineer Associate
-  company: Databricks
-  issuedDate: Issued Aug 2024 · Expires Aug 2026
-  url: https://credentials.databricks.com/304c9858-39ca-4635-bbb5-9bc253195f35
-  thumbnail: /images/sections/skills/databricks/certified-data-engineer-associate/thumbnail.png
-  logo: /images/sections/skills/databricks/logo.png
+- name: 'Hack Together: AI Agents Hackathon'
+  company: Microsoft
+  issuedDate: Issued Jun 2025
+  url: https://www.credly.com/badges/1f3986b5-7420-4188-8e9e-e8e05c4f3d1d/linked_in_profile
+  thumbnail: /images/sections/skills/microsoft/ai-agents-hackathon/thumbnail.png
+  logo: /images/sections/skills/microsoft/logo.png
+- name: 'Microsoft Certified: Azure Fundamentals'
+  company: Microsoft
+  issuedDate: Issued Aug 2023
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/A26D3126CCB96B9C?sharingId=1B829C45C4FCBA27
+  thumbnail: /images/sections/skills/microsoft/azure-fundamentals/thumbnail.png
+  logo: /images/sections/skills/microsoft/logo.png
+- name: 'Microsoft Certified: Fabric Data Engineer Associate'
+  company: Microsoft
+  issuedDate: Issued Feb 2025 · Expires Feb 2027
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/1C1BC904FA9D00C7?sharingId
+  thumbnail: /images/sections/skills/microsoft/fabric-data-engineer-associate/thumbnail.png
+  logo: /images/sections/skills/microsoft/logo.png
+- name: 'Microsoft Certified: Azure Data Engineer Associate'
+  company: Microsoft
+  issuedDate: Issued Feb 2024 · Expired Mar 2025
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/6362DBF26DA67A91?sharingId=1B829C45C4FCBA27
+  thumbnail: /images/sections/skills/microsoft/azure-data-engineer-associate/thumbnail.png
+  logo: /images/sections/skills/microsoft/logo.png
+- name: 'Microsoft Applied Skills: Implement a lakehouse in Microsoft Fabric'
+  company: Microsoft
+  issuedDate: Issued Sep 2024
+  url: https://learn.microsoft.com/api/credentials/share/en-us/AnasMofleh/867C5AFDD5EAA8E5?sharingId
+  thumbnail: /images/sections/skills/microsoft/implement-a-lakehouse-in-microsoft-fabric/thumbnail.png
+  logo: /images/sections/skills/microsoft/logo.png
