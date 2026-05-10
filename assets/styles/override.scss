@@ -1,4 +1,36 @@
-// override the project section's card styling 
+/* 1. Scale everything up by 125% (like browser zoom) */
+html {
+  font-size: 125%;
+}
+
+/* 2. Better text contrast for readability */
+p {
+  color: #111827 !important;
+}
+
+strong {
+  color: #111827 !important;
+}
+
+.sub-title,
+.text-muted {
+  color: #475569 !important;
+}
+
+html[data-theme='dark'] p {
+  color: #e2e8f0 !important;
+}
+
+html[data-theme='dark'] strong {
+  color: #f1f5f9 !important;
+}
+
+html[data-theme='dark'] .sub-title,
+html[data-theme='dark'] .text-muted {
+  color: #94a3b8 !important;
+}
+
+// override the project section's card styling
 .projects-section {
   .card {
     .card-header {
@@ -225,7 +257,7 @@ $pf-accent: $pf-neon;
   width: 8vw;
   min-width: 5rem;
   max-width: 8rem;
-  height: 2.6rem;
+  height: 3.2rem;
   padding: 0;
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
@@ -267,22 +299,23 @@ $pf-accent: $pf-neon;
   }
 
   /* Arrow shapes via clip-path — text sits inside the rectangular body. */
+  /* Thicker arrow shaft: inner bounds changed from 25%-75% to 20%-80% */
   &--top-left,
   &--bottom-left {
-    clip-path: polygon(0% 50%, 32% 0%, 32% 25%, 100% 25%, 100% 75%, 32% 75%, 32% 100%);
+    clip-path: polygon(0% 50%, 32% 0%, 32% 20%, 100% 20%, 100% 80%, 32% 80%, 32% 100%);
     .platformer-destination__label { padding-left: 34%; padding-right: 0.3rem; }
   }
   &--top-right,
   &--bottom-right {
-    clip-path: polygon(0% 25%, 68% 25%, 68% 0%, 100% 50%, 68% 100%, 68% 75%, 0% 75%);
+    clip-path: polygon(0% 20%, 68% 20%, 68% 0%, 100% 50%, 68% 100%, 68% 80%, 0% 80%);
     .platformer-destination__label { padding-right: 34%; padding-left: 0.3rem; }
   }
 
-  /* Position using viewport-relative units */
-  &--top-left    { top: 10vh;   left: 0.3vw; }
-  &--top-right   { top: 10vh;   right: 0.3vw; }
-  &--bottom-left { bottom: 10vh; left: 0.3vw; }
-  &--bottom-right{ bottom: 10vh; right: 0.3vw; }
+  /* Position using viewport-relative units — closer to the middle line */
+  &--top-left    { top: 22vh;   left: 0.3vw; }
+  &--top-right   { top: 22vh;   right: 0.3vw; }
+  &--bottom-left { bottom: 22vh; left: 0.3vw; }
+  &--bottom-right{ bottom: 22vh; right: 0.3vw; }
 
   /* Directional animation — continuous gentle pulse in arrow direction */
   animation: arrowPulse 2s ease-in-out infinite;
@@ -381,13 +414,22 @@ $pf-accent: $pf-neon;
   z-index: 1;
 }
 
-/* Author photo — neon ring matching the platforms */
+/* Author photo — neon ring matching the platforms, slightly larger than theme default (148px) */
 .platformer-shell #home img.rounded-circle {
+  width: 185px !important;
+  height: 185px !important;
   border: 3px solid #fff !important;
   box-shadow:
     0 0 12px #fff,
     0 0 28px rgba(255,255,255,0.7),
     0 0 48px rgba(255,255,255,0.5);
+}
+
+@media (max-width: 640px) {
+  .platformer-shell #home img.rounded-circle {
+    width: 160px !important;
+    height: 160px !important;
+  }
 }
 
 /* Player character (DOM sprite) */

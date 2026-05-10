@@ -1,7 +1,5 @@
-import random
 import yaml
 import os
-import re
 
 SKILLS_YAML_PATH = 'data/en/sections/skills.yaml'
 SKILLS_IMAGE_DIR = 'static/images/sections/skills'
@@ -91,9 +89,6 @@ def main():
             print(f"  ✓ logo: {skill['name']}")
         else:
             print(f"  ✗ No logo.png in {company_folder}/{cert_folder}/ — skipped")
-
-    # Shuffle the skills in random order
-    random.shuffle(data['skills'])
 
     with open(SKILLS_YAML_PATH, 'w', encoding='utf8') as f:
         yaml.dump(data, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
