@@ -8,7 +8,7 @@ section:
   template: sections/about.html
 
 # your designation
-designation: Data Engineer with a machine learning background 
+designation: Senior data engineer with a machine learning background
 # your company information
 company:
   name: Region Skåne.

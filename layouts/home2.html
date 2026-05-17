@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+<head>
+  <title>{{ .Site.Title }}</title>
+  {{- partial "header.html" . -}}
+  {{- partial "opengraph.html" . -}}
+  {{- partial "analytics.html" . -}}
+
+  {{/* Force dark theme — neon palette only works on dark bg */}}
+  <script>document.documentElement.setAttribute('data-theme','dark');</script>
+
+  {{/* Home neon dashboard styles — loaded after theme CSS so they win */}}
+  {{ $css := resources.Get "styles/home2.scss" | toCSS | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+  {{/* Chart.js v4 — loaded only on this page */}}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+          crossorigin="anonymous" defer></script>
+</head>
+<body class="h2-page">
+
+  <script>/* restore saved theme immediately to avoid flash */
+  (function(){try{if(localStorage.getItem('h2-theme')==='light')document.body.classList.add('h2-light');}catch(e){}}());
+  </script>
+
+  {{/* ── Top bar ──────────────────────────────────────────── */}}
+  <header class="h2-topbar">
+    <a href="/game/" class="h2-back-btn">&#8592;&nbsp;&nbsp;Gamified&nbsp;Home</a>
+  </header>
+
+  {{/* ── Theme toggle ─────────────────────────────────────── */}}
+  <button type="button" class="h2-theme-btn" id="h2ThemeBtn" aria-label="Switch to light theme">&#9790;</button>
+
+  {{/* ── Main dashboard ──────────────────────────────────── */}}
+  <main class="h2-dashboard">
+
+    {{/* Left: portrait */}}
+    <aside class="h2-portrait-col">
+      {{- partial "home2/portrait.html" . -}}
+    </aside>
+
+    {{/* Right: charts */}}
+    <section class="h2-charts-col">
+
+      {{/* ── KPI stat rail ──────────────────────────────── */}}
+      {{ $d   := index hugo.Data site.Language.Lang }}
+      {{ $exp := $d.sections.experiences }}
+      {{ $posCount := 0 }}
+      {{ range $exp.experiences }}{{ $posCount = add $posCount (len .positions) }}{{ end }}
+      <div class="h2-tile h2-kpi">
+        <div class="h2-stat">
+          <span class="h2-val" data-neon="cyan">{{ len $d.sections.projects.projects }}</span>
+          <span class="h2-lbl">Projects</span>
+        </div>
+        <div class="h2-stat">
+          <span class="h2-val" data-neon="cyan">{{ len $d.sections.skills.skills }}</span>
+          <span class="h2-lbl">Certifications</span>
+        </div>
+        <div class="h2-stat">
+          <span class="h2-val" data-neon="cyan">{{ len $exp.experiences }}</span>
+          <span class="h2-lbl">Companies</span>
+        </div>
+        <div class="h2-stat">
+          <span class="h2-val" data-neon="cyan">{{ $posCount }}</span>
+          <span class="h2-lbl">Positions</span>
+        </div>
+        <div class="h2-stat">
+          <span class="h2-val" data-neon="cyan">{{ sub now.Year 2021 }}+</span>
+          <span class="h2-lbl">Yrs&nbsp;Exp.</span>
+        </div>
+      </div>
+
+      {{/* ── Cert by Issuer (Doughnut) ──────────────────── */}}
+      <div class="h2-tile h2-chart-issuer">
+        <canvas id="chartIssuer"></canvas>
+      </div>
+
+      {{/* ── Projects by Category (Doughnut) ────────────── */}}
+      <div class="h2-tile h2-chart-projects">
+        <canvas id="chartProjects"></canvas>
+      </div>
+
+      {{/* ── Cert Timeline (Line) ────────────────────────── */}}
+      <div class="h2-tile h2-chart-timeline">
+        <canvas id="chartTimeline"></canvas>
+      </div>
+
+      {{/* ── Experience Duration (Horizontal Bar) ─────────── */}}
+      <div class="h2-tile h2-chart-exp">
+        <canvas id="chartExp"></canvas>
+      </div>
+
+    </section>
+  </main>
+
+  {{ partial "scripts.html" . }}
+
+  {{/* ── Hugo-rendered chart data ──────────────────────────── */}}
+  <script>
+  {{ $d := index hugo.Data site.Language.Lang }}
+  {{ $skills   := $d.sections.skills }}
+  {{ $projects := $d.sections.projects }}
+  {{ $expSec   := $d.sections.experiences }}
+
+  {{/* Cert-by-issuer count map */}}
+  {{ $issuerMap := dict }}
+  {{ range $skills.skills }}
+    {{ $existing := index $issuerMap .company | default 0 }}
+    {{ $issuerMap = merge $issuerMap (dict .company (add $existing 1)) }}
+  {{ end }}
+
+  {{/* Cert timeline: year → count */}}
+  {{ $yearMap := dict }}
+  {{ range $skills.skills }}
+    {{ $dateStr := strings.TrimPrefix "Issued " .issuedDate }}
+    {{ $dateStr  = index (split $dateStr " · ") 0 }}
+    {{ $parts   := split $dateStr " " }}
+    {{ if ge (len $parts) 2 }}
+      {{ $yr       := index $parts 1 }}
+      {{ $existing := index $yearMap $yr | default 0 }}
+      {{ $yearMap   = merge $yearMap (dict $yr (add $existing 1)) }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Projects by first tag; normalize profissional → Professional */}}
+  {{ $catMap := dict }}
+  {{ range $projects.projects }}
+    {{ $cat := "Untagged" }}
+    {{ if .tags }}
+      {{ $t := index .tags 0 }}
+      {{ if or (eq $t "professional") (eq $t "profissional") }}
+        {{ $cat = "Professional" }}
+      {{ else if eq $t "academic" }}
+        {{ $cat = "Academic" }}
+      {{ else if eq $t "hobby" }}
+        {{ $cat = "Hobby" }}
+      {{ else if eq $t "ai-agent" }}
+        {{ $cat = "AI Agent" }}
+      {{ else }}
+        {{ $cat = $t | title }}
+      {{ end }}
+    {{ end }}
+    {{ $existing := index $catMap $cat | default 0 }}
+    {{ $catMap    = merge $catMap (dict $cat (add $existing 1)) }}
+  {{ end }}
+
+  {{/* Experience duration per company — string-based month parsing */}}
+  {{ $MON := dict "Jan" 1 "Feb" 2 "Mar" 3 "Apr" 4 "May" 5 "Jun" 6 "Jul" 7 "Aug" 8 "Sep" 9 "Oct" 10 "Nov" 11 "Dec" 12 }}
+  {{ $nowYM     := add (mul now.Year 12) (int (now.Format "1")) }}
+  {{ $expLabels := slice }}
+  {{ $expData   := slice }}
+  {{ range $expSec.experiences }}
+    {{ $minYM     := 999999 }}
+    {{ $maxYM     := 0 }}
+    {{ $isPresent := false }}
+    {{ range .positions }}
+      {{ $sp      := split .start " " }}
+      {{ $startYM := add (mul (int (index $sp 1)) 12) (index $MON (index $sp 0) | default 1) }}
+      {{ if lt $startYM $minYM }}{{ $minYM = $startYM }}{{ end }}
+      {{ if .end }}
+        {{ $ep    := split .end " " }}
+        {{ $endYM := add (mul (int (index $ep 1)) 12) (index $MON (index $ep 0) | default 1) }}
+        {{ if gt $endYM $maxYM }}{{ $maxYM = $endYM }}{{ end }}
+      {{ else }}
+        {{ $isPresent = true }}
+      {{ end }}
+    {{ end }}
+    {{ if $isPresent }}{{ $maxYM = $nowYM }}{{ end }}
+    {{ $expLabels = $expLabels | append .company.name }}
+    {{ $expData   = $expData   | append (sub $maxYM $minYM) }}
+  {{ end }}
+
+  const H2_DATA = {
+    issuer: {
+      labels: ["Microsoft","Snowflake","Databricks","GitHub","AWS","dbt Labs"],
+      data: [
+        {{ index $issuerMap "Microsoft"                 | default 0 }},
+        {{ index $issuerMap "Snowflake"                 | default 0 }},
+        {{ index $issuerMap "Databricks"                | default 0 }},
+        {{ index $issuerMap "GitHub"                    | default 0 }},
+        {{ index $issuerMap "Amazon Web Services (AWS)" | default 0 }},
+        {{ index $issuerMap "dbt Labs"                  | default 0 }}
+      ]
+    },
+    proj: {
+      labels: ["Professional","Academic","AI Agent","Hobby","Untagged"],
+      data: [
+        {{ index $catMap "Professional" | default 0 }},
+        {{ index $catMap "Academic"     | default 0 }},
+        {{ index $catMap "AI Agent"     | default 0 }},
+        {{ index $catMap "Hobby"        | default 0 }},
+        {{ index $catMap "Untagged"     | default 0 }}
+      ]
+    },
+    timeline: {
+      labels: ["2021","2022","2023","2024","2025"],
+      data: [
+        {{ index $yearMap "2021" | default 0 }},
+        {{ index $yearMap "2022" | default 0 }},
+        {{ index $yearMap "2023" | default 0 }},
+        {{ index $yearMap "2024" | default 0 }},
+        {{ index $yearMap "2025" | default 0 }}
+      ]
+    },
+    exp: {
+      labels: {{ $expLabels | jsonify | safeJS }},
+      data:   {{ $expData   | jsonify | safeJS }}
+    }
+  };
+  </script>
+
+  {{/* ── Chart.js initialisation — theme-aware, re-callable ─── */}}
+  <script>
+  (function () {
+    const neonGlow = {
+      id: 'neonGlow',
+      beforeDatasetDraw(chart, { index }) {
+        const type = chart.config.type;
+        if (type !== 'line' && type !== 'bar') return;
+        const ds  = chart.data.datasets[index];
+        const ctx = chart.ctx;
+        ctx.save();
+        const col = typeof ds.borderColor === 'string' ? ds.borderColor : '#00f5ff';
+        ctx.shadowColor = col;
+        ctx.shadowBlur  = 18;
+      },
+      afterDatasetDraw(chart, { index }) {
+        const type = chart.config.type;
+        if (type !== 'line' && type !== 'bar') return;
+        chart.ctx.restore();
+      }
+    };
+
+    /* Pointer-line labels — connector lines for the Projects doughnut */
+    const pointerLabels = {
+      id: 'pointerLabels',
+      afterDraw(chart) {
+        if (chart.canvas.id !== 'chartProjects') return;
+        const ctx    = chart.ctx;
+        const meta   = chart.getDatasetMeta(0);
+        const labels = chart.data.labels;
+        const colors = chart.data.datasets[0].backgroundColor;
+        const values = chart.data.datasets[0].data;
+        const total  = values.reduce((a, b) => a + b, 0);
+        if (!total) return;
+        const textColor = document.body.classList.contains('h2-light') ? '#334155' : '#cbd5e1';
+        ctx.save();
+        ctx.font      = '12px Inter, system-ui, sans-serif';
+        ctx.lineWidth = 1;
+        meta.data.forEach(function (arc, i) {
+          if (!values[i]) return;
+          const mid     = (arc.startAngle + arc.endAngle) / 2;
+          const cx = arc.x, cy = arc.y, ro = arc.outerRadius;
+          const color   = Array.isArray(colors) ? colors[i] : colors;
+          const sx = cx + Math.cos(mid) * (ro + 3),  sy = cy + Math.sin(mid) * (ro + 3);
+          const ex = cx + Math.cos(mid) * (ro + 18), ey = cy + Math.sin(mid) * (ro + 18);
+          const goRight = Math.cos(mid) >= 0;
+          const hx = ex + (goRight ? 16 : -16);
+          ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.lineTo(hx, ey);
+          ctx.strokeStyle = color; ctx.stroke();
+          ctx.beginPath(); ctx.arc(hx, ey, 2, 0, Math.PI * 2);
+          ctx.fillStyle = color; ctx.fill();
+          ctx.fillStyle    = textColor;
+          ctx.textAlign    = goRight ? 'left' : 'right';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(labels[i], hx + (goRight ? 4 : -4), ey);
+        });
+        ctx.restore();
+      }
+    };
+
+    let _glowReg = false;
+    let _charts  = [];
+
+    window.buildH2Charts = function () {
+      _charts.forEach(c => { try { c.destroy(); } catch (e) {} });
+      _charts = [];
+      if (!_glowReg) { Chart.register(neonGlow); Chart.register(pointerLabels); _glowReg = true; }
+
+      const isLight = document.body.classList.contains('h2-light');
+      const NEON  = ['#00f5ff','#b000ff','#00ff9d','#ff0080','#3d7eff','#ffdd00'];
+      /* Company brand colours: Microsoft, Snowflake, Databricks, GitHub, AWS, dbt Labs */
+      const BRAND = ['#0078D4','#29B5E8','#FF3621','#2DA44E','#FF9900','#F97316'];
+      const GRID  = isLight ? 'rgba(0,0,0,0.09)'     : 'rgba(255,255,255,0.07)';
+      const TICK  = isLight ? '#334155'               : '#e2e8f0';
+      const BORD  = isLight ? 'rgba(240,244,248,0.9)' : '#07071a';
+      const legendOpts = {
+        labels: { color: isLight ? '#1e293b' : '#ffffff', font: { size: 13 }, boxWidth: 12, padding: 8 }
+      };
+      const titleOpts = (text) => ({
+        display: true,
+        text,
+        color: isLight ? '#475569' : '#f1f5f9',
+        font: { size: 13, weight: '600' },
+        padding: { bottom: 4 }
+      });
+
+      /* ── 1. Certifications by Issuer — Column (vertical bar) ─ */
+      _charts.push(new Chart(document.getElementById('chartIssuer'), {
+        type: 'bar',
+        data: {
+          labels: H2_DATA.issuer.labels,
+          datasets: [{ data: H2_DATA.issuer.data, backgroundColor: 'rgba(0,212,232,0.65)', borderColor: '#00d4e8', borderWidth: 2, borderRadius: 5 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: {
+            x: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 12 } } },
+            y: { beginAtZero: true, grid: { color: GRID }, ticks: { color: TICK, font: { size: 13 }, stepSize: 1 } }
+          },
+          plugins: { legend: { display: false }, title: titleOpts('Certs by Issuer') }
+        }
+      }));
+
+      /* ── 2. Projects by Category — Doughnut (pointer lines) ─ */
+      _charts.push(new Chart(document.getElementById('chartProjects'), {
+        type: 'doughnut',
+        data: {
+          labels: H2_DATA.proj.labels,
+          datasets: [{ data: H2_DATA.proj.data, backgroundColor: H2_DATA.proj.data.map(() => '#00f5ff'), borderColor: BORD, borderWidth: 2, hoverOffset: 6 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '62%',
+          layout: { padding: { left: 80, right: 55, top: 4, bottom: 4 } },
+          plugins: {
+            legend: { display: false },
+            title: titleOpts('Projects by Category'),
+            pointerLabels: {}
+          }
+        }
+      }));
+
+      /* ── 3. Certification Timeline — Line ───────────────── */
+      _charts.push(new Chart(document.getElementById('chartTimeline'), {
+        type: 'line',
+        data: {
+          labels: H2_DATA.timeline.labels,
+          datasets: [{
+            label: 'Certifications',
+            data: H2_DATA.timeline.data,
+            borderColor: '#00f5ff',
+            backgroundColor: 'rgba(0,245,255,0.10)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#00f5ff',
+            pointBorderColor: isLight ? '#f0f4f8' : '#050510',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            borderWidth: 2.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 13 } } },
+            y: { beginAtZero: true, grid: { color: GRID }, ticks: { color: TICK, font: { size: 13 }, stepSize: 1 } }
+          },
+          plugins: { legend: { display: false }, title: titleOpts('Certs per Year') }
+        }
+      }));
+
+      /* ── 4. Experience Duration — Horizontal Bar ─────────── */
+      _charts.push(new Chart(document.getElementById('chartExp'), {
+        type: 'bar',
+        data: {
+          labels: H2_DATA.exp.labels,
+          datasets: [{
+            label: 'Months',
+            data: H2_DATA.exp.data,
+            backgroundColor: H2_DATA.exp.data.map(() => 'rgba(0,245,255,0.60)'),
+            borderColor:     H2_DATA.exp.data.map(() => '#00f5ff'),
+            borderWidth: 2,
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          scales: {
+            x: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 13 } }, title: { display: true, text: 'months', color: TICK, font: { size: 12 } } },
+            y: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 13 } } }
+          },
+          plugins: { legend: { display: false }, title: titleOpts('Experience Duration') }
+        }
+      }));
+    };
+
+    document.addEventListener('DOMContentLoaded', window.buildH2Charts);
+  }());
+  </script>
+
+  {{/* ── Theme toggle handler ──────────────────────────────── */}}
+  <script>
+  (function () {
+    var btn = document.getElementById('h2ThemeBtn');
+    if (!btn) return;
+
+    function syncBtn() {
+      var isLight = document.body.classList.contains('h2-light');
+      btn.textContent = isLight ? '\u2600' : '\u263E';  /* ☀ / ☾ */
+      btn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+    }
+
+    syncBtn();  /* reflect any theme restored before DOMContentLoaded */
+
+    btn.addEventListener('click', function () {
+      var nowLight = document.body.classList.contains('h2-light');
+      document.body.classList.toggle('h2-light', !nowLight);
+      try { localStorage.setItem('h2-theme', nowLight ? 'dark' : 'light'); } catch (e) {}
+      syncBtn();
+      if (typeof window.buildH2Charts === 'function') window.buildH2Charts();
+    });
+  }());
+  </script>
+
+  {{/* ── Portrait flies to old-home position; character drops in on arrival ── */}}
+  <script>
+  (function () {
+    var btn = document.querySelector('.h2-back-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var href   = btn.getAttribute('href');
+      var img    = document.querySelector('.h2-portrait-img');
+      var charts = document.querySelector('.h2-charts-col');
+      var vw     = window.innerWidth;
+      var vh     = window.innerHeight;
+
+      /* Prevent scrollbar during exit */
+      document.body.style.overflow = 'hidden';
+
+      /* 1 ─ Slide chart tiles off to the right */
+      if (charts) {
+        charts.style.transition = 'transform 0.50s cubic-bezier(0.4,0,1,1)';
+        charts.style.transform  = 'translateX(110%)';
+      }
+
+      if (!img) {
+        sessionStorage.setItem('h2-transition', '1');
+        setTimeout(function () { window.location.href = href; }, 520);
+        return;
+      }
+
+      var rect = img.getBoundingClientRect();
+
+      /* Use the exact portrait position recorded by the home page on load.
+         Fall back to a geometric estimate if not yet stored.               */
+      var destSz, destL, destT;
+      var _stored = null;
+      try { _stored = localStorage.getItem('home-portrait-rect'); } catch (e) {}
+      if (_stored) {
+        try {
+          var _r = JSON.parse(_stored);
+          destL  = _r.left;
+          destT  = _r.top;
+          destSz = _r.width;
+        } catch (e) { _stored = null; }
+      }
+      if (!_stored) {
+        destSz = 185;
+        destL  = vw / 2 - destSz / 2;
+        destT  = vh * 0.70 - destSz / 2;
+      }
+
+      /* 2 ─ Fade out original portrait */
+      img.style.transition = 'opacity 0.30s ease';
+      img.style.opacity    = '0';
+
+      /* 3 ─ Spawn clone at current position (no transition yet) */
+      var clone = img.cloneNode(true);
+      clone.style.cssText =
+        'position:fixed;' +
+        'left:'   + rect.left   + 'px;' +
+        'top:'    + rect.top    + 'px;' +
+        'width:'  + rect.width  + 'px;' +
+        'height:' + rect.height + 'px;' +
+        'border-radius:50%;object-fit:cover;' +
+        'z-index:9999;pointer-events:none;margin:0;padding:0;' +
+        'box-shadow:0 0 0 3px #fff,0 0 14px rgba(255,255,255,0.55),0 0 32px rgba(255,255,255,0.22);';
+      document.body.appendChild(clone);
+
+      /* Force reflow */
+      clone.getBoundingClientRect();
+
+      /* 4 ─ Fly to old-home portrait position + size */
+      clone.style.transition =
+        'left 0.55s cubic-bezier(0.4,0,0.2,1),' +
+        'top 0.55s cubic-bezier(0.4,0,0.2,1),' +
+        'width 0.55s cubic-bezier(0.4,0,0.2,1),' +
+        'height 0.55s cubic-bezier(0.4,0,0.2,1),' +
+        'box-shadow 0.55s ease';
+      clone.style.left   = destL + 'px';
+      clone.style.top    = destT + 'px';
+      clone.style.width  = destSz + 'px';
+      clone.style.height = destSz + 'px';
+      clone.style.boxShadow =
+        '0 0 0 3px #fff,' +
+        '0 0 22px rgba(255,255,255,0.75),' +
+        '0 0 55px rgba(255,255,255,0.40),' +
+        '0 0 110px rgba(255,255,255,0.15)';
+
+      /* 5 ─ Signal home page to play character gravity-drop, then navigate */
+      sessionStorage.setItem('h2-transition', '1');
+      setTimeout(function () { window.location.href = href; }, 700);
+    });
+  }());
+  </script>
+
+</body>
+</html>

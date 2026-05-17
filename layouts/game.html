@@ -116,5 +116,81 @@
 
     {{- partial "misc/support.html" . -}}
 
+    {{/* ── Portrait rect → localStorage (for home fly-to); character drop on arrival ── */}}
+    <script>
+    (function () {
+
+      /* ── Always record the portrait's exact viewport position ─────────── */
+      window.addEventListener('load', function () {
+        var photo = document.querySelector(
+          '.platformer-shell .container.content img.rounded-circle,' +
+          '.platformer-shell #home img.rounded-circle'
+        );
+        if (photo) {
+          var pr = photo.getBoundingClientRect();
+          try {
+            localStorage.setItem('home-portrait-rect', JSON.stringify({
+              left:   Math.round(pr.left),
+              top:    Math.round(pr.top),
+              width:  Math.round(pr.width),
+              height: Math.round(pr.height)
+            }));
+          } catch (e) {}
+        }
+      });
+
+      /* ── Character gravity-drop only when arriving from Analytics home ── */
+      if (!sessionStorage.getItem('h2-transition')) return;
+      sessionStorage.removeItem('h2-transition');
+
+      window.addEventListener('load', function () {
+        var char  = document.querySelector('[data-character]');
+        var stage = document.querySelector('[data-platformer-stage]');
+        if (!char || !stage) return;
+
+        /* Wait for platformer.js initPlayer() — it uses translate3d */
+        setTimeout(function () {
+          /* Match both translate(x,y) and translate3d(x,y,z) */
+          var m = char.style.transform.match(/translate(?:3d)?\(([^,]+),\s*([^,)]+)/);
+          if (!m) return;
+
+          var spawnX = parseFloat(m[1]);
+          var spawnY = parseFloat(m[2]);
+          var sr     = stage.getBoundingClientRect();
+
+          /* Viewport coords of the spawn (floor) position */
+          var vx = sr.left + spawnX;
+          var vy = sr.top  + spawnY;
+
+          /* Hide real character — RAF loop keeps transform correct */
+          char.style.opacity = '0';
+
+          /* Clone sprite — starts at top of screen, same X as spawn */
+          var clone = char.cloneNode(true);
+          clone.style.cssText =
+            'position:fixed;' +
+            'left:' + vx + 'px;' +
+            'top:0px;' +
+            'width:28px;height:36px;' +
+            'pointer-events:none;z-index:9999;' +
+            'opacity:1;will-change:top;' +
+            'transition:top 0.72s cubic-bezier(0.2,0,1,1);';  /* gravity: slow-start → fast */
+          document.body.appendChild(clone);
+
+          clone.getBoundingClientRect();   /* force reflow so top:0 commits */
+
+          /* Drop to floor */
+          clone.style.top = vy + 'px';
+
+          /* Cleanup: remove clone, restore real character */
+          setTimeout(function () {
+            if (clone.parentNode) clone.parentNode.removeChild(clone);
+            char.style.opacity = '1';
+          }, 780);
+        }, 100);
+      });
+    }());
+    </script>
+
   </body>
 </html>

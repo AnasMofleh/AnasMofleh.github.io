@@ -179,7 +179,11 @@
   function stageRect() { return stage.getBoundingClientRect(); }
 
   // Player state — units in pixels relative to the stage.
-  var player = { x: 40, y: 0, vx: 0, vy: 0, w: 28, h: 36, onGround: false, jumps: 0, facing: 1 };
+  var player = {
+    x: 40, y: 0, vx: 0, vy: 0, w: 56, h: 72,
+    onGround: false, jumps: 0, facing: 1,
+    anim: "idle", secondJumpAscent: false
+  };
 
   // Physics tuning.
   var GRAVITY = 0.55;
@@ -224,6 +228,7 @@
       player.vy = JUMP_V * (player.jumps === 0 ? 1 : 0.85);
       player.jumps += 1;
       player.onGround = false;
+      player.secondJumpAscent = player.jumps === 2;
       track("player_jump", { double: player.jumps === 2 ? 1 : 0 });
     }
   }
@@ -277,8 +282,58 @@
       Math.abs((player.y + player.h) - pr.y) < 4;
   }
 
+  function updateCharacterState() {
+    if (player.onGround) {
+      player.anim = Math.abs(player.vx) > 0.45 ? "run" : "idle";
+      player.secondJumpAscent = false;
+      return;
+    }
+    if (player.secondJumpAscent) {
+      player.anim = "tailspin";
+      return;
+    }
+    if (player.vy < 0) {
+      player.anim = "jump";
+      return;
+    }
+    player.anim = "fall";
+  }
+
+  // Walk frame boundaries at background-size 305px 72px.
+  // Source frame widths: 210, 235, 230, 211, 259px (total 1145px).
+  // boundary_n = sum(widths 0..n-1) / 1145 * 305, rounded.
+  var WALK_FRAMES_X = [0, -56, -119, -180, -236];
+  var walkFrameIdx  = 0;
+  var walkLastMs    = 0;
+  var WALK_FRAME_MS = 84;   // 420ms / 5 frames
+
+  function applyCharacterClasses() {
+    if (!character) return;
+    var anim = player.anim;
+    character.classList.toggle("is-idle",     anim === "idle");
+    character.classList.toggle("is-run",      anim === "run");
+    character.classList.toggle("is-jump",     anim === "jump");
+    character.classList.toggle("is-fall",     anim === "fall");
+    character.classList.toggle("is-tailspin", anim === "tailspin");
+
+    if (anim === "run") {
+      var now = performance.now();
+      if (now - walkLastMs >= WALK_FRAME_MS) {
+        walkFrameIdx = (walkFrameIdx + 1) % WALK_FRAMES_X.length;
+        walkLastMs   = now;
+      }
+      character.style.backgroundPositionX = WALK_FRAMES_X[walkFrameIdx] + "px";
+    } else {
+      walkFrameIdx = 0;
+      walkLastMs   = 0;
+      character.style.backgroundPositionX = "";
+    }
+  }
+
   function applyTransform() {
     if (!character) return;
+    updateCharacterState();
+    applyCharacterClasses();
     character.style.transform =
       "translate3d(" + player.x + "px," + player.y + "px,0) scaleX(" + player.facing + ")";
   }
@@ -314,6 +369,7 @@
           player.vy = 0;
           player.onGround = true;
           player.jumps = 0;
+          player.secondJumpAscent = false;
           break;
         }
       }
@@ -344,6 +400,7 @@
         player.vy = 0;
         player.onGround = true;
         player.jumps = 0;
+        player.secondJumpAscent = false;
       }
 
       // Author photo circle — fully solid obstacle. Resolve by pushing the
@@ -375,6 +432,7 @@
             player.vy = 0;
             player.onGround = true;
             player.jumps = 0;
+            player.secondJumpAscent = false;
           } else if (nyn > 0.5 && player.vy < 0) {
             player.vy = 0;
           }
@@ -415,6 +473,8 @@
     player.y = srect.height - 18 - player.h;
     player.vx = 0;
     player.vy = 0;
+    player.anim = "idle";
+    player.secondJumpAscent = false;
     applyTransform();
   }
   // Wait for layout.

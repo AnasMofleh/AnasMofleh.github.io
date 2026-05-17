@@ -1,0 +1,28 @@
+{{- $d     := index hugo.Data site.Language.Lang -}}
+{{- $author := $d.author -}}
+{{- $about  := $d.sections.about -}}
+
+{{- $imgPath := $author.image -}}
+{{- $img     := resources.Get $imgPath -}}
+
+<div class="h2-portrait-wrapper">
+  {{ if $img }}
+    {{- $img = $img.Resize "300x300 webp q85" -}}
+    <img src="{{ $img.RelPermalink }}"
+         alt="{{ $author.name }}"
+         class="h2-portrait-img"
+         width="300" height="300">
+  {{ else }}
+    <img src="/{{ $imgPath }}"
+         alt="{{ $author.name }}"
+         class="h2-portrait-img"
+         width="300" height="300">
+  {{ end }}
+  <p class="h2-author-name">{{ $author.name }}</p>
+  <p class="h2-author-role">{{ $about.designation }}</p>
+  <p class="h2-author-company">
+    <a href="{{ $about.company.url }}" target="_blank" rel="noopener noreferrer">
+      {{ $about.company.name }}
+    </a>
+  </p>
+</div>
