@@ -125,11 +125,15 @@
     activeRoom = name;
     var roomEl = d.querySelector('.platformer-room[data-room="' + name + '"]');
     if (roomEl) {
-      var closeBtn = roomEl.querySelector("[data-room-close]");
-      if (closeBtn) setTimeout(function () { closeBtn.focus(); }, 250);
+        var roomBody = roomEl.querySelector("[data-room-body]");
+        if (roomBody) {
+          roomBody.setAttribute("tabindex", "0");
+          setTimeout(function () { roomBody.focus(); }, 250);
+        }
     }
     track("room_entered", { room: name, method: (opts && opts.method) || "unknown" });
     // Pause game loop while a room is open.
+    initRoomMiniGame(name);
     paused = true;
   }
 
@@ -138,6 +142,7 @@
     var prev = activeRoom;
     setRoomVisible("home");
     activeRoom = "home";
+    teardownRoomMiniGame();
     paused = false;
     if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (e) {}
     track("room_exited", { room: prev, method: method || "unknown" });
@@ -180,7 +185,7 @@
 
   // Player state — units in pixels relative to the stage.
   var player = {
-    x: 40, y: 0, vx: 0, vy: 0, w: 56, h: 72,
+    x: 40, y: 0, vx: 0, vy: 0, w: 97, h: 92,
     onGround: false, jumps: 0, facing: 1,
     anim: "idle", secondJumpAscent: false
   };
@@ -190,14 +195,23 @@
   var MOVE = 0.55;
   var FRICTION = 0.82;
   var MAX_VX = 4.2;
-  var JUMP_V = -10.5;
+  var JUMP_V = -12.5;
 
   var keys = { left: false, right: false, up: false, down: false };
 
   function setKey(k, v) { keys[k] = v; }
 
   d.addEventListener("keydown", function (ev) {
-    if (!charEnabled || activeRoom !== "home") return;
+    if (!charEnabled) return;
+    // In a room: only capture left/right for the mini-game; let everything
+    // else pass through so the room body can still be scrolled with arrow keys.
+    if (activeRoom !== "home") {
+      switch (ev.key) {
+        case "ArrowLeft":  case "a": case "A": setKey("left",  true); ev.preventDefault(); break;
+        case "ArrowRight": case "d": case "D": setKey("right", true); ev.preventDefault(); break;
+      }
+      return;
+    }
     switch (ev.key) {
       case "ArrowLeft":  case "a": case "A": setKey("left",  true);  ev.preventDefault(); break;
       case "ArrowRight": case "d": case "D": setKey("right", true);  ev.preventDefault(); break;
@@ -299,13 +313,63 @@
     player.anim = "fall";
   }
 
-  // Walk frame boundaries at background-size 305px 72px.
-  // Source frame widths: 210, 235, 230, 211, 259px (total 1145px).
-  // boundary_n = sum(widths 0..n-1) / 1145 * 305, rounded.
-  var WALK_FRAMES_X = [0, -56, -119, -180, -236];
+  // Frame data — individual sprite images per animation.
+  // Working at native pixel coordinates (no scale multiplier).
+  // Each image config: { url, w (sheet width), h (sheet height), fw (frame width), fh (frame height) }
+
+  // Standing — single frame, 160×190
+  var STAND_IMG = { url: '/images/game/standing.png', w: 160, h: 190, fw: 160, fh: 190 };
+  var STAND_FRAMES = [{ x: 0 }];
+
+  // Running — 4 frames, evenly divided (773÷4≈193px), sheet 773×184
+  var RUN_IMG = { url: '/images/game/running.png', w: 773, h: 184, fw: 193, fh: 184 };
+  var RUN_FRAMES = [
+    { x: 0   },  // 0: 0-193
+    { x: 193 },  // 1: 193-386
+    { x: 386 },  // 2: 386-579
+    { x: 579 },  // 3: 579-773
+  ];
+
+  // Jumping — 6 frames (last frame reserved for fall), sheet 1210×292
+  var JUMP_IMG = { url: '/images/game/jumping.png', w: 1210, h: 292, fw: 173, fh: 292 };
+  var JUMP_FRAMES = [
+    { x: 0    },
+    { x: 173  },
+    { x: 346  },
+    { x: 519  },
+    { x: 692  },
+    { x: 865  },
+  ];
+
   var walkFrameIdx  = 0;
   var walkLastMs    = 0;
-  var WALK_FRAME_MS = 84;   // 420ms / 5 frames
+  var WALK_FRAME_MS = 100;  // 400ms / 4 frames
+
+  var jumpFrameIdx  = 0;
+  var jumpLastMs    = 0;
+  var JUMP_FRAME_MS = 840;  // 840ms / 7 frames — slower, feels more weighty
+
+  var CHAR_SCALE = 0.5;  // display at half native sprite size
+
+  // Room mini-game
+  var ROOM_INTRO_SPEED = 3;    // px per frame for the walk-in animation
+  var roomPlayer = { x: 0, vx: 0, facing: 1, anim: "idle" };
+  var roomChar      = null;
+  var roomMiniStage = null;
+  var roomMeta      = null;   // set in initRoomMiniGame
+  var roomPhase     = "off"; // "off" | "intro" | "play"
+  var roomWalkFrameIdx = 0;
+  var roomWalkLastMs   = 0;
+
+  function setFrame(img, frame) {
+    character.style.backgroundImage = "url('" + img.url + "')";
+    character.style.backgroundSize = (img.w * CHAR_SCALE) + "px " + (img.h * CHAR_SCALE) + "px";
+    character.style.backgroundPositionX = -(frame.x * CHAR_SCALE) + "px";
+    character.style.backgroundPositionY = "0px";
+    character.style.backgroundRepeat = "no-repeat";
+    character.style.width = (img.fw * CHAR_SCALE) + "px";
+    character.style.height = (img.fh * CHAR_SCALE) + "px";
+  }
 
   function applyCharacterClasses() {
     if (!character) return;
@@ -319,14 +383,37 @@
     if (anim === "run") {
       var now = performance.now();
       if (now - walkLastMs >= WALK_FRAME_MS) {
-        walkFrameIdx = (walkFrameIdx + 1) % WALK_FRAMES_X.length;
+        // Loop all 4 frames
+        walkFrameIdx = (walkFrameIdx + 1) % RUN_FRAMES.length;
         walkLastMs   = now;
       }
-      character.style.backgroundPositionX = WALK_FRAMES_X[walkFrameIdx] + "px";
-    } else {
+      setFrame(RUN_IMG, RUN_FRAMES[walkFrameIdx]);
+      jumpFrameIdx = 0;
+      jumpLastMs   = 0;
+    } else if (anim === "jump" || anim === "tailspin") {
+      // Both jump and double-jump share the jumping animation
+      var now = performance.now();
+      if (now - jumpLastMs >= JUMP_FRAME_MS) {
+        // Play frames sequentially, stop at last
+        jumpFrameIdx = Math.min(jumpFrameIdx + 1, JUMP_FRAMES.length - 1);
+        jumpLastMs   = now;
+      }
+      setFrame(JUMP_IMG, JUMP_FRAMES[jumpFrameIdx]);
       walkFrameIdx = 0;
       walkLastMs   = 0;
-      character.style.backgroundPositionX = "";
+    } else if (anim === "idle") {
+      setFrame(STAND_IMG, STAND_FRAMES[0]);
+      walkFrameIdx = 0;
+      walkLastMs   = 0;
+      jumpFrameIdx = 0;
+      jumpLastMs   = 0;
+    } else {
+      // fall — last frame of jumping
+      setFrame(JUMP_IMG, JUMP_FRAMES[JUMP_FRAMES.length - 1]);
+      walkFrameIdx = 0;
+      walkLastMs   = 0;
+      jumpFrameIdx = JUMP_FRAMES.length - 1;
+      jumpLastMs   = 0;
     }
   }
 
@@ -336,6 +423,138 @@
     applyCharacterClasses();
     character.style.transform =
       "translate3d(" + player.x + "px," + player.y + "px,0) scaleX(" + player.facing + ")";
+  }
+
+  /* -------- Room mini-game -------- */
+  function setRoomFrame(img, frame) {
+    if (!roomChar) return;
+    roomChar.style.backgroundImage     = "url('" + img.url + "')";
+    roomChar.style.backgroundSize      = (img.w * CHAR_SCALE) + "px " + (img.h * CHAR_SCALE) + "px";
+    roomChar.style.backgroundPositionX = -(frame.x * CHAR_SCALE) + "px";
+    roomChar.style.backgroundPositionY = "0px";
+    roomChar.style.backgroundRepeat    = "no-repeat";
+    roomChar.style.width               = (img.fw * CHAR_SCALE) + "px";
+    roomChar.style.height              = (img.fh * CHAR_SCALE) + "px";
+  }
+
+  function applyRoomCharTransform() {
+    if (!roomChar) return;
+    if (roomPlayer.anim === "run") {
+      var now = performance.now();
+      if (now - roomWalkLastMs >= WALK_FRAME_MS) {
+        roomWalkFrameIdx = (roomWalkFrameIdx + 1) % RUN_FRAMES.length;
+        roomWalkLastMs   = now;
+      }
+      setRoomFrame(RUN_IMG, RUN_FRAMES[roomWalkFrameIdx]);
+    } else {
+      roomWalkFrameIdx = 0;
+      roomWalkLastMs   = 0;
+      setRoomFrame(STAND_IMG, STAND_FRAMES[0]);
+    }
+    roomChar.style.transform = "translate3d(" + roomPlayer.x + "px,0,0) scaleX(" + roomPlayer.facing + ")";
+  }
+
+  function initRoomMiniGame(roomName) {
+    var meta = ROOMS[roomName];
+    if (!meta || meta.side === "bottom") return; // skip intro/socials room
+    var roomEl = d.querySelector('.platformer-room[data-room="' + roomName + '"]');
+    if (!roomEl) return;
+    var frame = roomEl.querySelector('.platformer-room__frame');
+    if (!frame) return;
+
+    // Remove any stale mini-stage
+    var prev = frame.querySelector('.room-mini-stage');
+    if (prev) prev.remove();
+
+    var miniStage = d.createElement('div');
+    miniStage.className = 'room-mini-stage';
+    miniStage.setAttribute('aria-hidden', 'true');
+
+    var ground = d.createElement('div');
+    ground.className = 'room-mini-ground';
+    miniStage.appendChild(ground);
+
+    var char = d.createElement('div');
+    char.className = 'platformer-character room-mini-character';
+    char.setAttribute('aria-hidden', 'true');
+    miniStage.appendChild(char);
+
+    frame.appendChild(miniStage);
+    roomMiniStage = miniStage;
+    roomChar      = char;
+
+    var stageW    = frame.getBoundingClientRect().width;
+    var charW     = player.w;
+    var fromSide  = meta.from; // "left" or "right"
+
+    roomMeta = { from: fromSide, stageW: stageW, charW: charW };
+
+    if (fromSide === "right") {
+      // Player walked off right of home → character enters room from the right
+      roomPlayer.x      = stageW;
+      roomPlayer.facing = -1;
+      roomMeta.restX    = stageW - charW;  // right edge of popup
+      roomMeta.deepX    = 0;               // dead end: left edge of popup
+      roomMeta.exitX    = stageW;          // walk fully off right edge → exit
+    } else {
+      // Player walked off left of home → character enters room from the left
+      roomPlayer.x      = -charW;
+      roomPlayer.facing = 1;
+      roomMeta.restX    = 0;               // left edge of popup
+      roomMeta.deepX    = stageW - charW;  // dead end: right edge of popup
+      roomMeta.exitX    = -charW;          // walk fully off left edge → exit
+    }
+
+    roomPlayer.vx   = 0;
+    roomPlayer.anim = "run";
+    roomPhase       = "intro";
+    roomChar.style.visibility = "visible";
+    applyRoomCharTransform();
+  }
+
+  function teardownRoomMiniGame() {
+    roomPhase = "off";
+    if (roomMiniStage) { roomMiniStage.remove(); roomMiniStage = null; }
+    roomChar = null;
+    roomMeta = null;
+  }
+
+  function stepRoomMiniGame() {
+    if (roomPhase === "off" || !roomChar || !roomMeta) return;
+    var fromRight = roomMeta.from === "right";
+
+    if (roomPhase === "intro") {
+      // Auto-walk character to rest position
+      if (fromRight) {
+        roomPlayer.x -= ROOM_INTRO_SPEED;
+        if (roomPlayer.x <= roomMeta.restX) { roomPlayer.x = roomMeta.restX; roomPlayer.anim = "idle"; roomPhase = "play"; }
+      } else {
+        roomPlayer.x += ROOM_INTRO_SPEED;
+        if (roomPlayer.x >= roomMeta.restX) { roomPlayer.x = roomMeta.restX; roomPlayer.anim = "idle"; roomPhase = "play"; }
+      }
+
+    } else if (roomPhase === "play") {
+      if (keys.left)  { roomPlayer.vx -= MOVE; roomPlayer.facing = -1; }
+      if (keys.right) { roomPlayer.vx += MOVE; roomPlayer.facing =  1; }
+      if (!keys.left && !keys.right) roomPlayer.vx *= FRICTION;
+      if (roomPlayer.vx >  MAX_VX) roomPlayer.vx =  MAX_VX;
+      if (roomPlayer.vx < -MAX_VX) roomPlayer.vx = -MAX_VX;
+
+      roomPlayer.anim = Math.abs(roomPlayer.vx) > 0.45 ? "run" : "idle";
+      var nx = roomPlayer.x + roomPlayer.vx;
+
+      // Walking back off the entry edge → return to home
+      if (fromRight && nx >= roomMeta.exitX) { teardownRoomMiniGame(); exitRoom("player"); return; }
+      if (!fromRight && nx <= roomMeta.exitX) { teardownRoomMiniGame(); exitRoom("player"); return; }
+
+      // Dead-end wall — block going deeper into the room
+      if (fromRight  && nx < roomMeta.deepX) { nx = roomMeta.deepX; roomPlayer.vx = 0; }
+      if (!fromRight && nx > roomMeta.deepX) { nx = roomMeta.deepX; roomPlayer.vx = 0; }
+
+      roomPlayer.x = nx;
+    }
+
+    applyRoomCharTransform();
   }
 
   function step() {
@@ -403,41 +622,20 @@
         player.secondJumpAscent = false;
       }
 
-      // Author photo circle — fully solid obstacle. Resolve by pushing the
-      // player AABB out of the circle along the smallest axis.
+      // Author photo circle — land on top only, like a platform.
+      // Player can walk through from the sides and under freely.
       var circle = getPhotoCircle();
       if (circle) {
-        for (var iter = 0; iter < 2; iter++) {
-          var bx = nx + player.w / 2;
-          var by = ny + player.h / 2;
-          // Closest point on AABB to circle center.
-          var clampedX = Math.max(nx, Math.min(circle.cx, nx + player.w));
-          var clampedY = Math.max(ny, Math.min(circle.cy, ny + player.h));
-          var dx = clampedX - circle.cx;
-          var dy = clampedY - circle.cy;
-          var dist2 = dx * dx + dy * dy;
-          if (dist2 >= circle.r * circle.r) break;
-          var dist = Math.sqrt(dist2) || 0.0001;
-          var overlap = circle.r - dist;
-          // Direction from circle center to player center for separation.
-          var pdx = bx - circle.cx;
-          var pdy = by - circle.cy;
-          var pdLen = Math.sqrt(pdx * pdx + pdy * pdy) || 0.0001;
-          var nxn = pdx / pdLen;
-          var nyn = pdy / pdLen;
-          nx += nxn * overlap;
-          ny += nyn * overlap;
-          // Kill velocity into the surface.
-          if (nyn < -0.5 && player.vy > 0) {
-            player.vy = 0;
-            player.onGround = true;
-            player.jumps = 0;
-            player.secondJumpAscent = false;
-          } else if (nyn > 0.5 && player.vy < 0) {
-            player.vy = 0;
-          }
-          if (nxn < -0.5 && player.vx > 0) player.vx = 0;
-          if (nxn >  0.5 && player.vx < 0) player.vx = 0;
+        var circleTop = circle.cy - circle.r;
+        var prevBottom = player.y + player.h;
+        var nextBottom = ny + player.h;
+        var overlapsCX = nx + player.w > circle.cx - circle.r && nx < circle.cx + circle.r;
+        if (overlapsCX && player.vy >= 0 && prevBottom <= circleTop + 2 && nextBottom >= circleTop) {
+          ny = circleTop - player.h;
+          player.vy = 0;
+          player.onGround = true;
+          player.jumps = 0;
+          player.secondJumpAscent = false;
         }
       }
 
@@ -460,33 +658,39 @@
       player.y = ny;
       applyTransform();
     }
+    if (charEnabled && activeRoom !== "home" && activeRoom !== "intro") {
+      stepRoomMiniGame();
+    }
     scheduleNext();
   }
 
   function scheduleNext() { requestAnimationFrame(step); }
 
-  // Initial position + start. Spawn well to the right of the pipe so the
-  // player isn't trapped under any platform on first frame.
+  // Spawn character above the stage so it drops down into view.
   function initPlayer() {
     var srect = stageRect();
     player.x = Math.min(srect.width * 0.78, srect.width - 60);
-    player.y = srect.height - 18 - player.h;
+    player.y = -player.h;   // start above the stage
     player.vx = 0;
-    player.vy = 0;
-    player.anim = "idle";
+    player.vy = 3;          // give it a push downward
+    player.anim = "fall";
     player.secondJumpAscent = false;
+    if (character) character.style.visibility = "visible";
     applyTransform();
   }
-  // Wait for layout.
+  // Wait for layout, then spawn with a short delay so rAF runs smoothly.
   window.addEventListener("load", function () {
-    initPlayer();
-    scheduleNext();
+    setTimeout(function () {
+      initPlayer();
+      scheduleNext();
+    }, 250);
   });
   window.addEventListener("resize", function () {
     var wasMobile = !charEnabled;
     charEnabled = !isTouchOrSmall();
     stage.classList.toggle("is-no-character", !charEnabled);
     if (character) character.style.display = charEnabled ? "" : "none";
+    if (!charEnabled) teardownRoomMiniGame();
     if (charEnabled && wasMobile) initPlayer();
   });
 

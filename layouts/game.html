@@ -139,6 +139,15 @@
         }
       });
 
+      /* ── Fix navbar: make section links page-relative so they scroll
+           to the sections rendered on this page instead of navigating
+           away to the root home page. ── */
+      window.addEventListener('load', function () {
+        document.querySelectorAll('#top-nav-items a[href^="/#"]').forEach(function (a) {
+          a.setAttribute('href', a.getAttribute('href').replace(/^\/#/, '#'));
+        });
+      });
+
       /* ── Character gravity-drop only when arriving from Analytics home ── */
       if (!sessionStorage.getItem('h2-transition')) return;
       sessionStorage.removeItem('h2-transition');
@@ -171,7 +180,7 @@
             'position:fixed;' +
             'left:' + vx + 'px;' +
             'top:0px;' +
-            'width:28px;height:36px;' +
+            'width:150px;height:120px;' +
             'pointer-events:none;z-index:9999;' +
             'opacity:1;will-change:top;' +
             'transition:top 0.72s cubic-bezier(0.2,0,1,1);';  /* gravity: slow-start → fast */
