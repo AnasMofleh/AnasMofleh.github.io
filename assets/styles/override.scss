@@ -368,7 +368,8 @@ body.game-page {
   &:hover .platformer-pipe__rim { box-shadow: 0 0 22px var(--gold-glow); }
 }
 
-/* Vertical intro pipe — center bottom, double ring on top */
+/* Vertical intro pipe — center bottom, double ring on top. Stand on it
+   and press ↓ to descend into the Introduction. */
 .platformer-pipe--intro {
   left: 50%;
   bottom: 18px;
@@ -422,19 +423,25 @@ body.game-page {
   }
 }
 
-.platformer-pipe--edge-left-top     { top: 45vh; left: -70px;
+/* Top pair (28vh): floats above the edge/mid platforms — walk under on
+   the platforms; a jump from in front of the mouth rests Mario on the
+   ledge; a double jump lands him on top.
+   Bottom pair (77vh): clears the ground walker's head — walk under at
+   ground level; jump from under the body bumps the head; a jump from in
+   front of the mouth reaches the ledge with a single jump. */
+.platformer-pipe--edge-left-top     { top: 28vh; left: -70px;
   .platformer-pipe__rim  { right: 0; }
   .platformer-pipe__body { left: 0; }
 }
-.platformer-pipe--edge-left-bottom  { top: 84vh; left: -70px;
+.platformer-pipe--edge-left-bottom  { top: 70vh; left: -70px;
   .platformer-pipe__rim  { right: 0; }
   .platformer-pipe__body { left: 0; }
 }
-.platformer-pipe--edge-right-top    { top: 45vh; right: -70px;
+.platformer-pipe--edge-right-top    { top: 28vh; right: -70px;
   .platformer-pipe__rim  { left: 0; }
   .platformer-pipe__body { right: 0; }
 }
-.platformer-pipe--edge-right-bottom { top: 84vh; right: -70px;
+.platformer-pipe--edge-right-bottom { top: 70vh; right: -70px;
   .platformer-pipe__rim  { left: 0; }
   .platformer-pipe__body { right: 0; }
 }
@@ -486,8 +493,57 @@ body.game-page {
   }
 }
 
-/* While Mario is sinking into a warp pipe, the pipe covers him. */
-.platformer-stage.is-pipe-cover .platformer-pipe--edge { z-index: 7; }
+/* While Mario is sinking into a warp pipe (edge or intro), the pipe
+   covers him. */
+.platformer-stage.is-pipe-cover .platformer-pipe--edge,
+.platformer-stage.is-pipe-cover .platformer-pipe--intro { z-index: 7; }
+
+/* Intro room — the top tunnel with the connecting pipe's lower mouth. */
+.room-top-tunnel {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(to bottom, #0b0b0e, #17171c 80%),
+    #0b0b0e;
+  border-bottom: 4px solid var(--gold-deep);
+  box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.8);
+
+  &__pipe {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 70px;
+    z-index: 3;   /* the pipe renders over Mario while he walks beneath it */
+
+    &-rim {
+      position: absolute;
+      bottom: 0; left: -8px; right: -8px;
+      height: 20px;
+      background: linear-gradient(to bottom, var(--gold-bright), var(--gold-deep));
+      border: 3px solid var(--ink);
+      border-radius: 4px;
+      box-shadow: 0 0 14px var(--gold-glow);
+    }
+    &-body {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 14px;
+      background: linear-gradient(90deg, #4b4b55, #61616d 55%, #4b4b55);
+      border: 3px solid #26262c;
+      border-radius: 6px 6px 0 0;
+    }
+  }
+}
+
+.platformer-character.room-tunnel-character {
+  position: absolute;
+  left: 0; top: 0;
+  z-index: 2;
+}
 
 /* Player character — Mario sprite images per animation.
    Dimensions and background set dynamically by JS. */
@@ -516,14 +572,18 @@ body.game-page {
   &.is-tailspin { }
 }
 
-/* Skill coins — collectible gold coins above the platforms.
-   Spawned by JS from the skills data; collecting pops a fading skill name. */
+/* Skill collectibles — the issuing company's logo on a light badge,
+   spinning like the coins they replaced. Spawned by JS from the skills
+   data; collecting pops a fading skill name. */
 .platformer-coin {
   position: absolute;
   width: 24px;
   height: 32px;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 40%, var(--gold-bright), var(--gold));
+  background-color: rgba(255, 255, 255, 0.92);  /* badge backing — keeps dark logos (AWS) readable */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   border: 1px solid var(--gold-bright);
   box-shadow:
     0 0 10px var(--gold-glow),
@@ -531,17 +591,6 @@ body.game-page {
   z-index: 2;
   pointer-events: none;
   animation: coinSpin 0.9s ease-in-out infinite;
-
-  &::after { /* inner letter slot, like a classic SMB coin */
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 10px; height: 16px;
-    border-radius: 2px;
-    background: var(--gold-deep);
-    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.35);
-  }
 }
 
 @keyframes coinSpin {
@@ -574,6 +623,11 @@ body.game-page {
     border-radius: 50%;
     background: radial-gradient(circle at 50% 40%, var(--gold-bright), var(--gold));
     box-shadow: 0 0 6px var(--gold-glow);
+  }
+  &__label {
+    color: var(--gold);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
   }
   &__sep { color: var(--text-muted); }
 
@@ -749,6 +803,12 @@ body.game-page {
     padding: 0.35rem 0.9rem;
     font-weight: 700;
     cursor: pointer;
+  }
+
+  /* Back Home is a touch-only exit — desktop uses Esc or walks off the
+     room strip. */
+  @media (hover: hover) and (pointer: fine) {
+    &__close { display: none; }
   }
   &__body {
     flex: 1;
@@ -937,8 +997,9 @@ html[data-theme='light'] footer {
   background: #ffffff !important;
 }
 
-/* Home header — solid black + gold, sticky so it stays visible while
-   scrolling the sections. Beats the theme's fixed + transparent rules. */
+/* Home header — sticky so it stays visible while scrolling the sections.
+   Colors follow the page identity per theme; the theme's transparent-navbar
+   white text is overridden in both. */
 html[data-theme] body.h2-page .top-navbar,
 html[data-theme] body.h2-page .top-navbar.transparent-navbar {
   position: sticky !important;
@@ -949,15 +1010,64 @@ html[data-theme] body.h2-page .top-navbar.transparent-navbar {
   border-bottom: 1px solid var(--line-gold);
   box-shadow: none;
 }
-html[data-theme] body.h2-page .top-navbar .nav-link:hover {
+html[data-theme] body.h2-page .top-navbar .nav-link {
+  color: var(--text-bright) !important;
+}
+html[data-theme] body.h2-page .top-navbar .nav-link:hover,
+html[data-theme] body.h2-page .top-navbar .nav-link.active {
   color: var(--gold) !important;
   border-bottom: 2px solid var(--gold) !important;
 }
+html[data-theme] body.h2-page .top-navbar .theme-selector,
+html[data-theme] body.h2-page .top-navbar .theme-selector svg {
+  color: var(--gold) !important;
+}
+html[data-theme] body.h2-page .top-navbar .navbar-toggler {
+  color: var(--text-bright);
+}
+html[data-theme] body.h2-page .top-navbar .dropdown-menu {
+  background: var(--ink-3);
+  border: 1px solid var(--line-gold);
+}
+html[data-theme] body.h2-page .top-navbar .dropdown-item {
+  color: var(--text-bright);
+}
+html[data-theme] body.h2-page .top-navbar .dropdown-item:hover {
+  color: var(--gold);
+  background: var(--gold-soft);
+}
 
-/* Light header variant */
+/* Light header variant — matches the page's light background */
 html[data-theme='light'] body.h2-page .top-navbar,
 html[data-theme='light'] body.h2-page .top-navbar.transparent-navbar {
-  background-color: #ffffff !important;
+  background-color: #faf9f4 !important;
+  border-bottom: 1px solid rgba(168, 133, 42, 0.35);
+}
+html[data-theme='light'] body.h2-page .top-navbar .nav-link {
+  color: #1a1a20 !important;
+}
+html[data-theme='light'] body.h2-page .top-navbar .nav-link:hover,
+html[data-theme='light'] body.h2-page .top-navbar .nav-link.active {
+  color: #a8852a !important;
+  border-bottom: 2px solid #a8852a !important;
+}
+html[data-theme='light'] body.h2-page .top-navbar .theme-selector,
+html[data-theme='light'] body.h2-page .top-navbar .theme-selector svg {
+  color: #a8852a !important;
+}
+html[data-theme='light'] body.h2-page .top-navbar .navbar-toggler {
+  color: #3d3d44;
+}
+html[data-theme='light'] body.h2-page .top-navbar .dropdown-menu {
+  background: #ffffff;
+  border: 1px solid rgba(168, 133, 42, 0.35);
+}
+html[data-theme='light'] body.h2-page .top-navbar .dropdown-item {
+  color: #1a1a20;
+}
+html[data-theme='light'] body.h2-page .top-navbar .dropdown-item:hover {
+  color: #a8852a;
+  background: rgba(212, 175, 55, 0.15);
 }
 
 /* Nav links spread across the full header width (no logo/brand) */

@@ -132,8 +132,10 @@
         }
     }
     track("room_entered", { room: name, method: (opts && opts.method) || "unknown" });
-    // Pause game loop while a room is open.
-    initRoomMiniGame(name);
+    // Pause game loop while a room is open; the intro room gets its own
+    // top-tunnel mini-game instead of the bottom strip.
+    if (name === "intro") { initIntroTunnel(); }
+    else { initRoomMiniGame(name); }
     paused = true;
   }
 
@@ -146,12 +148,28 @@
     paused = false;
     if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (e) {}
     track("room_exited", { room: prev, method: method || "unknown" });
-    // Reposition character to the matching edge of home for a seamless feel.
-    var meta = ROOMS[prev];
-    if (character && meta) {
-      if (meta.side === "left")   { player.x = 6; player.vx = 0.4; }
-      else if (meta.side === "right") { player.x = stageRect().width - 6 - player.w; player.vx = -0.4; }
-      else if (meta.side === "bottom") { player.x = stageRect().width / 2 - player.w / 2; player.y = 40; player.vy = 0; }
+    // Clear pipe state so returning never re-triggers a mouth rest/drag,
+    // and lift the pipe cover now that the room is gone.
+    pipeEntry = null;
+    ledgePipe = null;
+    ledgeRestAt = null;
+    pipeSink = null;
+    teardownIntroTunnel();
+    stage.classList.remove("is-pipe-cover");
+    if (character) {
+      if (prev === "intro") {
+        // Ride back UP out of the pipe onto the rim.
+        startPipeRiseOut();
+      } else {
+        // Reposition at the matching edge — on the GROUND, so the mouth
+        // support can't re-catch him at the old ledge height.
+        var meta = ROOMS[prev];
+        if (meta.side === "left")   { player.x = 6; player.vx = 0.4; }
+        else if (meta.side === "right") { player.x = stageRect().width - 6 - player.w; player.vx = -0.4; }
+        var srect = stageRect();
+        player.y = srect.height - 18 - player.h;
+        player.vy = 0;
+      }
     }
   }
 
@@ -209,6 +227,12 @@
       switch (ev.key) {
         case "ArrowLeft":  case "a": case "A": setKey("left",  true); ev.preventDefault(); break;
         case "ArrowRight": case "d": case "D": setKey("right", true); ev.preventDefault(); break;
+        case "ArrowUp":    case "w": case "W": case " ": case "Spacebar":
+          // The intro tunnel captures jumps too (double-jump into the pipe).
+          if (activeRoom === "intro" && !keys.up) tryTunnelJump();
+          setKey("up", true);
+          ev.preventDefault();
+          break;
       }
       return;
     }
@@ -222,8 +246,8 @@
         break;
       case "ArrowDown":  case "s": case "S":
         setKey("down", true);
-        // Pipe entry if on top of pipe.
-        if (onPipe()) { enterRoom("intro", { method: "pipe" }); }
+        // Pipe entry if on top of pipe — elevator descent into it.
+        if (onPipe()) { startPipeSink(); }
         ev.preventDefault();
         break;
     }
@@ -315,10 +339,43 @@
     return list;
   }
 
-  var PIPE_MOUTH = 58;          // mouth window depth from the pipe top
-  var PIPE_ENTRY_FRAMES = 12;   // sink-in animation length
+  var PIPE_MOUTH = 76;          // mouth window depth from the pipe top
+  var PIPE_ENTRY_FRAMES = 22;   // sink-in animation length
   var ledgePipe = null;         // pipe whose mouth Mario is resting in
+  var ledgeRestAt = null;       // when he first rested in the mouth
   var pipeEntry = null;         // { room, side, from, to, t } sink animation
+
+  /* Intro pipe elevators — ↓ on the pipe sinks Mario into it (the room
+     opens with the top tunnel); returning rides him back UP out of the
+     pipe onto the rim. */
+  var pipeSink = null;          // { t } descending into the intro pipe
+  var pipeRise = null;          // { t, fromY, toY } ascending out of it
+  var PIPE_SINK_FRAMES = 22;
+  var PIPE_RISE_FRAMES = 26;
+
+  function startPipeSink() {
+    pipeSink = { t: 0 };
+    player.vx = 0;
+    player.vy = 0;
+    player.anim = "idle";
+  }
+
+  function startPipeRiseOut() {
+    var pr = pipeRect();
+    var srect = stageRect();
+    if (pr) {
+      player.x = pr.x + pr.w / 2 - player.w / 2;
+    } else {
+      player.x = srect.width / 2 - player.w / 2;
+    }
+    player.vx = 0;
+    player.vy = 0;
+    player.anim = "idle";
+    var fromY = pr ? pr.y - 8 : srect.height - 18 - player.h;  // mostly inside the pipe
+    var toY   = pr ? pr.y - player.h : fromY;                  // standing on the rim
+    pipeRise = { t: 0, fromY: fromY, toY: toY };
+    stage.classList.add("is-pipe-cover");
+  }
 
   function startPipeEntry(pipe) {
     var srect = stageRect();
@@ -598,6 +655,171 @@
     applyRoomCharTransform();
   }
 
+  /* -------- Intro room: top tunnel with the connecting pipe's mouth --------
+     Mario drops in from the top, walks left/right (both ends closed), and
+     double-jumps into the hanging pipe to ride back up to the map. */
+  var tunnelEl = null;
+  var tunnelChar = null;
+  var tunnelPipeEl = null;
+  var tunnelState = null;       // { x, y, vx, vy, facing, anim, jumps, onGround, exitAnim }
+  var TUNNEL_EXIT_FRAMES = 20;
+
+  function setTunnelFrame(img, frame) {
+    if (!tunnelChar) return;
+    tunnelChar.style.backgroundImage     = "url('" + img.url + "')";
+    tunnelChar.style.backgroundSize      = (img.w * CHAR_SCALE) + "px " + (img.h * CHAR_SCALE) + "px";
+    tunnelChar.style.backgroundPositionX = -(frame.x * CHAR_SCALE) + "px";
+    tunnelChar.style.backgroundPositionY = -((frame.y || 0) * CHAR_SCALE) + "px";
+    tunnelChar.style.backgroundRepeat    = "no-repeat";
+    tunnelChar.style.width               = (img.fw * CHAR_SCALE) + "px";
+    tunnelChar.style.height              = (img.fh * CHAR_SCALE) + "px";
+  }
+
+  function applyTunnelTransform() {
+    if (!tunnelChar || !tunnelState) return;
+    if (tunnelState.anim === "run") {
+      var now = performance.now();
+      if (now - roomWalkLastMs >= WALK_FRAME_MS) {
+        roomWalkFrameIdx = (roomWalkFrameIdx + 1) % RUN_FRAMES.length;
+        roomWalkLastMs   = now;
+      }
+      setTunnelFrame(RUN_IMG, RUN_FRAMES[roomWalkFrameIdx]);
+    } else {
+      roomWalkFrameIdx = 0;
+      roomWalkLastMs   = 0;
+      setTunnelFrame(STAND_IMG, STAND_FRAMES[0]);
+    }
+    tunnelChar.style.transform = "translate3d(" + tunnelState.x + "px," + tunnelState.y + "px,0) scaleX(" + tunnelState.facing + ")";
+  }
+
+  function initIntroTunnel() {
+    var roomEl = d.querySelector('.platformer-room[data-room="intro"]');
+    if (!roomEl) return;
+    var frame = roomEl.querySelector('.platformer-room__frame');
+    var body  = roomEl.querySelector('[data-room-body]');
+    if (!frame || !body) return;
+    var prev = frame.querySelector('.room-top-tunnel');
+    if (prev) prev.remove();
+
+    var tunnel = d.createElement('div');
+    tunnel.className = 'room-top-tunnel';
+    tunnel.setAttribute('aria-hidden', 'true');
+    var pipe = d.createElement('div');
+    pipe.className = 'room-top-tunnel__pipe';
+    pipe.innerHTML = '<span class="room-top-tunnel__pipe-rim"></span><span class="room-top-tunnel__pipe-body"></span>';
+    tunnel.appendChild(pipe);
+    var char = d.createElement('div');
+    char.className = 'platformer-character room-tunnel-character';
+    char.setAttribute('aria-hidden', 'true');
+    tunnel.appendChild(char);
+    frame.insertBefore(tunnel, body);
+
+    tunnelEl = tunnel;
+    tunnelChar = char;
+    tunnelPipeEl = pipe;
+    var w = tunnel.getBoundingClientRect().width;
+    tunnelState = {
+      x: (w - player.w) / 2, y: -player.h, vx: 0, vy: 3,
+      facing: 1, anim: "fall", jumps: 0, onGround: false, exitAnim: null
+    };
+    applyTunnelTransform();
+  }
+
+  function teardownIntroTunnel() {
+    if (tunnelEl && tunnelEl.parentNode) tunnelEl.parentNode.removeChild(tunnelEl);
+    tunnelEl = null;
+    tunnelChar = null;
+    tunnelPipeEl = null;
+    tunnelState = null;
+  }
+
+  function tryTunnelJump() {
+    if (!tunnelState || tunnelState.exitAnim) return;
+    if (tunnelState.jumps < 2) {
+      tunnelState.vy = JUMP_V * (tunnelState.jumps === 0 ? 1 : 0.85);
+      tunnelState.jumps += 1;
+      tunnelState.onGround = false;
+    }
+  }
+
+  function stepIntroTunnel() {
+    if (!tunnelState || !tunnelEl) return;
+
+    // Exit animation — rising up into the hanging pipe.
+    if (tunnelState.exitAnim) {
+      var ea = tunnelState.exitAnim;
+      ea.t += 1;
+      var epct = Math.min(ea.t / TUNNEL_EXIT_FRAMES, 1);
+      var eease = epct < 0.5 ? 4 * epct * epct * epct : 1 - Math.pow(-2 * epct + 2, 3) / 2;
+      tunnelState.y = ea.fromY + (ea.toY - ea.fromY) * eease;
+      tunnelState.anim = "idle";
+      applyTunnelTransform();
+      if (epct >= 1) {
+        teardownIntroTunnel();
+        exitRoom("pipe");
+      }
+      return;
+    }
+
+    // Input.
+    if (keys.left)  { tunnelState.vx -= MOVE; tunnelState.facing = -1; }
+    if (keys.right) { tunnelState.vx += MOVE; tunnelState.facing =  1; }
+    if (!keys.left && !keys.right) tunnelState.vx *= FRICTION;
+    if (tunnelState.vx >  MAX_VX) tunnelState.vx =  MAX_VX;
+    if (tunnelState.vx < -MAX_VX) tunnelState.vx = -MAX_VX;
+
+    // Physics.
+    tunnelState.vy += GRAVITY;
+    if (tunnelState.vy > 14) tunnelState.vy = 14;
+    var nx = tunnelState.x + tunnelState.vx;
+    var ny = tunnelState.y + tunnelState.vy;
+    var tRect = tunnelEl.getBoundingClientRect();
+    var w = tRect.width;
+    var floorY = tRect.height - player.h;
+
+    // The hanging pipe — its x-range and mouth depth.
+    var pipeRect = tunnelPipeEl ? tunnelPipeEl.getBoundingClientRect() : null;
+    var pipeLocal = pipeRect
+      ? { x: pipeRect.left - tRect.left, y: pipeRect.top - tRect.top, w: pipeRect.width, h: pipeRect.height }
+      : null;
+    var underPipeX = pipeLocal &&
+      nx + player.w / 2 > pipeLocal.x + 10 &&
+      nx + player.w / 2 < pipeLocal.x + pipeLocal.w - 10;
+
+    // Ceiling — the tunnel is closed at the top, except inside the pipe.
+    if (ny < 0 && !underPipeX) { ny = 0; tunnelState.vy = 0; }
+
+    // Closed at both ends.
+    if (nx < 0)              { nx = 0;              tunnelState.vx = 0; }
+    if (nx > w - player.w)   { nx = w - player.w;   tunnelState.vx = 0; }
+
+    // Floor.
+    tunnelState.onGround = false;
+    if (ny >= floorY) {
+      ny = floorY;
+      tunnelState.vy = 0;
+      tunnelState.onGround = true;
+      tunnelState.jumps = 0;
+    }
+
+    // Double-jump into the pipe while under it → ride back up.
+    if (underPipeX && tunnelState.jumps === 2 && pipeLocal &&
+        tunnelState.y < pipeLocal.y + pipeLocal.h + 4) {
+      var mouthTop = pipeLocal.y + pipeLocal.h - 34;   // inside the mouth band
+      tunnelState.exitAnim = { t: 0, fromY: tunnelState.y, toY: mouthTop - player.h };
+      tunnelState.vx = 0;
+      tunnelState.vy = 0;
+      tunnelState.x = pipeLocal.x + pipeLocal.w / 2 - player.w / 2;
+      tunnelState.anim = "idle";
+      return;
+    }
+
+    tunnelState.x = nx;
+    tunnelState.y = ny;
+    tunnelState.anim = tunnelState.onGround ? (Math.abs(tunnelState.vx) > 0.45 ? "run" : "idle") : "fall";
+    applyTunnelTransform();
+  }
+
   function step() {
     if (charEnabled && !paused && activeRoom === "home") {
       var srect = stageRect();
@@ -606,18 +828,56 @@
       if (pipeEntry) {
         pipeEntry.t += 1;
         var pe = pipeEntry;
-        var pct = Math.min(pe.t / PIPE_ENTRY_FRAMES, 1);
-        player.x = pe.from + (pe.to - pe.from) * pct;
+        var p = Math.min(pe.t / PIPE_ENTRY_FRAMES, 1);
+        // easeInOutCubic — mechanical elevator drag into the pipe
+        var ease = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        player.x = pe.from + (pe.to - pe.from) * ease;
         player.vx = 0;
         player.vy = 0;
         player.anim = "idle";
         stage.classList.add("is-pipe-cover");
         applyTransform();
-        if (pct >= 1) {
+        if (p >= 1) {
           pipeEntry = null;
           ledgePipe = null;
-          stage.classList.remove("is-pipe-cover");
+          // Keep the cover on through the room overlay fade — the pipe
+          // hides Mario until the room is fully visible. exitRoom() lifts it.
           enterRoom(pe.room, { method: "player" });
+        }
+        return scheduleNext();
+      }
+
+      // Intro pipe sink — ↓ on the pipe: elevator descent into the pipe.
+      if (pipeSink) {
+        pipeSink.t += 1;
+        player.y += 3.2;
+        player.vx = 0;
+        player.vy = 0;
+        player.anim = "idle";
+        stage.classList.add("is-pipe-cover");
+        applyTransform();
+        if (pipeSink.t >= PIPE_SINK_FRAMES) {
+          pipeSink = null;
+          // Cover stays on through the room fade; exitRoom lifts it.
+          enterRoom("intro", { method: "pipe" });
+        }
+        return scheduleNext();
+      }
+
+      // Intro pipe rise — elevator ascent back out of the pipe.
+      if (pipeRise) {
+        pipeRise.t += 1;
+        var prv = pipeRise;
+        var prp = Math.min(prv.t / PIPE_RISE_FRAMES, 1);
+        var prease = prp < 0.5 ? 4 * prp * prp * prp : 1 - Math.pow(-2 * prp + 2, 3) / 2;
+        player.y = prv.fromY + (prv.toY - prv.fromY) * prease;
+        player.vx = 0;
+        player.vy = 0;
+        player.anim = "idle";
+        applyTransform();
+        if (prp >= 1) {
+          pipeRise = null;
+          stage.classList.remove("is-pipe-cover");
         }
         return scheduleNext();
       }
@@ -741,8 +1001,11 @@
             ledgePipe = ep;
             break;
           }
-          if (player.vy >= 0 && edgePrevBottom <= ledgeY + 2 && edgeNextBottom >= ledgeY) {
-            // Falling into the mouth — rest on the ledge.
+          if (player.vy >= 3 && edgePrevBottom <= ledgeY + 2 && edgeNextBottom >= ledgeY) {
+            // Genuinely falling into the mouth — rest on the ledge.
+            // (vy >= 3 excludes the 0.55/frame gravity residue while
+            // standing on the ledge, which previously re-snapped Mario
+            // into the rest position every frame and glued him in.)
             ny = ledgeY - player.h;
             nx = restXep;
             player.vy = 0;
@@ -756,10 +1019,12 @@
         }
       }
 
-      // Resting in a mouth: support detection for players standing on a
-      // surface inside the window band (e.g. the edge platforms), and the
-      // half-in/half-out rest clamp.
-      if (!ledgePipe && player.onGround) {
+      // Resting in a mouth: the mouth ledge is a standing surface. When
+      // Mario's feet sit within the mouth window over the pipe, the ledge
+      // holds him (no onGround precondition — the catch above no longer
+      // re-lands him every frame). Walking out of the pipe's x-range
+      // releases the support and he falls off the mouth edge.
+      if (!ledgePipe) {
         for (var li = 0; li < edgePipes.length; li++) {
           var lp = edgePipes[li];
           var lpLedge = lp.y + PIPE_MOUTH;
@@ -767,11 +1032,24 @@
           var feet = ny + player.h;
           if (inX && feet > lp.y + 2 && feet <= lpLedge + 2) {
             ledgePipe = lp;
+            ny = lpLedge - player.h;
+            player.vy = 0;
+            player.onGround = true;
+            player.jumps = 0;
+            player.secondJumpAscent = false;
             break;
           }
         }
       }
       if (ledgePipe) {
+        if (!ledgeRestAt) ledgeRestAt = performance.now();
+        // The pipe renders over Mario while he is in the mouth — no
+        // overlay flash before the room opens.
+        stage.classList.add("is-pipe-cover");
+        // Walking out of the mouth postpones the drag — the player can
+        // leave freely and the timer restarts if they come back in.
+        var outDir = (ledgePipe.side === "left" && keys.right) || (ledgePipe.side === "right" && keys.left);
+        if (outDir) ledgeRestAt = performance.now();
         var restX = ledgePipe.side === "left"
           ? ledgePipe.x + ledgePipe.w - player.w / 2
           : ledgePipe.x - player.w / 2;
@@ -780,6 +1058,15 @@
         } else {
           nx = Math.min(nx, restX);
         }
+        // Elevator drag: after a short settle in the mouth, Mario gets
+        // pulled inside automatically. Jumping while resting also enters.
+        if (player.onGround && !pipeEntry && !outDir && performance.now() - ledgeRestAt > 400) {
+          startPipeEntry(ledgePipe);
+          track("player_entered_pipe", { room: ledgePipe.room });
+        }
+      } else {
+        ledgeRestAt = null;
+        if (!pipeEntry) stage.classList.remove("is-pipe-cover");
       }
 
       // Ground collision (stage floor).
@@ -844,6 +1131,9 @@
     if (charEnabled && activeRoom !== "home" && activeRoom !== "intro") {
       stepRoomMiniGame();
     }
+    if (charEnabled && activeRoom === "intro") {
+      stepIntroTunnel();
+    }
     scheduleNext();
   }
 
@@ -887,11 +1177,13 @@
   var coinsHudEl = stage.querySelector("[data-coins-hud]");
   var coinCountEl = stage.querySelector("[data-coins-count]");
 
-  function coinNames() {
+  function coinData() {
     var el = d.getElementById("platformer-skills-data");
     if (!el) return [];
     try {
-      return (JSON.parse(el.textContent) || []).map(function (s) { return s.name; }).filter(Boolean);
+      return (JSON.parse(el.textContent) || []).map(function (s) {
+        return { name: s.name, logo: s.logo || "" };
+      }).filter(function (s) { return s.name; });
     } catch (e) { return []; }
   }
 
@@ -899,6 +1191,7 @@
     var node = d.createElement("div");
     node.className = "platformer-coin";
     node.setAttribute("data-skill", c.name);
+    if (c.logo) node.style.backgroundImage = "url('" + c.logo + "')";
     node.style.left = c.x + "px";
     node.style.top  = c.y + "px";
     return node;
@@ -909,10 +1202,11 @@
     var plats = getPlatforms().filter(function (p) { return p.id !== "pipe" && p.w >= 60; });
     if (!plats.length) return;
 
-    // First run: build one coin per certification.
+    // First run: build one collectible per certification, with its
+    // issuing company's logo.
     if (!coins.length) {
-      coins = coinNames().map(function (name) {
-        return { name: name, x: 0, y: 0, node: null, collected: false };
+      coins = coinData().map(function (s) {
+        return { name: s.name, logo: s.logo, x: 0, y: 0, node: null, collected: false };
       });
     }
     if (!coins.length) return;
