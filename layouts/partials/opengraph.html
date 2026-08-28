@@ -5,8 +5,14 @@
 {{ $image       :=  (index hugo.Data site.Language.Lang).site.openGraph.image       | default (index hugo.Data site.Language.Lang).author.image }}
 {{ $url         :=  (index hugo.Data site.Language.Lang).site.openGraph.url         | default site.BaseURL }}
 
+{{/* og:image must be a real URL — resolve the asset through the pipeline. */}}
+{{ $ogImage := $image }}
+{{ with resources.Get $image }}
+  {{ $ogImage = .RelPermalink }}
+{{ end }}
+
 <meta property="og:title"       content="{{ $title }}"/>
 <meta property="og:type"        content="{{ $type }}"/>
 <meta property="og:description" content="{{ $description }}"/>
-<meta property="og:image"       content="{{ $image | relURL }}">
+<meta property="og:image"       content="{{ $ogImage | absURL }}">
 <meta property="og:url"         content="{{ $url }}">

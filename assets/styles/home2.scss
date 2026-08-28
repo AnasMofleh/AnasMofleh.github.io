@@ -1,84 +1,96 @@
 /* ============================================================
-  Home — Neon Analytics Dashboard
+  Home — Analytics Dashboard (black + gold identity)
    All rules scoped to body.h2-page — zero impact on other pages
+   Tokens live on :root in override.scss (--gold, --ink, …).
    ============================================================ */
 
 body.h2-page {
-  --neon-cyan:   #00d4e8;
-  --neon-purple: #9020e0;
-  --neon-green:  #00d980;
-  --neon-pink:   #d4006a;
-  --neon-blue:   #2a62e0;
-  --neon-yellow: #e8c000;
-  --bg-dark:     #060614;
-  --bg-card:     rgba(12, 12, 36, 0.90);
+  --bg-card:     rgba(16, 16, 20, 0.90);
   --border-dim:  rgba(255, 255, 255, 0.07);
-  --border-neon: rgba(0, 200, 220, 0.14);
-  --text-bright: #f1f5f9;
-  --text-muted:  #94a3b8;
+  --border-gold: var(--line-gold);
 
-  background: var(--bg-dark) !important;
+  background:
+    radial-gradient(ellipse at 18% 0%,  var(--gold-soft) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 100%, rgba(255, 215, 0, 0.06) 0%, transparent 45%),
+    var(--ink) !important;
   color: var(--text-bright) !important;
   margin: 0 !important;
   padding: 0 !important;
-  height: 100vh !important;
-  overflow: hidden !important;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Mulish', system-ui, -apple-system, sans-serif;
 }
 
-/* ── Floating Back Button ────────────────────────────────── */
-body.h2-page .h2-topbar {
-  position: fixed;
-  top: 14px;
-  left: 16px;
-  z-index: 200;
+/* ── Panel actions — gamified + download CV, lower part of the left panel ── */
+body.h2-page .h2-panel-actions {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 5;
 }
 
-body.h2-page .h2-back-btn {
+body.h2-page .h2-back-btn,
+body.h2-page .h2-cv-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 13px;
-  border: 1px solid rgba(0, 200, 220, 0.45);
-  border-radius: 6px;
-  color: var(--neon-cyan) !important;
+  padding: 10px 16px;
+  border: 1px solid var(--line-gold);
+  border-radius: 8px;
+  color: var(--gold) !important;
   text-decoration: none !important;
-  font-size: 0.79rem;
-  font-weight: 600;
+  font-size: 0.92rem;
+  font-weight: 700;
   letter-spacing: 0.04em;
-  background: rgba(6, 6, 20, 0.80);
+  white-space: nowrap;
+  background: rgba(5, 5, 5, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 0 8px rgba(0, 200, 220, 0.10);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.14);
   transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
-body.h2-page .h2-back-btn:hover {
-  background: rgba(0, 200, 220, 0.10);
-  border-color: rgba(0, 200, 220, 0.70);
-  box-shadow: 0 0 14px rgba(0, 200, 220, 0.26);
+body.h2-page .h2-back-btn:hover,
+body.h2-page .h2-cv-btn:hover {
+  background: var(--gold-soft);
+  border-color: var(--gold);
+  box-shadow: 0 0 18px var(--gold-glow);
 }
 
-/* ── Main Dashboard Grid ─────────────────────────────────── */
+/* ── Main Dashboard Grid — viewport minus the header bar ───── */
 body.h2-page .h2-dashboard {
+  position: relative;
   display: grid;
   grid-template-columns: 28fr 72fr;
-  height: 100vh;
+  height: calc(100vh - 50px);
   overflow: hidden;
 }
 
+/* (Scroll-down hint removed — the Download CV button links to #about.) */
+
 /* ── Portrait Column ─────────────────────────────────────── */
 body.h2-page .h2-portrait-col {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px 16px;
   background: radial-gradient(ellipse at center,
-    rgba(0, 200, 220, 0.04) 0%,
+    var(--gold-soft) 0%,
     transparent 68%);
-  border-right: 1px solid var(--border-neon);
+  border-right: 1px solid var(--border-gold);
   overflow: hidden;
+}
+
+/* Logo — centered at the top of the left panel */
+body.h2-page .h2-panel-logo {
+  width: 76px;
+  height: auto;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  display: block;
 }
 
 body.h2-page .h2-portrait-wrapper {
@@ -90,61 +102,66 @@ body.h2-page .h2-portrait-wrapper {
 }
 
 body.h2-page .h2-portrait-img {
-  width: clamp(120px, 16vw, 190px);
-  height: clamp(120px, 16vw, 190px);
+  width: clamp(150px, 22vw, 260px);
+  height: clamp(150px, 22vw, 260px);
   border-radius: 50%;
   object-fit: cover;
   display: block;
   box-shadow:
-    0 0 0 2px var(--neon-cyan),
-    0 0 10px rgba(0, 200, 220, 0.52),
-    0 0 26px rgba(0, 200, 220, 0.20),
-    0 0 60px rgba(0, 200, 220, 0.07);
+    0 0 0 2px var(--gold),
+    0 0 12px var(--gold-glow),
+    0 0 32px rgba(255, 215, 0, 0.28),
+    0 0 70px rgba(255, 215, 0, 0.10);
   animation: portraitPulse 3.5s ease-in-out infinite alternate;
 }
 
 @keyframes portraitPulse {
   from {
     box-shadow:
-      0 0 0 2px var(--neon-cyan),
-      0 0 10px rgba(0, 200, 220, 0.52),
-      0 0 26px rgba(0, 200, 220, 0.20),
-      0 0 60px rgba(0, 200, 220, 0.07);
+      0 0 0 2px var(--gold),
+      0 0 12px var(--gold-glow),
+      0 0 32px rgba(255, 215, 0, 0.28),
+      0 0 70px rgba(255, 215, 0, 0.10);
   }
   to {
     box-shadow:
-      0 0 0 2px var(--neon-cyan),
-      0 0 15px rgba(0, 200, 220, 0.68),
-      0 0 40px rgba(0, 200, 220, 0.28),
-      0 0 85px rgba(0, 200, 220, 0.11);
+      0 0 0 2px var(--gold),
+      0 0 18px var(--gold-glow),
+      0 0 46px rgba(255, 215, 0, 0.38),
+      0 0 95px rgba(255, 215, 0, 0.16);
   }
 }
 
 body.h2-page .h2-author-name {
   margin: 10px 0 0;
-  font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
   font-weight: 700;
   color: var(--text-bright);
-  text-shadow: 0 0 12px rgba(0, 200, 220, 0.26);
+  text-shadow: 0 0 14px rgba(255, 215, 0, 0.28);
   line-height: 1.2;
+  text-align: center;
 }
 
 body.h2-page .h2-author-role {
-  margin: 2px 0 0;
-  font-size: clamp(0.7rem, 0.95vw, 0.82rem);
-  color: var(--text-muted);
+  margin: 2px auto 0;
+  max-width: 92%;
+  font-size: clamp(0.9rem, 1.4vw, 1.2rem);
+  color: var(--text-body);
   line-height: 1.3;
+  text-align: center;
 }
 
 body.h2-page .h2-author-company {
-  margin: 2px 0 0;
-  font-size: clamp(0.66rem, 0.88vw, 0.78rem);
+  margin: 2px auto 0;
+  max-width: 92%;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  text-align: center;
 }
 
 body.h2-page .h2-author-company a {
-  color: var(--neon-cyan) !important;
+  color: var(--gold) !important;
   text-decoration: none !important;
-  text-shadow: 0 0 6px rgba(0, 200, 220, 0.28);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.28);
 }
 
 /* ── Charts Column ───────────────────────────────────────── */
@@ -175,8 +192,8 @@ body.h2-page .h2-tile {
 }
 
 body.h2-page .h2-tile:hover {
-  border-color: rgba(0, 245, 255, 0.28);
-  box-shadow: 0 0 18px rgba(0, 245, 255, 0.07);
+  border-color: var(--gold-muted);
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.09);
 }
 
 /* ── KPI Stat Rail ───────────────────────────────────────── */
@@ -185,17 +202,19 @@ body.h2-page .h2-kpi {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 10px 16px;
-  border-color: var(--border-neon);
+  padding: 12px 16px;
+  border-color: var(--border-gold);
   gap: 4px;
+  flex-wrap: wrap;
 }
 
 body.h2-page .h2-stat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   flex: 1;
+  min-width: 96px;
   padding: 0 6px;
 }
 
@@ -204,20 +223,20 @@ body.h2-page .h2-stat + .h2-stat {
 }
 
 body.h2-page .h2-val {
-  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  font-size: clamp(2.3rem, 4.2vw, 3.6rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.02em;
 }
 
-body.h2-page .h2-val[data-neon="cyan"]   { color: var(--neon-cyan);   text-shadow: 0 0 9px var(--neon-cyan);   }
-body.h2-page .h2-val[data-neon="purple"] { color: var(--neon-purple); text-shadow: 0 0 9px var(--neon-purple); }
-body.h2-page .h2-val[data-neon="green"]  { color: var(--neon-green);  text-shadow: 0 0 9px var(--neon-green);  }
-body.h2-page .h2-val[data-neon="pink"]   { color: var(--neon-pink);   text-shadow: 0 0 9px var(--neon-pink);   }
-body.h2-page .h2-val[data-neon="blue"]   { color: var(--neon-blue);   text-shadow: 0 0 9px var(--neon-blue);   }
+body.h2-page .h2-val[data-neon="cyan"]   { color: var(--gold);        text-shadow: 0 0 12px var(--gold-glow);   }
+body.h2-page .h2-val[data-neon="purple"] { color: var(--gold-bright); text-shadow: 0 0 12px rgba(255, 225, 77, 0.5); }
+body.h2-page .h2-val[data-neon="green"]  { color: var(--gold-mid);    text-shadow: 0 0 12px rgba(212, 175, 55, 0.5); }
+body.h2-page .h2-val[data-neon="pink"]   { color: var(--gold-deep);   text-shadow: 0 0 12px rgba(201, 162, 39, 0.5); }
+body.h2-page .h2-val[data-neon="blue"]   { color: var(--gold-muted);  text-shadow: 0 0 12px rgba(255, 215, 0, 0.35); }
 
 body.h2-page .h2-lbl {
-  font-size: clamp(0.58rem, 0.78vw, 0.70rem);
+  font-size: clamp(0.68rem, 0.9vw, 0.85rem);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.09em;
@@ -239,92 +258,90 @@ body.h2-page .h2-tile canvas {
   box-sizing: border-box;
 }
 
-/* ── Scrollbar hide (overflow: hidden already prevents scroll) ── */
 body.h2-page * {
   box-sizing: border-box;
 }
 
-/* ── Theme Toggle Button ─────────────────────────────────── */
-body.h2-page .h2-theme-btn {
-  position: fixed;
-  top: 14px;
-  right: 16px;
-  z-index: 200;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 28px;
-  padding: 0;
-  border: 1px solid rgba(0, 200, 220, 0.45);
-  border-radius: 6px;
-  color: var(--neon-cyan) !important;
-  background: rgba(6, 6, 20, 0.80);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 0 8px rgba(0, 200, 220, 0.10);
-  cursor: pointer;
-  font-size: 1.1rem;
-  line-height: 1;
-  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+/* ── Mobile: single column, hero grows to fit ────────────── */
+@media (max-width: 768px) {
+  body.h2-page .h2-panel-actions { display: none; }
+
+  body.h2-page .h2-dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  body.h2-page .h2-portrait-col {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-gold);
+    padding: 92px 16px 24px;
+  }
+
+  body.h2-page .h2-charts-col {
+    grid-template-rows: auto 240px 240px 240px 240px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "kpi"
+      "issuer"
+      "projects"
+      "timeline"
+      "exp";
+    height: auto;
+  }
 }
 
-body.h2-page .h2-theme-btn:hover {
-  background: rgba(0, 200, 220, 0.10);
-  border-color: rgba(0, 200, 220, 0.70);
-  box-shadow: 0 0 14px rgba(0, 200, 220, 0.26);
-}
-
-/* ── Light Theme ─────────────────────────────────────────── */
-body.h2-page.h2-light {
-  --bg-dark:     #eef2f7;
+/* ── Light theme — white + gold ──────────────────────────── */
+html[data-theme='light'] body.h2-page {
   --bg-card:     rgba(255, 255, 255, 0.95);
-  --border-dim:  rgba(0, 0, 0, 0.08);
-  --border-neon: rgba(0, 160, 185, 0.28);
-  --text-bright: #0f172a;
-  --text-muted:  #475569;
+  --border-dim:  rgba(26, 26, 32, 0.10);
+  --border-gold: rgba(168, 133, 42, 0.35);
+
+  background:
+    radial-gradient(ellipse at 18% 0%,  rgba(212, 175, 55, 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 100%, rgba(212, 175, 55, 0.06) 0%, transparent 45%),
+    #faf9f4 !important;
+  color: #1a1a20 !important;
 }
 
-body.h2-page.h2-light .h2-back-btn,
-body.h2-page.h2-light .h2-theme-btn {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(0, 160, 185, 0.50);
-  box-shadow: 0 0 8px rgba(0, 160, 185, 0.12);
-  color: var(--neon-cyan) !important;
-}
+html[data-theme='light'] body.h2-page .h2-val[data-neon="cyan"]   { color: #a8852a; text-shadow: none; }
+html[data-theme='light'] body.h2-page .h2-val[data-neon="purple"] { color: #b8912e; text-shadow: none; }
+html[data-theme='light'] body.h2-page .h2-val[data-neon="green"]  { color: #c9a227; text-shadow: none; }
+html[data-theme='light'] body.h2-page .h2-val[data-neon="pink"]   { color: #8a6d1f; text-shadow: none; }
+html[data-theme='light'] body.h2-page .h2-val[data-neon="blue"]   { color: #d4af37; text-shadow: none; }
 
-body.h2-page.h2-light .h2-back-btn:hover,
-body.h2-page.h2-light .h2-theme-btn:hover {
-  background: rgba(0, 200, 220, 0.12);
-  border-color: rgba(0, 160, 185, 0.80);
-  box-shadow: 0 0 14px rgba(0, 160, 185, 0.22);
-}
+html[data-theme='light'] body.h2-page .h2-lbl          { color: #6b675c; }
+html[data-theme='light'] body.h2-page .h2-author-name  { color: #1a1a20; text-shadow: none; }
+html[data-theme='light'] body.h2-page .h2-author-role  { color: #3d3d44; }
+html[data-theme='light'] body.h2-page .h2-author-company a { color: #a8852a !important; text-shadow: none; }
 
-body.h2-page.h2-light .h2-portrait-col {
+html[data-theme='light'] body.h2-page .h2-tile {
+  background: var(--bg-card);
+  border-color: var(--border-dim);
+}
+html[data-theme='light'] body.h2-page .h2-tile:hover {
+  border-color: rgba(168, 133, 42, 0.45);
+  box-shadow: 0 2px 14px rgba(168, 133, 42, 0.15);
+}
+html[data-theme='light'] body.h2-page .h2-kpi { border-color: rgba(168, 133, 42, 0.35); }
+
+html[data-theme='light'] body.h2-page .h2-portrait-col {
   background: radial-gradient(ellipse at center,
-    rgba(0, 200, 220, 0.09) 0%,
+    rgba(212, 175, 55, 0.10) 0%,
     transparent 68%);
 }
 
-body.h2-page.h2-light .h2-tile {
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+html[data-theme='light'] body.h2-page .h2-back-btn,
+html[data-theme='light'] body.h2-page .h2-cv-btn {
+  background: rgba(255, 255, 255, 0.92);
+  color: #a8852a !important;
+  border-color: rgba(168, 133, 42, 0.45);
+  box-shadow: 0 2px 10px rgba(168, 133, 42, 0.12);
 }
-
-body.h2-page.h2-light .h2-tile:hover {
-  border-color: rgba(0, 180, 200, 0.45);
-  box-shadow: 0 2px 12px rgba(0, 180, 200, 0.12);
-}
-
-body.h2-page.h2-light .h2-author-name {
-  color: #000000 !important;
-  text-shadow: none;
-}
-
-body.h2-page.h2-light .h2-author-role {
-  color: #000000 !important;
-}
-
-body.h2-page.h2-light .h2-author-company a {
-  color: var(--neon-cyan) !important;
-  text-shadow: none;
+html[data-theme='light'] body.h2-page .h2-back-btn:hover,
+html[data-theme='light'] body.h2-page .h2-cv-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #a8852a;
+  box-shadow: 0 2px 16px rgba(168, 133, 42, 0.22);
 }

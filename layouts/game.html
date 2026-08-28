@@ -14,6 +14,11 @@
     {{- partial "header.html" . -}}
     {{- partial "opengraph.html" . -}}
 
+    {{/* Pixel font for the game UI — declared in override.scss */}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
     {{- partial "analytics.html" . -}}
 
     {{/* Consent-gated GA4 wrapper used by the platformer engine. */}}
@@ -58,20 +63,14 @@
     </script>
 
     <script>
-      theme = localStorage.getItem('theme-scheme') || localStorage.getItem('darkmode:color-scheme') || 'light';
-      if (theme == 'system') {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          theme = 'dark';
-        } else {
-          theme = 'light';
-        }
-      }
-      document.documentElement.setAttribute('data-theme', theme);
+      /* The platformer world is always black + gold. */
+      document.documentElement.setAttribute('data-theme', 'dark');
     </script>
   </head>
-  <body data-bs-spy="scroll" data-bs-target="#top-navbar" data-bs-offset="100">
+  <body class="game-page">
 
-    {{- partial "navigators/navbar.html" . -}}
+    {{/* Gold back-link to the analytics home (hidden on mobile). */}}
+    <a href="/" class="game-back-btn" aria-label="Back to Analytics home">Analytics&nbsp;&nbsp;&#8594;</a>
 
     {{/* Home hero (kept as background) wrapped with the platformer overlay. */}}
     <div class="platformer-shell" data-platformer-shell>
@@ -79,7 +78,9 @@
       {{- partial "home/platformer.html" . -}}
     </div>
 
-    {{/* Standard sections below as scrollable fallback / SEO anchors. */}}
+    {{/* Standard sections kept hidden — the page never scrolls; these are the
+       clone source for the platformer rooms and the SEO fallback. */}}
+    <div hidden>
     {{ $sections:= hugo.Data.sections }}
     {{ if (index hugo.Data site.Language.Lang).sections }}
       {{ $sections = (index hugo.Data site.Language.Lang).sections }}
@@ -104,9 +105,7 @@
         {{ end }}
       {{ end }}
     {{ end }}
-
-    {{ $footerTemplate:= site.Params.footer.template | default "footer.html" }}
-    {{- partial $footerTemplate . -}}
+    </div>
 
     {{ partial "scripts.html" . }}
 
@@ -137,15 +136,6 @@
             }));
           } catch (e) {}
         }
-      });
-
-      /* ── Fix navbar: make section links page-relative so they scroll
-           to the sections rendered on this page instead of navigating
-           away to the root home page. ── */
-      window.addEventListener('load', function () {
-        document.querySelectorAll('#top-nav-items a[href^="/#"]').forEach(function (a) {
-          a.setAttribute('href', a.getAttribute('href').replace(/^\/#/, '#'));
-        });
       });
 
       /* ── Character gravity-drop only when arriving from Analytics home ── */
@@ -180,7 +170,7 @@
             'position:fixed;' +
             'left:' + vx + 'px;' +
             'top:0px;' +
-            'width:150px;height:120px;' +
+            'width:88px;height:80px;' +
             'pointer-events:none;z-index:9999;' +
             'opacity:1;will-change:top;' +
             'transition:top 0.72s cubic-bezier(0.2,0,1,1);';  /* gravity: slow-start → fast */

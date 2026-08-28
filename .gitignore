@@ -5,4 +5,4 @@ public/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*$py.class
+*$py.class.hugo_build.lock

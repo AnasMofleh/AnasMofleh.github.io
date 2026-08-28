@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}">
 <head>
   <title>{{ .Site.Title }}</title>
@@ -6,10 +6,18 @@
   {{- partial "opengraph.html" . -}}
   {{- partial "analytics.html" . -}}
 
-  {{/* Force dark theme — neon palette only works on dark bg */}}
-  <script>document.documentElement.setAttribute('data-theme','dark');</script>
+  {{/* Early theme init — dark default, honours the saved choice */}}
+  <script>
+  (function () {
+    var theme = localStorage.getItem('theme-scheme') || localStorage.getItem('darkmode:color-scheme') || 'dark';
+    if (theme === 'system') {
+      theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+  </script>
 
-  {{/* Home neon dashboard styles — loaded after theme CSS so they win */}}
+  {{/* Home dashboard styles — loaded after theme CSS so they win */}}
   {{ $css := resources.Get "styles/home2.scss" | toCSS | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
@@ -18,26 +26,23 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
           crossorigin="anonymous" defer></script>
 </head>
-<body class="h2-page">
+<body class="h2-page" data-bs-spy="scroll" data-bs-target="#top-navbar" data-bs-offset="100">
 
-  <script>/* restore saved theme immediately to avoid flash */
-  (function(){try{if(localStorage.getItem('h2-theme')==='light')document.body.classList.add('h2-light');}catch(e){}}());
-  </script>
-
-  {{/* ── Top bar ──────────────────────────────────────────── */}}
-  <header class="h2-topbar">
-    <a href="/game/" class="h2-back-btn">&#8592;&nbsp;&nbsp;Gamified&nbsp;Home</a>
-  </header>
-
-  {{/* ── Theme toggle ─────────────────────────────────────── */}}
-  <button type="button" class="h2-theme-btn" id="h2ThemeBtn" aria-label="Switch to light theme">&#9790;</button>
+  {{- partial "navigators/navbar.html" . -}}
 
   {{/* ── Main dashboard ──────────────────────────────────── */}}
   <main class="h2-dashboard">
 
-    {{/* Left: portrait */}}
+    {{/* Left: logo + portrait + gamified button */}}
     <aside class="h2-portrait-col">
+      {{ with resources.Get site.Params.logo.inverted }}
+        <img class="h2-panel-logo" src="{{ .RelPermalink }}" alt="Logo">
+      {{ end }}
       {{- partial "home2/portrait.html" . -}}
+      <div class="h2-panel-actions">
+        <a href="/game/" class="h2-back-btn">&#8592;&nbsp;&nbsp;Gamified&nbsp;Home</a>
+        <a href="#about" class="h2-cv-btn">&#8595;&nbsp;&nbsp;Download&nbsp;CV</a>
+      </div>
     </aside>
 
     {{/* Right: charts */}}
@@ -93,6 +98,35 @@
 
     </section>
   </main>
+
+  {{/* ── Professional sections below the dashboard hero ───────── */}}
+  {{ $sections:= hugo.Data.sections }}
+  {{ if (index hugo.Data site.Language.Lang).sections }}
+    {{ $sections = (index hugo.Data site.Language.Lang).sections }}
+  {{ end }}
+
+  {{ if $sections }}
+    {{ $background:= "bg-primary"}}
+    {{ range sort $sections "section.weight" }}
+      {{ if .section.enable }}
+        <div class="container-fluid section-holder d-flex {{ $background }}">
+          {{ if .section.template }}
+            {{- partial .section.template . -}}
+          {{ else }}
+            {{- partial (printf "sections/%s.html" (replace (lower .section.id) " " "-")) . -}}
+          {{ end }}
+        </div>
+        {{ if eq $background "bg-primary" }}
+          {{ $background = "bg-secondary" }}
+        {{ else }}
+          {{ $background = "bg-primary" }}
+        {{end}}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ $footerTemplate:= site.Params.footer.template | default "footer.html" }}
+  {{- partial $footerTemplate . -}}
 
   {{ partial "scripts.html" . }}
 
@@ -171,6 +205,15 @@
     {{ $expData   = $expData   | append (sub $maxYM $minYM) }}
   {{ end }}
 
+  {{/* Timeline years — derive from the data so new certs extend the chart */}}
+  {{ $minY := 9999 }}{{ $maxY := 0 }}
+  {{ range $k, $v := $yearMap }}
+    {{ $yy := int $k }}
+    {{ if lt $yy $minY }}{{ $minY = $yy }}{{ end }}
+    {{ if gt $yy $maxY }}{{ $maxY = $yy }}{{ end }}
+  {{ end }}
+  {{ if eq $maxY 0 }}{{ $minY = 2021 }}{{ $maxY = now.Year }}{{ end }}
+
   const H2_DATA = {
     issuer: {
       labels: ["Microsoft","Snowflake","Databricks","GitHub","AWS","dbt Labs"],
@@ -194,14 +237,8 @@
       ]
     },
     timeline: {
-      labels: ["2021","2022","2023","2024","2025"],
-      data: [
-        {{ index $yearMap "2021" | default 0 }},
-        {{ index $yearMap "2022" | default 0 }},
-        {{ index $yearMap "2023" | default 0 }},
-        {{ index $yearMap "2024" | default 0 }},
-        {{ index $yearMap "2025" | default 0 }}
-      ]
+      labels: [{{ range seq $minY $maxY }}"{{ . }}",{{ end }}],
+      data:   [{{ range seq $minY $maxY }}{{ index $yearMap (string .) | default 0 }},{{ end }}]
     },
     exp: {
       labels: {{ $expLabels | jsonify | safeJS }},
@@ -221,7 +258,7 @@
         const ds  = chart.data.datasets[index];
         const ctx = chart.ctx;
         ctx.save();
-        const col = typeof ds.borderColor === 'string' ? ds.borderColor : '#00f5ff';
+        const col = typeof ds.borderColor === 'string' ? ds.borderColor : '#ffd700';
         ctx.shadowColor = col;
         ctx.shadowBlur  = 18;
       },
@@ -244,7 +281,7 @@
         const values = chart.data.datasets[0].data;
         const total  = values.reduce((a, b) => a + b, 0);
         if (!total) return;
-        const textColor = document.body.classList.contains('h2-light') ? '#334155' : '#cbd5e1';
+        const textColor = document.documentElement.getAttribute('data-theme') === 'light' ? '#1a1a20' : '#f8f5ec';
         ctx.save();
         ctx.font      = '12px Inter, system-ui, sans-serif';
         ctx.lineWidth = 1;
@@ -278,20 +315,20 @@
       _charts = [];
       if (!_glowReg) { Chart.register(neonGlow); Chart.register(pointerLabels); _glowReg = true; }
 
-      const isLight = document.body.classList.contains('h2-light');
-      const NEON  = ['#00f5ff','#b000ff','#00ff9d','#ff0080','#3d7eff','#ffdd00'];
-      /* Company brand colours: Microsoft, Snowflake, Databricks, GitHub, AWS, dbt Labs */
-      const BRAND = ['#0078D4','#29B5E8','#FF3621','#2DA44E','#FF9900','#F97316'];
-      const GRID  = isLight ? 'rgba(0,0,0,0.09)'     : 'rgba(255,255,255,0.07)';
-      const TICK  = isLight ? '#334155'               : '#e2e8f0';
-      const BORD  = isLight ? 'rgba(240,244,248,0.9)' : '#07071a';
+      /* Gold series palette — deep enough to read on both themes */
+      const GOLD  = ['#d4af37','#c9a227','#b8912e','#a8852a','#8a6d1f','#e6b325'];
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const GRID  = isLight ? 'rgba(0,0,0,0.08)'    : 'rgba(255,255,255,0.08)';
+      const TICK  = isLight ? '#3d3d44'             : '#e8e4d8';
+      const BORD  = isLight ? '#ffffff'             : '#0a0a0c';
+      const TEXT  = isLight ? '#1a1a20'             : '#f8f5ec';
       const legendOpts = {
-        labels: { color: isLight ? '#1e293b' : '#ffffff', font: { size: 13 }, boxWidth: 12, padding: 8 }
+        labels: { color: TEXT, font: { size: 13 }, boxWidth: 12, padding: 8 }
       };
       const titleOpts = (text) => ({
         display: true,
         text,
-        color: isLight ? '#475569' : '#f1f5f9',
+        color: TEXT,
         font: { size: 13, weight: '600' },
         padding: { bottom: 4 }
       });
@@ -301,7 +338,7 @@
         type: 'bar',
         data: {
           labels: H2_DATA.issuer.labels,
-          datasets: [{ data: H2_DATA.issuer.data, backgroundColor: 'rgba(0,212,232,0.65)', borderColor: '#00d4e8', borderWidth: 2, borderRadius: 5 }]
+          datasets: [{ data: H2_DATA.issuer.data, backgroundColor: 'rgba(255,215,0,0.55)', borderColor: '#ffd700', borderWidth: 2, borderRadius: 5 }]
         },
         options: {
           responsive: true, maintainAspectRatio: false,
@@ -318,7 +355,7 @@
         type: 'doughnut',
         data: {
           labels: H2_DATA.proj.labels,
-          datasets: [{ data: H2_DATA.proj.data, backgroundColor: H2_DATA.proj.data.map(() => '#00f5ff'), borderColor: BORD, borderWidth: 2, hoverOffset: 6 }]
+          datasets: [{ data: H2_DATA.proj.data, backgroundColor: H2_DATA.proj.data.map((_, i) => GOLD[i % GOLD.length]), borderColor: BORD, borderWidth: 2, hoverOffset: 6 }]
         },
         options: {
           responsive: true, maintainAspectRatio: false, cutout: '62%',
@@ -339,12 +376,12 @@
           datasets: [{
             label: 'Certifications',
             data: H2_DATA.timeline.data,
-            borderColor: '#00f5ff',
-            backgroundColor: 'rgba(0,245,255,0.10)',
+            borderColor: '#ffd700',
+            backgroundColor: 'rgba(255,215,0,0.10)',
             fill: true,
             tension: 0.4,
-            pointBackgroundColor: '#00f5ff',
-            pointBorderColor: isLight ? '#f0f4f8' : '#050510',
+            pointBackgroundColor: '#ffd700',
+            pointBorderColor: isLight ? '#ffffff' : '#050505',
             pointBorderWidth: 2,
             pointRadius: 5,
             pointHoverRadius: 7,
@@ -370,8 +407,8 @@
           datasets: [{
             label: 'Months',
             data: H2_DATA.exp.data,
-            backgroundColor: H2_DATA.exp.data.map(() => 'rgba(0,245,255,0.60)'),
-            borderColor:     H2_DATA.exp.data.map(() => '#00f5ff'),
+            backgroundColor: H2_DATA.exp.data.map(() => 'rgba(212,175,55,0.60)'),
+            borderColor:     H2_DATA.exp.data.map(() => '#d4af37'),
             borderWidth: 2,
             borderRadius: 5
           }]
@@ -390,29 +427,23 @@
     };
 
     document.addEventListener('DOMContentLoaded', window.buildH2Charts);
+
+    /* Repaint charts when the theme switches (navbar theme selector). */
+    if (typeof MutationObserver === 'function') {
+      new MutationObserver(function () {
+        if (typeof window.buildH2Charts === 'function') window.buildH2Charts();
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }
   }());
   </script>
 
-  {{/* ── Theme toggle handler ──────────────────────────────── */}}
+  {{/* ── Navbar section links → in-page anchors ─────────────── */}}
   <script>
   (function () {
-    var btn = document.getElementById('h2ThemeBtn');
-    if (!btn) return;
-
-    function syncBtn() {
-      var isLight = document.body.classList.contains('h2-light');
-      btn.textContent = isLight ? '\u2600' : '\u263E';  /* ☀ / ☾ */
-      btn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
-    }
-
-    syncBtn();  /* reflect any theme restored before DOMContentLoaded */
-
-    btn.addEventListener('click', function () {
-      var nowLight = document.body.classList.contains('h2-light');
-      document.body.classList.toggle('h2-light', !nowLight);
-      try { localStorage.setItem('h2-theme', nowLight ? 'dark' : 'light'); } catch (e) {}
-      syncBtn();
-      if (typeof window.buildH2Charts === 'function') window.buildH2Charts();
+    window.addEventListener('load', function () {
+      document.querySelectorAll('#top-nav-items a[href^="/#"]').forEach(function (a) {
+        a.setAttribute('href', a.getAttribute('href').replace(/^\/#/, '#'));
+      });
     });
   }());
   </script>

@@ -3,38 +3,39 @@ html {
   font-size: 125%;
 }
 
-/* 2. Better text contrast for readability */
+/* 2. Black + Gold identity. Dark theme: warm off-white body text;
+   light theme: warm ink text. Gold accents come from the token set. */
 p {
-  color: #111827 !important;
+  color: #e8e4d8 !important;
 }
 
 strong {
-  color: #111827 !important;
+  color: #f8f5ec !important;
 }
 
 .sub-title,
 .text-muted {
-  color: #475569 !important;
+  color: #9a968a !important;
 }
 
-html[data-theme='dark'] p {
-  color: #e2e8f0 !important;
+html[data-theme='light'] p {
+  color: #1a1a20 !important;
 }
 
-html[data-theme='dark'] strong {
-  color: #f1f5f9 !important;
+html[data-theme='light'] strong {
+  color: #0a0a0c !important;
 }
 
-html[data-theme='dark'] .sub-title,
-html[data-theme='dark'] .text-muted {
-  color: #94a3b8 !important;
+html[data-theme='light'] .sub-title,
+html[data-theme='light'] .text-muted {
+  color: #6b675c !important;
 }
 
 // override the project section's card styling
 .projects-section {
   .card {
     .card-header {
-      background-color: get-light-color('bg-card');
+      background-color: var(--ink-3);
       padding: 0.7rem;
       padding-bottom: 0rem;
       text-decoration: none;
@@ -115,8 +116,8 @@ html[data-theme='dark'] .text-muted {
 }
 
 
-// override the skills section's card styling 
-$card-color: rgba(198, 222, 228, 0.357);
+// override the skills section's card styling
+$card-color: var(--ink-3);
 
 .skills-section {
   .card {
@@ -190,16 +191,15 @@ html[data-theme='dark'] {
     .card {
       .card-head {
         background-color: $card-color !important;
-        border-bottom: 0.0625rem solid rgba(get-dark-color('accent-color'), 0.4);
+        border-bottom: 0.0625rem solid var(--line-gold);
       }
 
       .card-body {
         background-color: $card-color !important;
-        
+
         .card-subtitle,
         .card-date {
-          color: white;
-          /* Change text color to white */
+          color: var(--text-bright);
         }
       }
     }
@@ -211,22 +211,73 @@ html[data-theme='dark'] {
    ========================================================================= */
 
 :root {
-  --pf-neon: #00f0ff;
-  --pf-neon-deep: #0066ff;
-  --pf-neon-soft: rgba(0, 240, 255, 0.85);
+  /* Black + Gold identity tokens — single source of truth */
+  --gold:        #ffd700;
+  --gold-bright: #ffe14d;
+  --gold-mid:    #d4af37;
+  --gold-deep:   #c9a227;
+  --gold-muted:  rgba(255, 215, 0, 0.35);
+  --gold-soft:   rgba(255, 215, 0, 0.12);
+  --gold-glow:   rgba(255, 215, 0, 0.55);
+
+  --ink:     #050505;
+  --ink-2:   #0a0a0c;
+  --ink-3:   #121216;
+  --ink-4:   #1a1a20;
+  --line-gold: rgba(255, 215, 0, 0.22);
+
+  --text-bright: #f8f5ec;
+  --text-body:   #e8e4d8;
+  --text-muted:  #9a968a;
 }
 
-$pf-bg-card: rgba(8, 14, 28, 0.82);
-$pf-neon: #00f0ff;
-$pf-neon-deep: #0066ff;
+$pf-bg-card: rgba(10, 10, 12, 0.85);
+$pf-neon: #ffd700;
+$pf-neon-deep: #c9a227;
 $pf-platform: $pf-neon;
-$pf-platform-top: lighten($pf-neon, 10%);
+$pf-platform-top: #ffe14d;
 $pf-pipe: $pf-neon;
 $pf-pipe-dark: $pf-neon-deep;
 $pf-accent: $pf-neon;
 
 .platformer-shell {
   position: relative;
+}
+
+/* Game page — locked viewport: the character is the only way around. */
+body.game-page {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Gold back-link to the analytics home (mirrors the gamified button). */
+.game-back-btn {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 200;
+  padding: 5px 13px;
+  border: 1px solid var(--line-gold);
+  border-radius: 6px;
+  color: var(--gold) !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+  background: rgba(5, 5, 5, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.12);
+  transition: background 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    background: var(--gold-soft);
+    box-shadow: 0 0 14px var(--gold-glow);
+  }
+}
+
+@media (hover: none), (max-width: 768px) {
+  .game-back-btn { display: none; }
 }
 
 .platformer-hero {
@@ -248,92 +299,7 @@ $pf-accent: $pf-neon;
   }
 }
 
-/* Destinations (corner arrow buttons) — arrow-shaped via clip-path, white */
-.platformer-destination {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 8vw;
-  min-width: 5rem;
-  max-width: 8rem;
-  height: 3.2rem;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-  border: 0;
-  font-family: 'Press Start 2P', 'Mulish', system-ui, sans-serif;
-  font-size: clamp(0.65rem, 1.6vw, 0.85rem);
-  text-decoration: none;
-  cursor: pointer;
-  pointer-events: auto;
-  z-index: 4;
-  filter:
-    drop-shadow(0 0 8px rgba(255, 255, 255, 0.9))
-    drop-shadow(0 0 20px rgba(255, 255, 255, 0.5))
-    drop-shadow(0 0 36px rgba(200, 220, 255, 0.3));
-  transition: transform 0.15s ease, filter 0.15s ease;
-
-  &:hover, &:focus-visible {
-    transform: scale(1.08);
-    filter:
-      drop-shadow(0 0 12px #fff)
-      drop-shadow(0 0 28px rgba(255, 255, 255, 0.85))
-      drop-shadow(0 0 48px rgba(200, 220, 255, 0.5))
-      drop-shadow(0 0 72px rgba(180, 200, 255, 0.35));
-    outline: none;
-  }
-
-  &__label {
-    color: #fff;
-    line-height: 1.15;
-    text-align: center;
-    white-space: nowrap;
-    text-shadow:
-      0 0 8px rgba(255, 255, 255, 0.9),
-      0 0 18px rgba(200, 220, 255, 0.5);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
-
-  /* Arrow shapes via clip-path — text sits inside the rectangular body. */
-  /* Thicker arrow shaft: inner bounds changed from 25%-75% to 20%-80% */
-  &--top-left,
-  &--bottom-left {
-    clip-path: polygon(0% 50%, 32% 0%, 32% 20%, 100% 20%, 100% 80%, 32% 80%, 32% 100%);
-    .platformer-destination__label { padding-left: 34%; padding-right: 0.3rem; }
-  }
-  &--top-right,
-  &--bottom-right {
-    clip-path: polygon(0% 20%, 68% 20%, 68% 0%, 100% 50%, 68% 100%, 68% 80%, 0% 80%);
-    .platformer-destination__label { padding-right: 34%; padding-left: 0.3rem; }
-  }
-
-  /* Position using viewport-relative units — closer to the middle line */
-  &--top-left    { top: 22vh;   left: 0.3vw; }
-  &--top-right   { top: 22vh;   right: 0.3vw; }
-  &--bottom-left { bottom: 22vh; left: 0.3vw; }
-  &--bottom-right{ bottom: 22vh; right: 0.3vw; }
-
-  /* Directional animation — continuous gentle pulse in arrow direction */
-  animation: arrowPulse 2s ease-in-out infinite;
-  &--top-left    { animation-name: arrowPulseLeft; }
-  &--top-right   { animation-name: arrowPulseRight; }
-  &--bottom-left { animation-name: arrowPulseLeft; }
-  &--bottom-right{ animation-name: arrowPulseRight; }
-}
-
-@keyframes arrowPulseLeft {
-  0%, 100% { transform: translateX(0); }
-  50%      { transform: translateX(-6px); }
-}
-@keyframes arrowPulseRight {
-  0%, 100% { transform: translateX(0); }
-  50%      { transform: translateX(6px); }
-}
-
-/* Platforms — neon glowing */
+/* Platforms — gold glowing */
 .platformer-platform {
   position: absolute;
     background: linear-gradient(to bottom,
@@ -357,14 +323,10 @@ $pf-accent: $pf-neon;
   &--edge-right  { top: 50%;  right: 0;  width: 14%; height: 12px; transform: translateY(-50%); border-radius: 3px 0 0 3px; }
 }
 
-/* Pipe — center bottom, leads to intro */
+/* Pipe — shared base. The vertical center-bottom pipe leads to the intro
+   room; the four horizontal edge pipes replace the old corner arrows. */
 .platformer-pipe {
   position: absolute;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  width: 64px;
-  height: 96px;
   background: transparent;
   border: 0;
   padding: 0;
@@ -374,34 +336,111 @@ $pf-accent: $pf-neon;
 
   &__rim {
     position: absolute;
-    top: 0; left: -8px; right: -8px;
-    height: 18px;
-    background: #fff;
-    border: 3px solid rgba(200, 200, 200, 0.8);
+    border: 3px solid var(--ink);
     border-radius: 4px;
+    background: linear-gradient(to bottom, var(--gold-bright), var(--gold-deep));
+    box-shadow: 0 0 14px var(--gold-glow);
   }
   &__body {
     position: absolute;
-    top: 14px; left: 0; right: 0; bottom: 0;
-    background: #fff;
-    border: 3px solid rgba(200, 200, 200, 0.8);
-    border-radius: 0 0 4px 4px;
+    border: 3px solid #26262c;
+    border-radius: 4px;
+    background:
+      linear-gradient(90deg, #4b4b55, #61616d 55%, #4b4b55),
+      #4b4b55;
+    box-shadow: inset 10px 0 0 rgba(255, 215, 0, 0.22);
   }
   &__hint {
     position: absolute;
     top: -1.6rem;
-    left: 50%;
-    transform: translateX(-50%);
     font-family: 'Press Start 2P', monospace;
     font-size: 0.55rem;
-    color: #fff;
-    background: rgba(0,0,0,0.55);
+    color: var(--gold);
+    background: rgba(0, 0, 0, 0.65);
     padding: 0.25rem 0.4rem;
     border-radius: 3px;
     white-space: nowrap;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
   }
 
-  &:hover .platformer-pipe__hint { background: rgba(0,0,0,0.8); }
+  &:hover .platformer-pipe__hint,
+  &:focus-visible .platformer-pipe__hint { background: rgba(0, 0, 0, 0.85); }
+  &:hover .platformer-pipe__rim { box-shadow: 0 0 22px var(--gold-glow); }
+}
+
+/* Vertical intro pipe — center bottom, double ring on top */
+.platformer-pipe--intro {
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: 132px;
+  height: 96px;
+
+  .platformer-pipe__rim {
+    top: 0; left: -8px; right: -8px;
+    height: 20px;
+  }
+  .platformer-pipe__rim2 {
+    position: absolute;
+    top: 20px; left: -4px; right: -4px;
+    height: 10px;
+    background: linear-gradient(to bottom, var(--gold-bright), var(--gold-deep));
+    border: 3px solid var(--ink);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+  }
+  .platformer-pipe__body {
+    top: 28px; left: 0; right: 0; bottom: 0;
+    box-shadow: none;  /* no left gold stripe on the vertical pipe */
+  }
+  .platformer-pipe__hint { left: 50%; transform: translateX(-50%); }
+}
+
+/* Horizontal edge pipes — the four warp entries; mouth faces the stage.
+   Pipes are partially off-screen: the visible rim+body marks where the
+   player walks in. Not solid — the edge transition does the entering. */
+.platformer-pipe--edge {
+  width: 132px;
+  height: 110px;
+  transform: none;
+
+  .platformer-pipe__rim {
+    top: 0; bottom: 0;
+    width: 24px;
+    height: auto;
+    border-radius: 6px;
+  }
+  .platformer-pipe__body {
+    top: 0; bottom: 0;
+    width: 108px;
+    border-radius: 6px;
+  }
+  .platformer-pipe__hint {
+    top: -1.6rem;
+    left: 78px;   /* pipe sits at -70px → keeps the chip inside the page */
+    white-space: nowrap;
+  }
+}
+
+.platformer-pipe--edge-left-top     { top: 45vh; left: -70px;
+  .platformer-pipe__rim  { right: 0; }
+  .platformer-pipe__body { left: 0; }
+}
+.platformer-pipe--edge-left-bottom  { top: 84vh; left: -70px;
+  .platformer-pipe__rim  { right: 0; }
+  .platformer-pipe__body { left: 0; }
+}
+.platformer-pipe--edge-right-top    { top: 45vh; right: -70px;
+  .platformer-pipe__rim  { left: 0; }
+  .platformer-pipe__body { right: 0; }
+}
+.platformer-pipe--edge-right-bottom { top: 84vh; right: -70px;
+  .platformer-pipe__rim  { left: 0; }
+  .platformer-pipe__body { right: 0; }
+}
+.platformer-pipe--edge-right-top,
+.platformer-pipe--edge-right-bottom {
+  .platformer-pipe__hint { left: auto; right: 78px; }
 }
 
 /* Ground baseline */
@@ -413,15 +452,31 @@ $pf-accent: $pf-neon;
   z-index: 1;
 }
 
-/* Author photo — neon ring matching the platforms, slightly larger than theme default (148px) */
+/* Author photo — gold ring matching the platforms, slightly larger than theme default (148px) */
 .platformer-shell #home img.rounded-circle {
   width: 185px !important;
   height: 185px !important;
-  border: 3px solid #fff !important;
+  border: 3px solid var(--gold) !important;
   box-shadow:
-    0 0 12px #fff,
-    0 0 28px rgba(255,255,255,0.7),
-    0 0 48px rgba(255,255,255,0.5);
+    0 0 12px var(--gold-glow),
+    0 0 28px rgba(255, 215, 0, 0.5),
+    0 0 48px rgba(255, 215, 0, 0.3);
+}
+
+/* Game map background — ink, matching the rest of the identity.
+   The theme hero paints a full-bleed background image; drop it and
+   keep the author photo + greeting on pure black. */
+.platformer-shell #home {
+  background-color: var(--ink) !important;
+}
+.platformer-shell #homePageBackgroundImageDivStyled {
+  background-image: none !important;
+  background-color: var(--ink) !important;
+}
+/* The hero's "scroll to about" chevron is a dead link on the locked
+   game page — the character is the navigation here. */
+.platformer-shell #home a.arrow-center {
+  display: none;
 }
 
 @media (max-width: 640px) {
@@ -431,13 +486,16 @@ $pf-accent: $pf-neon;
   }
 }
 
-/* Player character — individual sprite images per animation.
+/* While Mario is sinking into a warp pipe, the pipe covers him. */
+.platformer-stage.is-pipe-cover .platformer-pipe--edge { z-index: 7; }
+
+/* Player character — Mario sprite images per animation.
    Dimensions and background set dynamically by JS. */
 .platformer-character {
   position: absolute;
   left: 0; top: 0;
-  width: 102px;
-  height: 92px;
+  width: 64px;
+  height: 64px;
   z-index: 6;
   pointer-events: none;
   will-change: transform;
@@ -446,12 +504,8 @@ $pf-accent: $pf-neon;
 
   background-image: url('/images/game/standing.png');
   background-repeat: no-repeat;
-  background-size: 80px 95px;
+  background-size: 64px 64px;
   background-position: 0 0;
-
-  /* Hide old CSS-drawn child spans */
-  &::before, &::after { display: none; }
-  &__body, &__face, &__tail { display: none; }
 
   /* All frame positioning handled by JS (setFrame).
      These classes exist for toggle only. */
@@ -460,6 +514,105 @@ $pf-accent: $pf-neon;
   &.is-jump { }
   &.is-fall { }
   &.is-tailspin { }
+}
+
+/* Skill coins — collectible gold coins above the platforms.
+   Spawned by JS from the skills data; collecting pops a fading skill name. */
+.platformer-coin {
+  position: absolute;
+  width: 24px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, var(--gold-bright), var(--gold));
+  border: 1px solid var(--gold-bright);
+  box-shadow:
+    0 0 10px var(--gold-glow),
+    0 0 24px rgba(255, 215, 0, 0.35);
+  z-index: 2;
+  pointer-events: none;
+  animation: coinSpin 0.9s ease-in-out infinite;
+
+  &::after { /* inner letter slot, like a classic SMB coin */
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px; height: 16px;
+    border-radius: 2px;
+    background: var(--gold-deep);
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@keyframes coinSpin {
+  0%, 100% { transform: scaleX(1); }
+  50%      { transform: scaleX(0.15); }
+}
+
+/* Coin counter HUD — top-left of the stage */
+.platformer-coins-hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(5, 5, 5, 0.78);
+  border: 1px solid var(--line-gold);
+  border-radius: 6px;
+  color: var(--gold);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  &__icon {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, var(--gold-bright), var(--gold));
+    box-shadow: 0 0 6px var(--gold-glow);
+  }
+  &__sep { color: var(--text-muted); }
+
+  &.is-flash {
+    animation: hudFlash 0.9s ease-in-out 2;
+  }
+}
+
+@keyframes hudFlash {
+  0%, 100% { box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+  50%      { box-shadow: 0 0 18px var(--gold-glow); }
+}
+
+/* Floating fading skill-name popup on coin pickup */
+.platformer-coin-popup {
+  position: absolute;
+  z-index: 7;
+  transform: translateX(-50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.55rem;
+  line-height: 1.4;
+  color: var(--gold-bright);
+  text-shadow:
+    0 0 6px rgba(255, 215, 0, 0.8),
+    0 2px 2px rgba(0, 0, 0, 0.9);
+  background: rgba(5, 5, 5, 0.72);
+  border: 1px solid var(--line-gold);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  max-width: 240px;
+  pointer-events: none;
+  animation: coinPop 2.6s ease-out forwards;
+}
+
+@keyframes coinPop {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(0) scale(0.9); }
+  12%  { opacity: 1; transform: translateX(-50%) translateY(-12px) scale(1.05); }
+  70%  { opacity: 1; transform: translateX(-50%) translateY(-46px) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-58px) scale(0.95); }
 }
 
 /* Help panel — bottom center. Always dark-themed regardless of site theme. */
@@ -692,9 +845,8 @@ html[data-theme='dark'] .platformer-room__frame {
 @media (prefers-reduced-motion: reduce) {
   .platformer-room { transition: opacity 0.15s ease; }
   .platformer-character { transition: none; }
-  .platformer-destination {
-    animation: none !important;
-  }
+  .platformer-coin { animation: none !important; }
+  .platformer-coin-popup { animation-duration: 0.01s !important; }
 }
 
 /* ---------- Hide "Posts" and "Notes" nav links in header ---------- */
@@ -707,610 +859,110 @@ html[data-theme='dark'] .platformer-room__frame {
 @media (hover: none), (max-width: 768px) {
   .platformer-character { display: none !important; }
   .platformer-help      { display: none !important; }
+  .platformer-coin,
+  .platformer-coins-hud { display: none !important; }
   .platformer-pipe__hint { font-size: 0.5rem; }
 
-  .platformer-destination {
-    width: 10vw;
-    min-width: 4.5rem;
-    max-width: 7rem;
-    font-size: clamp(0.45rem, 1vw, 0.6rem);
-    padding: 0;
-    &--bottom-left, &--bottom-right { bottom: 12vh; }
+  .platformer-pipe--edge {
+    width: 84px;
+    height: 88px;
+    .platformer-pipe__body { width: 60px; }
+    .platformer-pipe__hint { display: none; }
   }
+  .platformer-pipe--edge-left-top,
+  .platformer-pipe--edge-left-bottom    { left: 0; }
+  .platformer-pipe--edge-right-top,
+  .platformer-pipe--edge-right-bottom   { right: 0; }
   .platformer-room__frame { margin: 0; width: 100vw; max-height: 100vh; border-radius: 0; }
 }
 
+
 /* =========================================================================
-  Home analytics landing page
-  ========================================================================= */
+   Professional sections on the home page (below the stats hero) — black + gold
+   ========================================================================= */
 
-.home2-page {
-  --home2-bg: #f5f7fb;
-  --home2-surface: rgba(255, 255, 255, 0.82);
-  --home2-border: rgba(148, 163, 184, 0.18);
-  --home2-text: #0f172a;
-  --home2-muted: #475569;
-  --home2-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
-  position: relative;
-  overflow: hidden;
-  color: var(--home2-text);
-  background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.16), transparent 32%),
-    radial-gradient(circle at top right, rgba(20, 184, 166, 0.14), transparent 28%),
-    linear-gradient(180deg, #f8fbff 0%, var(--home2-bg) 52%, #eef3fb 100%);
+/* html[data-theme] prefix beats the theme's own dark-theme rules. */
+html[data-theme] .section-holder.bg-primary   { background: var(--ink) !important; }
+html[data-theme] .section-holder.bg-secondary { background: var(--ink-2) !important; }
+
+html[data-theme] .section-holder {
+  h1.text-center,
+  h1.text-center span { color: var(--gold); }
+
+  .card {
+    background: var(--ink-3);
+    border: 1px solid var(--line-gold);
+    color: var(--text-body);
+  }
+  .card .card-title,
+  h3, h4, h5 { color: var(--text-bright); }
+  a { color: var(--gold); }
 }
 
-.home2-page__backdrop {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(14, 165, 233, 0.12), transparent 18%),
-    radial-gradient(circle at 85% 10%, rgba(249, 115, 22, 0.10), transparent 20%),
-    radial-gradient(circle at 78% 75%, rgba(37, 99, 235, 0.12), transparent 20%);
-  pointer-events: none;
+/* Light theme — white + gold sections */
+html[data-theme='light'] .section-holder.bg-primary   { background: #ffffff !important; }
+html[data-theme='light'] .section-holder.bg-secondary { background: #f7f4ec !important; }
+
+html[data-theme='light'] .section-holder {
+  h1.text-center,
+  h1.text-center span { color: #a8852a; }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid rgba(168, 133, 42, 0.35);
+    color: #1a1a20;
+  }
+  .card .card-title,
+  h3, h4, h5 { color: #0a0a0c; }
+  a { color: #a8852a; }
 }
 
-.home2-page__shell {
-  position: relative;
-  z-index: 1;
-  padding: 2.5rem 0 4rem;
+html[data-theme='light'] .skills-section .card .card-head,
+html[data-theme='light'] .skills-section .card .card-body {
+  background-color: #ffffff !important;
 }
 
-.home2-hero,
-.home2-dashboard {
-  position: relative;
+html[data-theme='light'] .projects-section .card .card-header {
+  background-color: #ffffff !important;
 }
 
-.home2-hero__panel,
-.home2-card,
-.home2-portrait-card,
-.home2-company-card {
-  background: var(--home2-surface);
-  border: 1px solid var(--home2-border);
-  box-shadow: var(--home2-shadow);
-  backdrop-filter: blur(16px);
+/* Footer — matches the identity in both themes */
+footer {
+  background: var(--ink) !important;
+
+  a:hover { color: var(--gold) !important; }
 }
 
-.home2-hero__panel {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.9fr);
-  gap: 1.5rem;
-  border-radius: 2rem;
-  padding: 1.75rem;
-  animation: home2-rise 0.6s ease both;
+html[data-theme='light'] footer {
+  background: #ffffff !important;
 }
 
-.home2-kicker,
-.home2-card__eyebrow,
-.home2-portrait-card__eyebrow {
-  margin: 0;
-  color: #2563eb;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+/* Home header — solid black + gold, sticky so it stays visible while
+   scrolling the sections. Beats the theme's fixed + transparent rules. */
+html[data-theme] body.h2-page .top-navbar,
+html[data-theme] body.h2-page .top-navbar.transparent-navbar {
+  position: sticky !important;
+  top: 0;
+  z-index: 1050;
+  height: 50px;
+  background-color: var(--ink) !important;
+  border-bottom: 1px solid var(--line-gold);
+  box-shadow: none;
+}
+html[data-theme] body.h2-page .top-navbar .nav-link:hover {
+  color: var(--gold) !important;
+  border-bottom: 2px solid var(--gold) !important;
 }
 
-.home2-hero__copy h1,
-.home2-card h2,
-.home2-company-card h3 {
-  color: var(--home2-text);
+/* Light header variant */
+html[data-theme='light'] body.h2-page .top-navbar,
+html[data-theme='light'] body.h2-page .top-navbar.transparent-navbar {
+  background-color: #ffffff !important;
 }
 
-.home2-hero__copy h1 {
-  margin: 0.55rem 0 0.9rem;
-  font-size: clamp(2rem, 4vw, 3.6rem);
-  line-height: 1.02;
-}
-
-.home2-hero__role {
-  margin-bottom: 0.9rem;
-  font-size: 1rem;
-  color: var(--home2-muted);
-}
-
-.home2-hero__role a {
-  color: inherit;
-  font-weight: 700;
-}
-
-.home2-hero__description {
-  max-width: 42rem;
-  margin-bottom: 1.25rem;
-  color: var(--home2-muted);
-  font-size: 1rem;
-}
-
-.home2-hero__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-}
-
-.home2-badge,
-.home2-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.65rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(37, 99, 235, 0.14);
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--home2-muted);
-}
-
-.home2-badge strong,
-.home2-chip {
-  color: var(--home2-text);
-}
-
-.home2-chip {
-  font-size: 0.86rem;
-  font-weight: 600;
-}
-
-.home2-hero__focus {
-  display: grid;
-  gap: 0.8rem;
-  padding-left: 1.1rem;
-  margin: 0 0 1.5rem;
-  color: var(--home2-muted);
-}
-
-.home2-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-}
-
-.home2-actions .btn {
-  border-radius: 999px;
-  padding: 0.85rem 1.35rem;
-  font-weight: 700;
-}
-
-.home2-hero__visual {
-  display: flex;
-  align-items: center;
-}
-
-.home2-portrait-card {
-  display: grid;
-  gap: 1rem;
+/* Nav links spread across the full header width (no logo/brand) */
+.top-navbar .navbar-collapse { flex-grow: 1; }
+.top-navbar .h2-nav-spread {
   width: 100%;
-  border-radius: 1.75rem;
-  padding: 1rem;
-  justify-items: center;
-  text-align: center;
-}
-
-.home2-portrait-card__frame {
-  width: 100%;
-  padding: 0.5rem 0 0;
-}
-
-.home2-portrait-card__frame::after {
-  display: none;
-}
-
-.home2-portrait-card__image {
-  display: block;
-  width: 100%;
-  max-width: 18rem;
-  aspect-ratio: 1;
-  object-fit: cover;
-  object-position: center 20%;
-  border: 0.5rem solid rgba(255, 255, 255, 0.82);
-  box-shadow: 0 18px 42px rgba(37, 99, 235, 0.18);
-}
-
-.home2-portrait-card__meta h2 {
-  margin: 0.4rem 0 0.55rem;
-  font-size: 1.4rem;
-}
-
-.home2-portrait-card__meta p {
-  margin: 0;
-  color: var(--home2-muted);
-}
-
-.home2-dashboard {
-  margin-top: 1.5rem;
-}
-
-.home2-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 1.25rem;
-}
-
-.home2-card {
-  border-radius: 1.75rem;
-  padding: 1.3rem;
-  animation: home2-rise 0.7s ease both;
-}
-
-.home2-card--kpis {
-  grid-column: span 4;
-}
-
-.home2-card--projects {
-  grid-column: span 4;
-}
-
-.home2-card--issuers {
-  grid-column: span 4;
-}
-
-.home2-card--timeline {
-  grid-column: span 5;
-}
-
-.home2-card--skills {
-  grid-column: span 7;
-}
-
-.home2-card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.home2-card__header h2 {
-  margin: 0.35rem 0 0;
-  font-size: 1.28rem;
-}
-
-.home2-stat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.85rem;
-}
-
-.home2-stat {
-  border-radius: 1.25rem;
-  padding: 1rem;
-  background: rgba(248, 250, 252, 0.94);
-  border: 1px solid rgba(148, 163, 184, 0.16);
-}
-
-.home2-stat strong {
-  display: block;
-  margin-bottom: 0.35rem;
-  font-size: 2rem;
-  line-height: 1;
-  color: var(--home2-text);
-}
-
-.home2-stat span,
-.home2-current-role p,
-.home2-legend__item p,
-.home2-bars__label span,
-.home2-company-card__header p,
-.home2-meter__label span,
-.home2-legend__item strong {
-  color: var(--home2-muted);
-}
-
-.home2-current-role {
-  margin-top: 1rem;
-  padding: 1rem 1.05rem;
-  border-radius: 1.25rem;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(20, 184, 166, 0.08));
-}
-
-.home2-current-role h3 {
-  margin: 0.3rem 0 0.15rem;
-  font-size: 1.35rem;
-}
-
-.home2-projects__content {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 1.25rem;
-  align-items: center;
-}
-
-.home2-donut {
-  position: relative;
-  width: 100%;
-  max-width: 16rem;
-  margin: 0 auto;
-  aspect-ratio: 1;
-  border-radius: 50%;
-}
-
-.home2-donut::after {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.16);
-}
-
-.home2-donut__center {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.home2-donut__center strong {
-  font-size: 2.1rem;
-  line-height: 1;
-}
-
-.home2-donut__center span {
-  color: var(--home2-muted);
-}
-
-.home2-legend {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.home2-legend__item {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.home2-legend__swatch {
-  width: 0.85rem;
-  height: 0.85rem;
-  border-radius: 50%;
-  flex: 0 0 auto;
-}
-
-.home2-legend__item strong,
-.home2-bars__label strong,
-.home2-meter__label strong,
-.home2-company-card__header span,
-.home2-line-chart__value {
-  color: var(--home2-text);
-}
-
-.home2-legend__item p {
-  margin: 0.1rem 0 0;
-}
-
-.home2-bars {
-  display: grid;
-  gap: 1rem;
-}
-
-.home2-bars__row {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.home2-bars__label,
-.home2-meter__label,
-.home2-company-card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.home2-bars__track,
-.home2-meter__track {
-  width: 100%;
-  height: 0.72rem;
-  border-radius: 999px;
-  background: rgba(148, 163, 184, 0.18);
-  overflow: hidden;
-}
-
-.home2-bars__value,
-.home2-meter__value {
-  height: 100%;
-  border-radius: inherit;
-}
-
-.home2-meter__value {
-  background: linear-gradient(90deg, var(--home2-company-accent), rgba(255, 255, 255, 0.4));
-}
-
-.home2-line-chart {
-  padding-top: 0.5rem;
-}
-
-.home2-line-chart svg {
-  width: 100%;
-  height: auto;
-}
-
-.home2-line-chart__axis,
-.home2-line-chart__guide {
-  stroke: rgba(148, 163, 184, 0.26);
-  stroke-width: 1.5;
-}
-
-.home2-line-chart__guide {
-  stroke-dasharray: 6 6;
-}
-
-.home2-line-chart__line {
-  fill: none;
-  stroke: #2563eb;
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.home2-line-chart__point {
-  fill: #2563eb;
-}
-
-.home2-line-chart__label,
-.home2-line-chart__value {
-  font-size: 0.68rem;
-  font-weight: 600;
-}
-
-.home2-line-chart__label {
-  fill: var(--home2-muted);
-}
-
-.home2-line-chart__value {
-  fill: var(--home2-text);
-}
-
-.home2-company-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.home2-company-card {
-  border-radius: 1.4rem;
-  padding: 1rem;
-}
-
-.home2-company-card__header {
-  margin-bottom: 1rem;
-}
-
-.home2-company-card__header h3 {
-  margin: 0;
-  font-size: 1.15rem;
-}
-
-.home2-company-card__header p {
-  margin: 0.25rem 0 0;
-}
-
-.home2-company-card__header span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 4.8rem;
-  padding: 0.45rem 0.75rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.home2-company-card__meters {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.home2-meter {
-  display: grid;
-  gap: 0.45rem;
-}
-
-html[data-theme='dark'] {
-  .home2-page {
-    --home2-bg: #09111f;
-    --home2-surface: rgba(8, 15, 29, 0.82);
-    --home2-border: rgba(96, 165, 250, 0.16);
-    --home2-text: #eff6ff;
-    --home2-muted: #cbd5e1;
-    --home2-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-    background:
-      radial-gradient(circle at top left, rgba(37, 99, 235, 0.22), transparent 34%),
-      radial-gradient(circle at top right, rgba(20, 184, 166, 0.18), transparent 30%),
-      linear-gradient(180deg, #07101d 0%, #0b1323 52%, #09111f 100%);
-  }
-
-  .home2-badge,
-  .home2-chip,
-  .home2-stat,
-  .home2-current-role,
-  .home2-company-card__header span,
-  .home2-donut::after {
-    background: rgba(8, 15, 29, 0.82);
-  }
-
-  .home2-bars__track,
-  .home2-meter__track {
-    background: rgba(148, 163, 184, 0.24);
-  }
-
-  .home2-portrait-card__frame {
-    background: transparent;
-  }
-
-  .home2-portrait-card__image {
-    border-color: rgba(15, 23, 42, 0.82);
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
-  }
-}
-
-@include media('<=large') {
-  .home2-hero__panel {
-    grid-template-columns: 1fr;
-  }
-
-  .home2-card--kpis,
-  .home2-card--projects,
-  .home2-card--issuers,
-  .home2-card--timeline,
-  .home2-card--skills {
-    grid-column: span 12;
-  }
-}
-
-@include media('<=medium') {
-  .home2-page__shell {
-    padding-top: 1.5rem;
-  }
-
-  .home2-hero__panel,
-  .home2-card {
-    border-radius: 1.35rem;
-    padding: 1.1rem;
-  }
-
-  .home2-projects__content,
-  .home2-company-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home2-stat-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .home2-portrait-card__frame {
-    padding-top: 0.25rem;
-  }
-}
-
-@include media('<=small') {
-  .home2-grid,
-  .home2-stat-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home2-hero__badges,
-  .home2-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .home2-actions .btn {
-    width: 100%;
-  }
-}
-
-@keyframes home2-rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  justify-content: space-evenly;
 }

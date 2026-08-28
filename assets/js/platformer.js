@@ -185,7 +185,7 @@
 
   // Player state — units in pixels relative to the stage.
   var player = {
-    x: 40, y: 0, vx: 0, vy: 0, w: 97, h: 92,
+    x: 40, y: 0, vx: 0, vy: 0, w: 64, h: 64,
     onGround: false, jumps: 0, facing: 1,
     anim: "idle", secondJumpAscent: false
   };
@@ -238,6 +238,12 @@
   });
 
   function tryJump() {
+    // Jumping while resting in a pipe mouth enters the pipe.
+    if (ledgePipe && player.onGround) {
+      startPipeEntry(ledgePipe);
+      track("player_entered_pipe", { room: ledgePipe.room });
+      return;
+    }
     if (player.jumps < 2) {
       player.vy = JUMP_V * (player.jumps === 0 ? 1 : 0.85);
       player.jumps += 1;
@@ -287,6 +293,45 @@
     return null;
   }
 
+  // The four edge warp pipes as solid bodies (stage coordinates).
+  // Each pipe has a mouth window of PIPE_MOUTH px below its top; under the
+  // window the pipe is solid. Mario rests half-in/half-out on the mouth's
+  // inner ledge and enters the room by jumping while resting.
+  function getEdgePipes() {
+    var srect = stageRect();
+    var nodes = stage.querySelectorAll(".platformer-pipe--edge");
+    var list = [];
+    Array.prototype.forEach.call(nodes, function (n) {
+      var r = n.getBoundingClientRect();
+      list.push({
+        x: r.left - srect.left,
+        y: r.top - srect.top,
+        w: r.width,
+        h: r.height,
+        room: n.getAttribute("data-room-link"),
+        side: n.className.indexOf("--edge-left") >= 0 ? "left" : "right"
+      });
+    });
+    return list;
+  }
+
+  var PIPE_MOUTH = 58;          // mouth window depth from the pipe top
+  var PIPE_ENTRY_FRAMES = 12;   // sink-in animation length
+  var ledgePipe = null;         // pipe whose mouth Mario is resting in
+  var pipeEntry = null;         // { room, side, from, to, t } sink animation
+
+  function startPipeEntry(pipe) {
+    var srect = stageRect();
+    var from = pipe.side === "left"
+      ? pipe.x + pipe.w - player.w / 2
+      : pipe.x - player.w / 2;
+    var to = pipe.side === "left" ? -16 : srect.width - 16;
+    pipeEntry = { room: pipe.room, side: pipe.side, from: from, to: to, t: 0 };
+    player.jumps = 0;
+    player.vx = 0;
+    player.vy = 0;
+  }
+
   function onPipe() {
     var pr = pipeRect();
     if (!pr) return false;
@@ -313,32 +358,28 @@
     player.anim = "fall";
   }
 
-  // Frame data — individual sprite images per animation.
+  // Frame data — Mario sprite strips (SMB1 small Mario, 16×16 cells).
   // Working at native pixel coordinates (no scale multiplier).
   // Each image config: { url, w (sheet width), h (sheet height), fw (frame width), fh (frame height) }
 
-  // Standing — single frame, 160×190
-  var STAND_IMG = { url: '/images/game/standing.png', w: 160, h: 190, fw: 160, fh: 190 };
+  // Standing — single frame, 17×16
+  var STAND_IMG = { url: '/images/game/standing.png', w: 17, h: 16, fw: 17, fh: 16 };
   var STAND_FRAMES = [{ x: 0 }];
 
-  // Running — 4 frames, evenly divided (773÷4≈193px), sheet 773×184
-  var RUN_IMG = { url: '/images/game/running.png', w: 773, h: 184, fw: 193, fh: 184 };
+  // Running — 3 frames of 16×16
+  var RUN_IMG = { url: '/images/game/running.png', w: 48, h: 16, fw: 16, fh: 16 };
   var RUN_FRAMES = [
-    { x: 0   },  // 0: 0-193
-    { x: 193 },  // 1: 193-386
-    { x: 386 },  // 2: 386-579
-    { x: 579 },  // 3: 579-773
+    { x: 0  },
+    { x: 16 },
+    { x: 32 },
   ];
 
-  // Jumping — 6 frames (last frame reserved for fall), sheet 1210×292
-  var JUMP_IMG = { url: '/images/game/jumping.png', w: 1210, h: 292, fw: 173, fh: 292 };
+  // Jumping — 3 frames of 16×16 (last frame reserved for fall)
+  var JUMP_IMG = { url: '/images/game/jumping.png', w: 48, h: 16, fw: 16, fh: 16 };
   var JUMP_FRAMES = [
-    { x: 0    },
-    { x: 173  },
-    { x: 346  },
-    { x: 519  },
-    { x: 692  },
-    { x: 865  },
+    { x: 0  },
+    { x: 16 },
+    { x: 32 },
   ];
 
   var walkFrameIdx  = 0;
@@ -349,7 +390,7 @@
   var jumpLastMs    = 0;
   var JUMP_FRAME_MS = 840;  // 840ms / 7 frames — slower, feels more weighty
 
-  var CHAR_SCALE = 0.5;  // display at half native sprite size
+  var CHAR_SCALE = 4;  // 16px cells → 64px display size
 
   // Room mini-game
   var ROOM_INTRO_SPEED = 3;    // px per frame for the walk-in animation
@@ -365,7 +406,7 @@
     character.style.backgroundImage = "url('" + img.url + "')";
     character.style.backgroundSize = (img.w * CHAR_SCALE) + "px " + (img.h * CHAR_SCALE) + "px";
     character.style.backgroundPositionX = -(frame.x * CHAR_SCALE) + "px";
-    character.style.backgroundPositionY = "0px";
+    character.style.backgroundPositionY = -((frame.y || 0) * CHAR_SCALE) + "px";
     character.style.backgroundRepeat = "no-repeat";
     character.style.width = (img.fw * CHAR_SCALE) + "px";
     character.style.height = (img.fh * CHAR_SCALE) + "px";
@@ -431,7 +472,7 @@
     roomChar.style.backgroundImage     = "url('" + img.url + "')";
     roomChar.style.backgroundSize      = (img.w * CHAR_SCALE) + "px " + (img.h * CHAR_SCALE) + "px";
     roomChar.style.backgroundPositionX = -(frame.x * CHAR_SCALE) + "px";
-    roomChar.style.backgroundPositionY = "0px";
+    roomChar.style.backgroundPositionY = -((frame.y || 0) * CHAR_SCALE) + "px";
     roomChar.style.backgroundRepeat    = "no-repeat";
     roomChar.style.width               = (img.fw * CHAR_SCALE) + "px";
     roomChar.style.height              = (img.fh * CHAR_SCALE) + "px";
@@ -561,6 +602,26 @@
     if (charEnabled && !paused && activeRoom === "home") {
       var srect = stageRect();
 
+      // Pipe entry animation — sinking into the pipe after jumping in.
+      if (pipeEntry) {
+        pipeEntry.t += 1;
+        var pe = pipeEntry;
+        var pct = Math.min(pe.t / PIPE_ENTRY_FRAMES, 1);
+        player.x = pe.from + (pe.to - pe.from) * pct;
+        player.vx = 0;
+        player.vy = 0;
+        player.anim = "idle";
+        stage.classList.add("is-pipe-cover");
+        applyTransform();
+        if (pct >= 1) {
+          pipeEntry = null;
+          ledgePipe = null;
+          stage.classList.remove("is-pipe-cover");
+          enterRoom(pe.room, { method: "player" });
+        }
+        return scheduleNext();
+      }
+
       // Horizontal input.
       if (keys.left)  { player.vx -= MOVE; player.facing = -1; }
       if (keys.right) { player.vx += MOVE; player.facing =  1; }
@@ -609,7 +670,116 @@
             if (player.vx < 0) player.vx = 0;
           }
         }
-        break;
+      }
+
+      // Solid edge warp pipes — Mario-style: stand on top, bump the bottom,
+      // rest half-in/half-out on the mouth's inner ledge, and enter by
+      // jumping while resting. The solid lower part keeps him in front of
+      // the pipe at ground level.
+      var edgePipes = getEdgePipes();
+      var edgePrevBottom = player.y + player.h;
+      var edgePrevTop = player.y;
+      ledgePipe = null;
+      for (var ei = 0; ei < edgePipes.length; ei++) {
+        var ep = edgePipes[ei];
+        var innerFace = ep.side === "left" ? ep.x + ep.w : ep.x;
+        var ledgeY = ep.y + PIPE_MOUTH;
+        var overlapsXe = nx + player.w > ep.x && nx < ep.x + ep.w;
+        var edgeNextBottom = ny + player.h;
+        var edgeNextTop = ny;
+
+        // Top landing — stand on the pipe like on a platform.
+        if (player.vy >= 0 && edgePrevBottom <= ep.y + 2 && edgeNextBottom >= ep.y && overlapsXe) {
+          ny = ep.y - player.h;
+          player.vy = 0;
+          player.onGround = true;
+          player.jumps = 0;
+          player.secondJumpAscent = false;
+          break;
+        }
+
+        // Bottom bump — cannot jump through the pipe from below.
+        if (player.vy < 0 && edgePrevTop >= ep.y + ep.h - 2 && edgeNextTop <= ep.y + ep.h && overlapsXe) {
+          ny = ep.y + ep.h;
+          player.vy = 0;
+          continue;
+        }
+
+        // Solid lower part — blocks entry below the mouth window.
+        var inSolidPart = ny + player.h > ledgeY + 2 && ny < ep.y + ep.h;
+        var crossingInner = ep.side === "left" ? nx < innerFace : nx + player.w > innerFace;
+        if (inSolidPart && crossingInner) {
+          if (ep.side === "left") {
+            nx = innerFace - 2;   // flush against the pipe face, in front
+            if (player.vx < 0) player.vx = 0;
+          } else {
+            nx = innerFace - player.w + 2;
+            if (player.vx > 0) player.vx = 0;
+          }
+          continue;
+        }
+
+        // Mouth window catches — rising or falling into the mouth rests
+        // Mario on the inner ledge, snapped to the half-in/half-out spot.
+        var restXep = ep.side === "left"
+          ? ep.x + ep.w - player.w / 2
+          : ep.x - player.w / 2;
+        var nearMouth = ep.side === "left"
+          ? nx + player.w > innerFace - 4 && nx < innerFace + 40
+          : nx + player.w > innerFace - 40 && nx < innerFace + 4;
+        var inWindow = ny + player.h > ep.y + 2 && ny < ledgeY + 2;
+        if (inWindow && nearMouth) {
+          if (player.vy < 0 && edgePrevBottom >= ledgeY && edgeNextBottom <= ledgeY) {
+            // Rising into the mouth — caught on the ledge.
+            ny = ledgeY - player.h;
+            nx = restXep;
+            player.vy = 0;
+            player.vx = 0;
+            player.onGround = true;
+            player.jumps = 0;
+            player.secondJumpAscent = false;
+            ledgePipe = ep;
+            break;
+          }
+          if (player.vy >= 0 && edgePrevBottom <= ledgeY + 2 && edgeNextBottom >= ledgeY) {
+            // Falling into the mouth — rest on the ledge.
+            ny = ledgeY - player.h;
+            nx = restXep;
+            player.vy = 0;
+            player.vx = 0;
+            player.onGround = true;
+            player.jumps = 0;
+            player.secondJumpAscent = false;
+            ledgePipe = ep;
+            break;
+          }
+        }
+      }
+
+      // Resting in a mouth: support detection for players standing on a
+      // surface inside the window band (e.g. the edge platforms), and the
+      // half-in/half-out rest clamp.
+      if (!ledgePipe && player.onGround) {
+        for (var li = 0; li < edgePipes.length; li++) {
+          var lp = edgePipes[li];
+          var lpLedge = lp.y + PIPE_MOUTH;
+          var inX = player.x + player.w > lp.x + 4 && player.x < lp.x + lp.w - 4;
+          var feet = ny + player.h;
+          if (inX && feet > lp.y + 2 && feet <= lpLedge + 2) {
+            ledgePipe = lp;
+            break;
+          }
+        }
+      }
+      if (ledgePipe) {
+        var restX = ledgePipe.side === "left"
+          ? ledgePipe.x + ledgePipe.w - player.w / 2
+          : ledgePipe.x - player.w / 2;
+        if (ledgePipe.side === "left") {
+          nx = Math.max(nx, restX);   // can't walk deeper into the tube
+        } else {
+          nx = Math.min(nx, restX);
+        }
       }
 
       // Ground collision (stage floor).
@@ -639,20 +809,33 @@
         }
       }
 
-      // Edge transitions — direction maps to room.
-      if (nx < -player.w * 0.6) {
-        // Left edge: top half -> experiences, bottom half -> education.
-        var room = (player.y + player.h / 2) < srect.height / 2 ? "experiences" : "education";
-        player.x = -player.w * 0.6; player.y = ny; applyTransform();
-        enterRoom(room, { method: "player" });
-        return scheduleNext();
+      // Respawn collected coins after a minute so readers can see what
+      // they missed — the coin quietly returns to its spot.
+      var nowMs = performance.now();
+      for (var ri = 0; ri < coins.length; ri++) {
+        var rc = coins[ri];
+        if (rc.collected && rc.respawnAt && nowMs >= rc.respawnAt) {
+          rc.collected = false;
+          rc.respawnAt = null;
+          rc.node = makeCoinNode(rc);
+          stage.appendChild(rc.node);
+        }
       }
-      if (nx > srect.width - player.w * 0.4) {
-        var room2 = (player.y + player.h / 2) < srect.height / 2 ? "skills" : "projects";
-        player.x = srect.width - player.w * 0.4; player.y = ny; applyTransform();
-        enterRoom(room2, { method: "player" });
-        return scheduleNext();
+      if (coinCountEl) coinCountEl.textContent = String(coins.filter(function (c) { return c.collected; }).length);
+
+      // Coin pickups — forgiving AABB (player box shrunk 8px per side).
+      for (var ci = 0; ci < coins.length; ci++) {
+        var coin = coins[ci];
+        if (coin.collected) continue;
+        var pL = nx + 8, pR = nx + player.w - 8, pT = ny + 8, pB = ny + player.h - 8;
+        if (pR > coin.x && pL < coin.x + 24 && pB > coin.y && pT < coin.y + 32) {
+          collectCoin(coin);
+        }
       }
+
+      // Screen edges are hard walls — rooms are entered only through pipes.
+      if (nx < -player.w * 0.6) nx = -player.w * 0.6;
+      if (nx > srect.width - player.w * 0.4) nx = srect.width - player.w * 0.4;
 
       player.x = nx;
       player.y = ny;
@@ -682,6 +865,7 @@
   window.addEventListener("load", function () {
     setTimeout(function () {
       initPlayer();
+      spawnCoins();
       scheduleNext();
     }, 250);
   });
@@ -692,15 +876,89 @@
     if (character) character.style.display = charEnabled ? "" : "none";
     if (!charEnabled) teardownRoomMiniGame();
     if (charEnabled && wasMobile) initPlayer();
+    if (charEnabled) spawnCoins();
   });
 
-  /* -------- Click-to-enter on pipe also for desktop -------- */
-  var pipeBtn = stage.querySelector(".platformer-pipe");
-  if (pipeBtn) {
-    pipeBtn.addEventListener("click", function (ev) {
-      ev.preventDefault();
-      enterRoom("intro", { method: "pipe-click" });
+  /* -------- Skill coins --------
+     One coin per certification (from the skills data JSON). Coins rest on
+     the platforms; collecting one pops a fading skill-name label and bumps
+     the HUD counter. Collected state lasts for the session. */
+  var coins = [];        // { name, x, y, node, collected }
+  var coinsHudEl = stage.querySelector("[data-coins-hud]");
+  var coinCountEl = stage.querySelector("[data-coins-count]");
+
+  function coinNames() {
+    var el = d.getElementById("platformer-skills-data");
+    if (!el) return [];
+    try {
+      return (JSON.parse(el.textContent) || []).map(function (s) { return s.name; }).filter(Boolean);
+    } catch (e) { return []; }
+  }
+
+  function makeCoinNode(c) {
+    var node = d.createElement("div");
+    node.className = "platformer-coin";
+    node.setAttribute("data-skill", c.name);
+    node.style.left = c.x + "px";
+    node.style.top  = c.y + "px";
+    return node;
+  }
+
+  function spawnCoins() {
+    if (isTouchOrSmall()) return;
+    var plats = getPlatforms().filter(function (p) { return p.id !== "pipe" && p.w >= 60; });
+    if (!plats.length) return;
+
+    // First run: build one coin per certification.
+    if (!coins.length) {
+      coins = coinNames().map(function (name) {
+        return { name: name, x: 0, y: 0, node: null, collected: false };
+      });
+    }
+    if (!coins.length) return;
+
+    // (Re-)pin every uncollected coin above a platform.
+    var placed = 0;
+    coins.forEach(function (c) {
+      if (c.collected) return;
+      var plat = plats[placed % plats.length];
+      var idx  = Math.floor(placed / plats.length);
+      var frac = 0.2 + 0.3 * Math.min(idx, 2);   // up to 3 coins per platform
+      c.x = plat.x + plat.w * frac - 12;
+      c.y = plat.y - 38;
+      if (c.node && c.node.parentNode) c.node.parentNode.removeChild(c.node);
+      c.node = makeCoinNode(c);
+      stage.appendChild(c.node);
+      placed++;
     });
+    if (coinCountEl) coinCountEl.textContent = String(coins.filter(function (c) { return c.collected; }).length);
+  }
+
+  function showCoinPopup(coin) {
+    var pop = d.createElement("div");
+    pop.className = "platformer-coin-popup";
+    pop.textContent = coin.name;
+    pop.style.left = (coin.x + 12) + "px";
+    pop.style.top  = (coin.y - 10) + "px";
+    stage.appendChild(pop);
+    pop.addEventListener("animationend", function () {
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
+    });
+  }
+
+  function collectCoin(coin) {
+    coin.collected = true;
+    coin.respawnAt = performance.now() + 60000;  // reappears after a minute
+    if (coin.node && coin.node.parentNode) coin.node.parentNode.removeChild(coin.node);
+    coin.node = null;
+    var collected = coins.filter(function (c) { return c.collected; }).length;
+    if (coinCountEl) coinCountEl.textContent = String(collected);
+    showCoinPopup(coin);
+    track("coin_collected", { skill: coin.name });
+    if (collected === coins.length && coinsHudEl) {
+      coinsHudEl.classList.add("is-flash");
+      track("all_coins_collected");
+    }
   }
 
 })();

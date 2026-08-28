@@ -1,5 +1,5 @@
 # Copyright Notice
-copyright: © 2024 Copyright.
+copyright: © 2026 Anas Mofleh.
 
 # A disclaimer notice for the footer. Make sure you have set "params.footer.disclaimer.enable: true" in your `config.yaml` file.
 disclaimer: "This theme is under MIT license. So, you can use it for non-commercial, commercial, or private uses.
@@ -14,7 +14,7 @@ description: Portfolio and personal blog of Anas Mofleh.
 customMenus:
 - name: Home
   url: /
-  hideFromNavbar: false
+  hideFromNavbar: true
   showOnFooter: false
 - name: Docs
   url: https://toha-guides.netlify.app/posts/
@@ -29,5 +29,5 @@ openGraph:
   title: Anas's Portfolio
   type: website
   description: Portfolio and personal website of Anas Mofleh.
-  image: images/author/anas.png
+  image: images/author/Anas.png
   url: https://AnasMofleh.github.io
