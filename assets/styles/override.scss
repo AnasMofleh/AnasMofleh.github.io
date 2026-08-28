@@ -1091,40 +1091,4 @@ html[data-theme='light'] body.h2-page .top-navbar .dropdown-item:hover {
   padding-top: 0 !important;
 }
 
-/* Soft-skill badges: full-width rows, circle left, label text right. */
-.about-section .row .col-6 {
-  flex: 0 0 100%;
-  max-width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 4px 8px;
-}
-.about-section .circular-progress {
-  flex: 0 0 auto;
-  width: 110px;
-  height: 110px;
-  line-height: 110px;
-  margin: 0;
-}
-.about-section .circular-progress .circular-progress-value {
-  position: static !important;
-  transform: none !important;
-  display: block !important;
-  width: auto !important;
-  height: auto !important;
-  padding: 0 !important;
-  font-size: 1.05rem;
-  line-height: 1.3;
-  text-align: left !important;
-  color: var(--text-bright);
-}
-html[data-theme] .about-section .circular-progress::after {
-  border-color: var(--ink-4);
-}
-html[data-theme='light'] .about-section .circular-progress .circular-progress-value {
-  color: #1a1a20;
-}
-html[data-theme='light'] .about-section .circular-progress::after {
-  border-color: #e5e0d0;
-}
+/* Soft-skill badges keep the theme's default horizontal layout. */

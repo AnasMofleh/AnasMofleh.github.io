@@ -721,7 +721,8 @@
     var w = tunnel.getBoundingClientRect().width;
     tunnelState = {
       x: (w - player.w) / 2, y: -player.h, vx: 0, vy: 3,
-      facing: 1, anim: "fall", jumps: 0, onGround: false, exitAnim: null
+      facing: 1, anim: "fall", jumps: 0, onGround: false, exitAnim: null,
+      spawning: true   // the drop-in passes through the pipe from above
     };
     applyTunnelTransform();
   }
@@ -790,6 +791,26 @@
     // Ceiling — the tunnel is closed at the top, except inside the pipe.
     if (ny < 0 && !underPipeX) { ny = 0; tunnelState.vy = 0; }
 
+    // The hanging pipe is solid from its sides — its body blocks any
+    // horizontal passage. The mouth opening (under the pipe) stays free
+    // for the jump-in entry, and the exit animation passes through.
+    if (pipeLocal && !tunnelState.exitAnim && !tunnelState.spawning && !underPipeX) {
+      var solidTop = pipeLocal.y + 2;
+      var solidBottom = pipeLocal.y + pipeLocal.h - 34;
+      var pOvY = ny + player.h > solidTop && ny < solidBottom;
+      var pOvX = nx + player.w > pipeLocal.x + 2 && nx < pipeLocal.x + pipeLocal.w - 2;
+      if (pOvX && pOvY) {
+        // Eject to the side the player approached from.
+        if (tunnelState.x + player.w / 2 <= pipeLocal.x + pipeLocal.w / 2) {
+          nx = pipeLocal.x - player.w;
+          if (tunnelState.vx > 0) tunnelState.vx = 0;
+        } else {
+          nx = pipeLocal.x + pipeLocal.w;
+          if (tunnelState.vx < 0) tunnelState.vx = 0;
+        }
+      }
+    }
+
     // Closed at both ends.
     if (nx < 0)              { nx = 0;              tunnelState.vx = 0; }
     if (nx > w - player.w)   { nx = w - player.w;   tunnelState.vx = 0; }
@@ -801,11 +822,13 @@
       tunnelState.vy = 0;
       tunnelState.onGround = true;
       tunnelState.jumps = 0;
+      tunnelState.spawning = false;
     }
 
-    // Double-jump into the pipe while under it → ride back up.
-    if (underPipeX && tunnelState.jumps === 2 && pipeLocal &&
-        tunnelState.y < pipeLocal.y + pipeLocal.h + 4) {
+    // A single jump with more than half of Mario inside the pipe mouth
+    // rides him back up to the gamified home.
+    if (underPipeX && !tunnelState.exitAnim && pipeLocal && tunnelState.vy < 0 &&
+        tunnelState.y < pipeLocal.y + pipeLocal.h - 32) {
       var mouthTop = pipeLocal.y + pipeLocal.h - 34;   // inside the mouth band
       tunnelState.exitAnim = { t: 0, fromY: tunnelState.y, toY: mouthTop - player.h };
       tunnelState.vx = 0;
