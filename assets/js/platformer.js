@@ -711,6 +711,7 @@
     var char = d.createElement('div');
     char.className = 'platformer-character room-tunnel-character';
     char.setAttribute('aria-hidden', 'true');
+    char.style.visibility = 'visible';   // base class starts hidden
     tunnel.appendChild(char);
     frame.insertBefore(tunnel, body);
 

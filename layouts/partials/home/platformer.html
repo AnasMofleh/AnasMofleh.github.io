@@ -67,7 +67,7 @@
       <span class="platformer-pipe__rim"></span>
       <span class="platformer-pipe__rim2"></span>
       <span class="platformer-pipe__body"></span>
-      <span class="platformer-pipe__hint">Intro</span>
+      <span class="platformer-pipe__hint">About Me</span>
     </button>
 
     {{/* Player character (hidden on mobile via CSS). */}}
@@ -92,8 +92,8 @@
         <p class="platformer-hint">
           Use <kbd>←</kbd> <kbd>→</kbd> to move, <kbd>↑</kbd> or <kbd>Space</kbd> to jump (press again for a double jump).
           Jump into a warp pipe's mouth — Mario rests half-in, then gets pulled inside. You can also jump on top of the
-          pipes or pass underneath. Stand on the center pipe and press <kbd>↓</kbd> to descend to the Introduction; in
-          the Introduction, walk the top tunnel and double-jump into the hanging pipe to ride back up. <kbd>Esc</kbd>
+          pipes or pass underneath. Stand on the center pipe and press <kbd>↓</kbd> to descend to About Me; in
+          About Me, walk the top tunnel and double-jump into the hanging pipe to ride back up. <kbd>Esc</kbd>
           returns to the map. Collect the company badges to claim your certifications. Tap the pipes on touch devices.
         </p>
       </div>
@@ -108,7 +108,7 @@
       (dict "id" "skills"      "title" "Skills"                    "side" "right"  "eyebrow" "Top-right room"    "source" "#skills")
       (dict "id" "education"   "title" "Education"  "side" "left"   "eyebrow" "Bottom-left room"  "source" "#education,#publications")
       (dict "id" "projects"    "title" "Projects"                  "side" "right"  "eyebrow" "Bottom-right room" "source" "#projects")
-      (dict "id" "intro"       "title" "Introduction"              "side" "bottom" "eyebrow" "Pipe room"         "source" "#about")
+      (dict "id" "intro"       "title" "About Me"                   "side" "bottom" "eyebrow" "Pipe room"         "source" "#about")
     }}
     {{ range $rooms }}
       <section class="platformer-room platformer-room--{{ .side }}"
