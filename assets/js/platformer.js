@@ -419,8 +419,8 @@
   // Working at native pixel coordinates (no scale multiplier).
   // Each image config: { url, w (sheet width), h (sheet height), fw (frame width), fh (frame height) }
 
-  // Standing — single frame, 17×16
-  var STAND_IMG = { url: '/images/game/standing.png', w: 17, h: 16, fw: 17, fh: 16 };
+  // Standing — single frame, 16×16 (canonical 12×16 art centered)
+  var STAND_IMG = { url: '/images/game/standing.png', w: 16, h: 16, fw: 16, fh: 16 };
   var STAND_FRAMES = [{ x: 0 }];
 
   // Running — 3 frames of 16×16
