@@ -204,7 +204,7 @@
   // Player state — units in pixels relative to the stage.
   var player = {
     x: 40, y: 0, vx: 0, vy: 0, w: 64, h: 64,
-    onGround: false, jumps: 0, facing: 1,
+    onGround: false, jumps: 0, facing: 1, crouching: false,
     anim: "idle", secondJumpAscent: false
   };
 
@@ -246,8 +246,10 @@
         break;
       case "ArrowDown":  case "s": case "S":
         setKey("down", true);
-        // Pipe entry if on top of pipe — elevator descent into it.
+        // Pipe entry if on top of pipe — elevator descent into it;
+        // otherwise duck.
         if (onPipe()) { startPipeSink(); }
+        else if (player.onGround) { player.crouching = true; }
         ev.preventDefault();
         break;
     }
@@ -257,11 +259,12 @@
       case "ArrowLeft":  case "a": case "A": setKey("left",  false); break;
       case "ArrowRight": case "d": case "D": setKey("right", false); break;
       case "ArrowUp":    case "w": case "W": case " ": case "Spacebar": setKey("up", false); break;
-      case "ArrowDown":  case "s": case "S": setKey("down", false); break;
+      case "ArrowDown":  case "s": case "S": setKey("down", false); player.crouching = false; break;
     }
   });
 
   function tryJump() {
+    player.crouching = false;
     // Jumping while resting in a pipe mouth enters the pipe.
     if (ledgePipe && player.onGround) {
       startPipeEntry(ledgePipe);
@@ -399,6 +402,11 @@
   }
 
   function updateCharacterState() {
+    if (player.crouching && player.onGround) {
+      player.anim = "crouch";
+      player.secondJumpAscent = false;
+      return;
+    }
     if (player.onGround) {
       player.anim = Math.abs(player.vx) > 0.45 ? "run" : "idle";
       player.secondJumpAscent = false;
@@ -439,6 +447,10 @@
     { x: 32 },
   ];
 
+  // Crouching — single frame, 16×16 (down motion on the ground)
+  var CROUCH_IMG = { url: '/images/game/crouching.png', w: 16, h: 16, fw: 16, fh: 16 };
+  var CROUCH_FRAMES = [{ x: 0 }];
+
   var walkFrameIdx  = 0;
   var walkLastMs    = 0;
   var WALK_FRAME_MS = 100;  // 400ms / 4 frames
@@ -477,8 +489,15 @@
     character.classList.toggle("is-jump",     anim === "jump");
     character.classList.toggle("is-fall",     anim === "fall");
     character.classList.toggle("is-tailspin", anim === "tailspin");
+    character.classList.toggle("is-crouch",   anim === "crouch");
 
-    if (anim === "run") {
+    if (anim === "crouch") {
+      setFrame(CROUCH_IMG, CROUCH_FRAMES[0]);
+      walkFrameIdx = 0;
+      walkLastMs   = 0;
+      jumpFrameIdx = 0;
+      jumpLastMs   = 0;
+    } else if (anim === "run") {
       var now = performance.now();
       if (now - walkLastMs >= WALK_FRAME_MS) {
         // Loop all 4 frames
