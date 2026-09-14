@@ -2,25 +2,35 @@ name: "Theme Update"
 
 on:
   schedule:
-    - cron: "0 0 * * 5" # At 00:00 on Friday
+    - cron: "0 0 1 * *" # At 00:00 UTC on the 1st of every month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: theme-update
+  cancel-in-progress: false
 
 jobs:
   update-theme:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: main
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3.2.1
         with:
-          hugo-version: "latest"
+          hugo-version: "0.160.1"
           extended: true
 
       - name: Update hugo modules

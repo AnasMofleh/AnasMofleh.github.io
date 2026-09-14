@@ -1,5 +1,7 @@
 from data_writer import data_writer
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import os
 import sys
 
@@ -13,28 +15,65 @@ class projects_getter():
             sys.exit(1)
         self.username = username
         self.token = token
+        self.session = self._make_session()
+
+    def _make_session(self):
+        retries = Retry(
+            total=4,
+            backoff_factor=2,
+            status_forcelist=(429, 500, 502, 503, 504),
+            allowed_methods=("GET",),
+            respect_retry_after_header=True,
+        )
+        session = requests.Session()
+        session.mount("https://", HTTPAdapter(max_retries=retries))
+        return session
+
+    def _fetch_page(self, page, authenticated=True):
+        # GitHub API URL for the user's repositories
+        url = f'https://api.github.com/users/{self.username}/repos'
+        headers = {'Authorization': f'token {self.token}'} if authenticated else {}
+        return self.session.get(
+            url,
+            headers=headers,
+            params={'per_page': 100, 'page': page},
+            timeout=(5, 30),
+        )
 
     def list_repos(self):
         projects = {}
         tags = {}
         page = 1
+        authenticated = True
 
         while True:
-            # GitHub API URL for the user's repositories
-            url = f'https://api.github.com/users/{self.username}/repos'
-
-            # Send a GET request to the GitHub API with authorization
             try:
-                response = requests.get(
-                    url,
-                    headers={'Authorization': f'token {self.token}'},
-                    params={'per_page': 100, 'page': page}
-                )
+                response = self._fetch_page(page, authenticated=authenticated)
+
+                # GITHUB_TOKEN may be rejected for user-scoped endpoints; public
+                # repo data needs no auth, so fall back to an anonymous request.
+                if (authenticated
+                        and response.status_code == 403
+                        and 'resource not accessible by integration' in response.text.lower()):
+                    print('GITHUB_TOKEN not accepted for this endpoint; '
+                          'retrying without authentication (public data only).')
+                    authenticated = False
+                    response = self._fetch_page(page, authenticated=False)
+
                 response.raise_for_status()
+            except requests.exceptions.HTTPError as error:
+                status_code = error.response.status_code
+                hints = {
+                    401: 'the token is invalid or has expired',
+                    403: 'the token lacks permission or the rate limit is exceeded'
+                         f' (X-RateLimit-Remaining: {error.response.headers.get("X-RateLimit-Remaining", "N/A")})',
+                    404: f'the user "{self.username}" was not found',
+                }
+                print(f'Error fetching repositories (HTTP {status_code}): '
+                      f'{hints.get(status_code, "")} — {error}')
+                sys.exit(1)
             except requests.exceptions.RequestException as error:
-                status = getattr(error, 'response', None)
-                status_code = status.status_code if status else 'N/A'
-                print(f'Error fetching repositories (HTTP {status_code}): {error}')
+                print(f'Network error fetching repositories after retries: {error}')
                 sys.exit(1)
 
             repos = response.json()
@@ -67,7 +106,3 @@ if __name__ == '__main__':
     projects, tags = projects_getter().list_repos()
     data_writer().update_info(tags, 'data/en/sections/projects.yaml', 'buttons')
     data_writer().update_info(projects, 'data/en/sections/projects.yaml', 'projects')
-
-
-
-
